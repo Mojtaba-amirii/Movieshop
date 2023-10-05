@@ -2,13 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-/* .bm-burger-button {
-  width: 36px;
-  height: 30px;
-  left: 36px;
+.bm-burger-button {
+  width: 16px;
+  height: 16px;
+  /* left: 36px;
 
-  top: 36px;
-} */
+  top: 36px; */
+}
 
 .bm-burger-bars {
   background: #383f5b;
