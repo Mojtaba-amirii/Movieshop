@@ -8,7 +8,7 @@ export default function SearchBar() {
 
   return (
     <>
-      <div className="min-w-sm mt-4 flex  flex-col items-center gap-2">
+      <div className="min-w-sm mt-4 flex  flex-col items-center justify-center gap-2 md:flex-row">
         <input
           className=" w-2/3  rounded-md border border-black  "
           placeholder="Search..."
@@ -21,10 +21,10 @@ export default function SearchBar() {
           onChange={(e) => setGenre(e.target.value)}
         >
           <option value="all">All Genres</option>
-          <option value="volvo">Volvo</option>
-          <option value="saab">Saab</option>
-          <option value="opel">Opel</option>
-          <option value="audi">Audi</option>
+          <option value="drama">Drama</option>
+          <option value="action">Action</option>
+          <option value="horror">Horror</option>
+          <option value="comedy">Comedy</option>
         </select>
       </div>
     </>

@@ -1,3 +1,4 @@
+import MovieList from "./MovieList";
 import Navbar from "./navbar";
 import React, { ReactNode } from "react";
 
@@ -10,6 +11,7 @@ export default function Layout({ children }: LayoutProps) {
     <>
       <Navbar />
       <main>{children}</main>
+      <MovieList />
       {/* <Footer /> */}
     </>
   );
