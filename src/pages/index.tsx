@@ -1,4 +1,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
+
+import Login from "./login";
+import Done from "./done";
 import { useState } from "react";
 import MovieList from "~/components/MovieList";
 import SearchBar from "~/components/Search";
