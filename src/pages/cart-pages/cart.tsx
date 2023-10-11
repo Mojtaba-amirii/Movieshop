@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Movie } from "../movie-details/[movie]";
 import axios, { AxiosResponse } from "axios";
 import { AiFillCloseCircle } from "react-icons/ai";
+import Link from "next/link";
 
 export default function ShoppingCart() {
   const [cartMovies, setCartMovies] = useState<Movie[]>([]);
@@ -93,12 +94,14 @@ export default function ShoppingCart() {
           {`Total: ${totalPrice} kr`}
         </p>
       )}
-      <button
-        type="button"
-        className="sm:text-md md:text-l rounded-md border border-black bg-sky-400 px-4 py-2 text-sm lg:text-xl xl:text-2xl"
-      >
-        To Payment
-      </button>
+      <Link href="/cart-pages/PaymentPage">
+        <button
+          type="button"
+          className="sm:text-md md:text-l rounded-md border border-black bg-sky-400 px-4 py-2 text-sm lg:text-xl xl:text-2xl"
+        >
+          To Payment
+        </button>
+      </Link>
     </div>
   );
 }
