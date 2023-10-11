@@ -1,9 +1,8 @@
 import axios, { AxiosResponse } from "axios";
-import { link } from "fs";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
-interface Movie {
+export interface Movie {
   id: number;
   name: string;
   image: {
@@ -15,15 +14,12 @@ interface Movie {
   summary: string;
 }
 
-export default function movieDetails() {
+export default function MovieDetails() {
   const [movie, setMovie] = useState<Movie>();
-
   const router = useRouter();
-
   console.log(router.query.movie);
 
   let movieName: string;
-
   if (router.query.movie) {
     movieName = router.query.movie as string;
     movieName = movieName.replaceAll("%20", " ");
@@ -57,6 +53,8 @@ export default function movieDetails() {
 
   console.log(movie);
 
+  const handleAddToCart = () => {};
+
   return (
     <div>
       {movie ? (
@@ -69,11 +67,17 @@ export default function movieDetails() {
           />
           <div className="flex">
             <h2>Genres:&nbsp;</h2>
-            <div>{movie.genres.join(', ')}</div>
+            <div>{movie.genres.join(", ")}</div>
           </div>
           <div dangerouslySetInnerHTML={{ __html: movie.summary }}></div>
           <p className="text-lg font-semibold">{movie.price} kr</p>
-          <button className="rounded-full bg-gray-200 px-2">Add to Cart</button>
+          <button
+            type="button"
+            className="rounded-full bg-gray-200 px-2"
+            onClick={() => handleAddToCart()}
+          >
+            Add to Cart
+          </button>
         </div>
       ) : (
         "Loading..."

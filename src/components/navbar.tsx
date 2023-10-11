@@ -1,5 +1,6 @@
-import { SlBasketLoaded } from "react-icons/sl";
+import { FaShoppingBasket } from "react-icons/fa";
 import HamburgerMenu from "./hamburger";
+import Link from "next/link";
 
 export default function Navbar() {
   return (
@@ -10,10 +11,14 @@ export default function Navbar() {
             <HamburgerMenu />
           </li>
           <li className="text-2xl font-bold">
-            <h1>MOVIESHOP</h1>
+            <Link href="/">
+              <h1>MOVIESHOP</h1>
+            </Link>
           </li>
-          <li className="text-xl">
-            <SlBasketLoaded />
+          <li className="text-2xl ">
+            <Link href="/cart-pages/cart">
+              <FaShoppingBasket />
+            </Link>
           </li>
         </ul>
       </nav>

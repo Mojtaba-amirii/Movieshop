@@ -26,7 +26,7 @@ export default function HamburgerMenu() {
       <Menu
         customBurgerIcon={<GiHamburgerMenu />}
         width={"auto"}
-        className="left-0 top-0"
+        className=" left-0 top-0"
       >
         <Links />
       </Menu>

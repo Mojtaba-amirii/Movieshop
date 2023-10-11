@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios, { AxiosResponse } from "axios";
-import SearchBar from "./Search";
+
 import Link from "next/link";
 
 interface Movie {
@@ -22,8 +22,8 @@ interface SearchProps {
 export default function MovieList({ search, genre }: SearchProps) {
   const [movies, setMovies] = useState<Movie[]>([]);
 
-  console.log('Search: ', search)
-  console.log('Genre: ', genre)
+  console.log("Search: ", search);
+  console.log("Genre: ", genre);
 
   useEffect(() => {
     async function fetchMovies() {
@@ -38,7 +38,7 @@ export default function MovieList({ search, genre }: SearchProps) {
           genres: movie.genres.length != 0 ? movie.genres : ["Unknown"],
         }));
 
-        console.log(moviesWithPricesAndGenres[93])
+        console.log(moviesWithPricesAndGenres[93]);
 
         setMovies(moviesWithPricesAndGenres);
       } catch (error) {
@@ -67,16 +67,15 @@ export default function MovieList({ search, genre }: SearchProps) {
 
   return (
     <div>
-      <ul className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+      <ul className="mx-1 grid grid-cols-2 gap-1  md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
         {filteredMovies.map((movie) => (
           <li
             key={movie.id}
-            className="flex flex-col items-center rounded-md border p-4"
+            className="flex flex-col items-center rounded-md border p-3"
           >
             <Link
-              href={{
-                pathname: `/movie-details/${movie.name}`,
-              }}
+              href="/movie-details/[movie]"
+              as={`/movie-details/${movie.name}`}
             >
               <img
                 src={movie.image.medium}
@@ -85,7 +84,10 @@ export default function MovieList({ search, genre }: SearchProps) {
               />
               <div className="text-center">
                 <div className="text-lg font-semibold">{movie.name}</div>
-                <div className="flex-col">Genre: {movie.genres}</div>
+                <div className="flex flex-col">
+                  <h2>Genres:&nbsp;</h2>
+                  <div>{movie.genres.join(", ")}</div>
+                </div>
                 <div>Price: {movie.price} kr</div>
               </div>
             </Link>
