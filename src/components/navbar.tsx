@@ -5,22 +5,38 @@ import Link from "next/link";
 export default function Navbar() {
   return (
     <header>
-      <nav className=" sticky flex  w-full bg-sky-400 px-6 py-4">
-        <ul className="flex w-full items-center justify-between">
-          <li className="text-xl md:hidden">
+      <nav className=" sticky flex  w-full items-center justify-between bg-sky-400 px-6 py-4">
+        <div className="flex items-center gap-4">
+          <Link href="/" className="text-2xl font-bold">
+            <h1>MOVIESHOP</h1>
+          </Link>
+          <div className="text-xl lg:hidden">
             <HamburgerMenu />
-          </li>
-          <li className="text-2xl font-bold">
-            <Link href="/">
-              <h1>MOVIESHOP</h1>
-            </Link>
-          </li>
-          <li className="text-2xl ">
-            <Link href="/cart-pages/cart">
-              <FaShoppingBasket />
-            </Link>
-          </li>
-        </ul>
+          </div>
+          <div className="hidden lg:block">
+            <ul className="flex gap-2">
+              <li>
+                <Link href="/login" className="font-bold">
+                  Login
+                </Link>
+              </li>
+              <li>
+                <Link href="/signin" className="font-bold">
+                  Sign in
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="font-bold">
+                  About
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <Link href="/cart-pages/cart" className="text-2xl">
+          <FaShoppingBasket />
+        </Link>
       </nav>
     </header>
   );
