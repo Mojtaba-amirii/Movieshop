@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios, { AxiosResponse } from "axios";
-import { Movie } from "./movie-details/[movie]";
+import axios from "axios";
+import type { AxiosResponse } from "axios";
+import type { Movie } from "./movie-details/[movie]";
 
 export default function Mymovies() {
   const [myMovies, setMyMovies] = useState<Movie[]>([]);
@@ -24,7 +25,7 @@ export default function Mymovies() {
         console.error("Error fetching movies:", error);
       }
     }
-    fetchMovies();
+    fetchMovies().catch((error) => console.error(error));
 
     function getRandomPrice(min: number, max: number): number {
       return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -32,15 +33,15 @@ export default function Mymovies() {
   }, []);
 
   // Function to add a movie to the cart
-  const addMovieToCart = (movie: Movie) => {
-    setMyMovies([...myMovies, movie]);
-  };
+  // const addMovieToCart = (movie: Movie) => {
+  //   setMyMovies([...myMovies, movie]);
+  // };
 
   // Function to remove a movie from the cart
-  const removeMovieFromCart = (movie: Movie) => {
-    const updatedCart = myMovies.filter((myMovie) => myMovie !== movie);
-    setMyMovies(updatedCart);
-  };
+  // const removeMovieFromCart = (movie: Movie) => {
+  //   const updatedCart = myMovies.filter((myMovie) => myMovie !== movie);
+  //   setMyMovies(updatedCart);
+  // };
 
   return (
     <div className=" container mx-auto  px-4">

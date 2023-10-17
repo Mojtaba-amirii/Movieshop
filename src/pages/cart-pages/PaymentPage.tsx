@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Movie } from "../movie-details/[movie]";
-import axios, { AxiosResponse } from "axios";
+import type { Movie } from "../movie-details/[movie]";
+import axios from "axios";
+import type { AxiosResponse } from "axios";
 import { AiFillCloseCircle } from "react-icons/ai";
 import {
   FaCcVisa,
