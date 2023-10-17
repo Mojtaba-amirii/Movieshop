@@ -70,7 +70,8 @@ export default function ShoppingCart() {
               alt={movie.name}
               width={80}
               height={96}
-              // className="h-24 w-20 sm:h-32 sm:w-24 md:h-40 md:w-32 lg:h-48 lg:w-36 xl:h-56 xl:w-40"
+              priority
+              className=" sm:h-32 sm:w-24 md:h-40 md:w-32 lg:h-48 lg:w-36 xl:h-56 xl:w-40"
             />
             <div className="flex flex-1 flex-row items-center gap-8">
               <p className="sm:text-md md:text-l text-sm lg:text-xl xl:text-2xl">

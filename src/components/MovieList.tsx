@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import type { AxiosResponse } from "axios";
-
+import Image from "next/image";
 import Link from "next/link";
 
 interface Movie {
@@ -78,11 +78,16 @@ export default function MovieList({ search, genre }: SearchProps) {
               href="/movie-details/[movie]"
               as={`/movie-details/${movie.name}`}
             >
-              <img
-                src={movie.image.medium}
-                alt={movie.name}
-                className="mb-2 h-auto w-full"
-              />
+              <div className="aspect-w-24 aspect-h-12 relative">
+                <Image
+                  src={movie.image.medium}
+                  alt={movie.name}
+                  width={600}
+                  height={696}
+                  priority
+                  className="mx-auto mb-2 h-auto w-full "
+                />
+              </div>
               <div className="text-center">
                 <div className="text-lg font-semibold">{movie.name}</div>
                 <div className="flex flex-col">

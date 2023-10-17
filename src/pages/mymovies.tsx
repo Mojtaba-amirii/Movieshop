@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import type { AxiosResponse } from "axios";
 import type { Movie } from "./movie-details/[movie]";
+import Image from "next/image";
 
-export default function Mymovies() {
+export default function MyMovies() {
   const [myMovies, setMyMovies] = useState<Movie[]>([]);
 
   useEffect(() => {
@@ -52,10 +53,13 @@ export default function Mymovies() {
             key={index}
             className="mx-auto flex w-full flex-col items-center gap-6 rounded-xl border bg-gray-100 p-3"
           >
-            <img
+            <Image
               src={movie.image.medium}
               alt={movie.name}
-              className="h-26 w-24 sm:h-32 sm:w-24 md:h-40 md:w-32 lg:h-48 lg:w-36 xl:h-56 xl:w-40"
+              width={336}
+              height={346}
+              priority
+              className="mb-2 h-auto w-auto "
             />
             <div className="flex flex-1 flex-col items-center gap-8">
               <p className="sm:text-md md:text-md lg:text-l lg:text-l text-sm">
