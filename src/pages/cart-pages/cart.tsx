@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Movie } from "../movie-details/[movie]";
-import axios, { AxiosResponse } from "axios";
+import type { Movie } from "../movie-details/[movie]";
+import axios from "axios";
+import type { AxiosResponse } from "axios";
 import { AiFillCloseCircle } from "react-icons/ai";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function ShoppingCart() {
   const [cartMovies, setCartMovies] = useState<Movie[]>([]);
@@ -27,7 +29,7 @@ export default function ShoppingCart() {
         console.error("Error fetching movies:", error);
       }
     }
-    fetchMovies();
+    fetchMovies().catch((error) => console.error(error));
 
     function getRandomPrice(min: number, max: number): number {
       return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -35,9 +37,9 @@ export default function ShoppingCart() {
   }, []);
 
   // Function to add a movie to the cart
-  const addMovieToCart = (movie: Movie) => {
-    setCartMovies([...cartMovies, movie]);
-  };
+  // const addMovieToCart = (movie: Movie) => {
+  //   setCartMovies([...cartMovies, movie]);
+  // };
 
   // Function to remove a movie from the cart
   const removeMovieFromCart = (movie: Movie) => {
@@ -63,10 +65,12 @@ export default function ShoppingCart() {
             key={index}
             className="mx-auto flex w-full flex-row items-center gap-6 rounded-xl border bg-gray-200 p-3"
           >
-            <img
+            <Image
               src={movie.image.medium}
               alt={movie.name}
-              className="h-24 w-20 sm:h-32 sm:w-24 md:h-40 md:w-32 lg:h-48 lg:w-36 xl:h-56 xl:w-40"
+              width={80}
+              height={96}
+              // className="h-24 w-20 sm:h-32 sm:w-24 md:h-40 md:w-32 lg:h-48 lg:w-36 xl:h-56 xl:w-40"
             />
             <div className="flex flex-1 flex-row items-center gap-8">
               <p className="sm:text-md md:text-l text-sm lg:text-xl xl:text-2xl">

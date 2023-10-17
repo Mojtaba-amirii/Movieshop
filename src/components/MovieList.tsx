@@ -45,7 +45,7 @@ export default function MovieList({ search, genre }: SearchProps) {
         console.error("Error fetching movies:", error);
       }
     }
-    fetchMovies();
+    fetchMovies().catch((error) => console.error(error));
   }, []);
   // Filter movies based on the Search
   const filteredMovies = movies.filter((movie) => {

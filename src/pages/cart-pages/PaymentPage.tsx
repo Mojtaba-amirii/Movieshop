@@ -35,7 +35,7 @@ export default function PaymentPage() {
         console.error("Error fetching movies:", error);
       }
     }
-    fetchMovies();
+    fetchMovies().catch((error) => console.error(error));
 
     function getRandomPrice(min: number, max: number): number {
       return Math.floor(Math.random() * (max - min + 1)) + min;

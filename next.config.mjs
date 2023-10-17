@@ -4,6 +4,19 @@
  */
 await import("./src/env.mjs");
 
+// module.exports = {
+//   images: {
+//     remotePatterns: [
+//       {
+//         protocol: "https",
+//         hostname: "static.tvmaze.com",
+//         port: "",
+//         pathname: "/uploads/images**",
+//       },
+//     ],
+//   },
+// };
+
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
