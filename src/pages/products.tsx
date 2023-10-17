@@ -1,10 +1,13 @@
-import SearchBar from "~/components/searchbar";
+import React, { useState } from "react";
+import SearchBar from "~/components/Search";
 
 export default function Admin() {
+  const [search, setSearch] = useState<string | undefined>();
+  const [genre, setGenre] = useState<string | undefined>();
   return (
     <div className="flex flex-col items-center ">
       <h1 className="my-10 text-center text-5xl">Products</h1>
-      <SearchBar />
+      <SearchBar setSearch={setSearch} setGenre={setGenre} />
     </div>
   );
 }
