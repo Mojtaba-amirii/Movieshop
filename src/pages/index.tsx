@@ -1,10 +1,10 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+// import { signIn, signOut, useSession } from "next-auth/react";
 
 import { useState } from "react";
 import MovieList from "~/components/MovieList";
 import SearchBar from "~/components/Search";
 
-import { api } from "~/utils/api";
+// import { api } from "~/utils/api";
 
 export default function Home() {
   const [search, setSearch] = useState<string | undefined>();

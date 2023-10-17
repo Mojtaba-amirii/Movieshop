@@ -44,7 +44,7 @@ export default function MovieDetails() {
         console.error("Error fetching movies:", error);
       }
     }
-    fetchMovies();
+    fetchMovies().catch((error) => console.error(error));
   }, [router]);
 
   function getRandomPrice(min: number, max: number): number {
@@ -53,7 +53,7 @@ export default function MovieDetails() {
 
   console.log(movie);
 
-  const handleAddToCart = () => {};
+  // const handleAddToCart = () => {};
 
   return (
     <div>
@@ -74,7 +74,7 @@ export default function MovieDetails() {
           <button
             type="button"
             className="rounded-full bg-gray-200 px-2"
-            onClick={() => handleAddToCart()}
+            // onClick={() => handleAddToCart()}
           >
             Add to Cart
           </button>
