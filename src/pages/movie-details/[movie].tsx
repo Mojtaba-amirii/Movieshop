@@ -1,4 +1,5 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
+import type { AxiosResponse } from "axios";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
@@ -19,7 +20,7 @@ export default function MovieDetails() {
   const router = useRouter();
   console.log(router.query.movie);
 
-  let movieName: string;
+  let movieName = "";
   if (router.query.movie) {
     movieName = router.query.movie as string;
     movieName = movieName.replaceAll("%20", " ");
@@ -45,7 +46,7 @@ export default function MovieDetails() {
       }
     }
     fetchMovies().catch((error) => console.error(error));
-  }, [router]);
+  }, [router, movieName]);
 
   function getRandomPrice(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
