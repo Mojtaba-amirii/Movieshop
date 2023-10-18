@@ -3,6 +3,7 @@ import type { Movie } from "../movie-details/[movie]";
 import axios from "axios";
 import type { AxiosResponse } from "axios";
 import { AiFillCloseCircle } from "react-icons/ai";
+import Image from "next/image";
 import {
   FaCcVisa,
   FaCcMastercard,
@@ -77,10 +78,13 @@ export default function PaymentPage() {
               key={index}
               className="mx-auto flex w-full max-w-screen-lg flex-row items-center gap-2 rounded-xl border bg-gray-200 p-2 md:gap-6"
             >
-              <img
+              <Image
                 src={movie.image.medium}
                 alt={movie.name}
-                className="h-10 w-6 md:w-8 "
+                width={24}
+                height={40}
+                priority
+                className=" md:h-12 md:w-8 "
               />
               <div className="flex flex-row items-center gap-8">
                 <p className="text-sm ">{movie.name}</p>

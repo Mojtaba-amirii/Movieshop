@@ -2,6 +2,7 @@ import axios from "axios";
 import type { AxiosResponse } from "axios";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 export interface Movie {
   id: number;
@@ -61,10 +62,13 @@ export default function MovieDetails() {
       {movie ? (
         <div className="mx-auto flex w-[90%] flex-col items-center">
           <h1 className="text-2xl font-bold">{movie.name}</h1>
-          <img
-            src={movie.image.original}
+          <Image
+            src={movie.image.medium}
             alt={movie.name}
-            className="my-2 h-auto w-[60%]"
+            width={80}
+            height={96}
+            priority
+            className="mb-2 sm:h-32 sm:w-24 md:h-44 md:w-36 lg:h-56 lg:w-40 xl:h-64 xl:w-56"
           />
           <div className="flex">
             <h2>Genres:&nbsp;</h2>

@@ -2,23 +2,19 @@
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
  * for Docker builds.
  */
-await import("./src/env.mjs");
-
-// module.exports = {
-//   images: {
-//     remotePatterns: [
-//       {
-//         protocol: "https",
-//         hostname: "static.tvmaze.com",
-//         port: "",
-//         pathname: "/uploads/images**",
-//       },
-//     ],
-//   },
-// };
+let env;
+try {
+  env = await import("./src/env.mjs");
+} catch (error) {
+  console.error("Error loading environment configuration:", error);
+  env = {}; // Provide a default configuration or empty object
+}
 
 /** @type {import("next").NextConfig} */
 const config = {
+  images: {
+    domains: ["static.tvmaze.com"], // Add your domain(s) here
+  },
   reactStrictMode: true,
 
   /**
