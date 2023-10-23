@@ -1,16 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { api } from "~/utils/api";
+import { Movie } from "~/types/types";
 
-interface Movie {
-  id: string;
-  title: string;
-  poster: string | null;
-  genres: string[];
-}
-
-interface SearchProps {
+type SearchProps = {
   search: string | undefined;
   genre: string | undefined;
 }
@@ -18,15 +12,51 @@ interface SearchProps {
 function generateRandomPrice() {
   return Math.floor(Math.random() * 51 + 50);
 }
+
+async function checkURL(url: string): Promise<boolean> {
+  try {
+    const response = await fetch(url);
+    return response.ok;
+  } catch (error) {
+    return false;
+  }
+}
+
 export default function MovieList({ search, genre }: SearchProps) {
+  const [validatedMovies, setValidatedMovies] = useState<Movie[]>();
+
   // const allMovies = api.movies.getAll.useQuery();
-  const movies = api.movies.first100.useQuery();
+  const movies = api.movies.first100.useQuery().data;
+
+  useEffect(() => {
+    if (movies) {
+      Promise.all(
+        movies.map((movie: Movie) => {
+          if (movie.poster) {
+            return checkURL(movie.poster).then((result: boolean) => {
+              if (result) {
+                console.log("YES!");
+                return movie;
+              } else {
+                console.log("NO!");
+                return { ...movie, poster: "/image-not-found.jpg" };
+              }
+            });
+          } else {
+            return Promise.resolve({ ...movie, poster: "/image-not-found.jpg" });
+          }
+        })
+      ).then((updatedMovies) => {
+        setValidatedMovies(updatedMovies as Movie[]);
+      });
+    }
+  }, [movies]);
 
   console.log("Search: ", search);
   console.log("Genre: ", genre);
 
   // Filter movies based on the Search
-  const filteredMovies = movies.data?.filter((movie: Movie) => {
+  const filteredMovies = validatedMovies?.filter((movie: Movie) => {
     if (movie) {
       const isSearchMatch =
         !search || movie.title.toLowerCase().includes(search.toLowerCase());

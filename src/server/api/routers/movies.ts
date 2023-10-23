@@ -1,4 +1,4 @@
-// import { z } from "zod";
+import { z } from "zod";
 
 import {
   createTRPCRouter,
@@ -25,4 +25,15 @@ export const moviesRouter = createTRPCRouter({
       take: 100,
     });
   }),
+  findByTitle: publicProcedure
+    .input(z.object({ title: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.db.movies.findFirst({
+        where: {
+          title: {
+            equals: input.title,
+          },
+        },
+      });
+    }),
 });

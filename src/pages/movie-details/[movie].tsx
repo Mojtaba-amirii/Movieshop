@@ -3,68 +3,60 @@ import type { AxiosResponse } from "axios";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { Movie } from "~/types/types";
+import { api } from "~/utils/api";
 
-export interface Movie {
-  id: number;
-  name: string;
-  image: {
-    medium: string;
-    original: string;
-  };
-  price: number;
-  genres: string[];
-  summary: string;
+function generateRandomPrice() {
+  return Math.floor(Math.random() * 51 + 50);
+}
+
+async function checkURL(url: string): Promise<boolean> {
+  try {
+    const response = await fetch(url);
+    return response.ok;
+  } catch (error) {
+    return false;
+  }
 }
 
 export default function MovieDetails() {
-  const [movie, setMovie] = useState<Movie>();
+  const [validatedMovie, setValidatedMovie] = useState<Movie>();
   const router = useRouter();
   console.log(router.query.movie);
 
-  let movieName = "";
-  if (router.query.movie) {
-    movieName = router.query.movie as string;
-    movieName = movieName.replaceAll("%20", " ");
-    console.log(movieName);
-  }
+  const movie = api.movies.findByTitle.useQuery({
+    title: router.query.movie as string,
+  }).data;
+  console.log(movie);
 
   useEffect(() => {
-    async function fetchMovies() {
-      try {
-        const response: AxiosResponse<Movie[]> = await axios.get(
-          "https://api.tvmaze.com/shows",
-        );
-
-        const movies = response.data.map((movie) => ({
-          ...movie,
-          price: getRandomPrice(50, 100),
-          genres: movie.genres.length != 0 ? movie.genres : ["Unknown"],
-        }));
-
-        setMovie(movies.filter((movie) => movie.name === movieName)[0]);
-      } catch (error) {
-        console.error("Error fetching movies:", error);
+    if (movie) {
+      if (movie.poster) {
+        checkURL(movie.poster).then((result: boolean) => {
+          if (result) {
+            console.log("YES!");
+            setValidatedMovie(movie);
+          } else {
+            console.log("NO!");
+            setValidatedMovie({ ...movie, poster: "/image-not-found.jpg" });
+          }
+        });
+      } else {
+        setValidatedMovie({ ...movie, poster: "/image-not-found.jpg" });
       }
     }
-    fetchMovies().catch((error) => console.error(error));
-  }, [router, movieName]);
-
-  function getRandomPrice(min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
-  console.log(movie);
+  }, [movie]);
 
   // const handleAddToCart = () => {};
 
   return (
     <div>
-      {movie ? (
+      {validatedMovie ? (
         <div className="mx-auto flex w-[90%] flex-col items-center">
-          <h1 className="text-2xl font-bold">{movie.name}</h1>
+          <h1 className="text-2xl font-bold">{validatedMovie.title}</h1>
           <Image
-            src={movie.image.medium}
-            alt={movie.name}
+            src={validatedMovie.poster ? validatedMovie.poster : ""}
+            alt={validatedMovie.title}
             width={80}
             height={96}
             priority
@@ -72,10 +64,18 @@ export default function MovieDetails() {
           />
           <div className="flex">
             <h2>Genres:&nbsp;</h2>
-            <div>{movie.genres.join(", ")}</div>
+            <div>{validatedMovie.genres.join(", ")}</div>
           </div>
-          <div dangerouslySetInnerHTML={{ __html: movie.summary }}></div>
-          <p className="text-lg font-semibold">{movie.price} kr</p>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: validatedMovie.fullplot
+                ? validatedMovie.fullplot
+                : validatedMovie.plot
+                ? validatedMovie.plot
+                : "No Plot Available",
+            }}
+          ></div>
+          <p className="text-lg font-semibold">{generateRandomPrice()} kr</p>
           <button
             type="button"
             className="rounded-full bg-gray-200 px-2"

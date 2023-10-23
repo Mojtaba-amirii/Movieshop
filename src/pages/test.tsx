@@ -1,23 +1,71 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Movie } from "~/types/types";
 import { api } from "~/utils/api";
 
 export default function () {
-  const movies = api.movies.first100.useQuery();
+  const [validatedMovies, setValidatedMovies] = useState<Movie[]>();
 
-  console.log(movies.data);
+  const movies = api.movies.first100.useQuery().data;
 
-  /* const checkLinkValidity = async (link: URL) => {
-    try {
-      const response = await fetch(link);
-      if (response.ok) {
-        return link;
-      } else {
-        return ("/image-not-found.jpg");
-      }
-    } catch (error) {
-      return ("/image-not-found.jpg");;
+  console.log(movies);
+  console.log(validatedMovies);
+
+  /* useEffect(() => {
+    return setValidatedMovies(
+      movies?.map((movie: Movie) => {
+        if (movie.poster) {
+          checkURL(movie.poster).then((result: boolean) => {
+            if (result) {
+              console.log("YES!");
+              return movie;
+            } else {
+              console.log("NO!");
+              return { ...movie, poster: "/image-not-found.jpg" };
+            }
+          });
+        } else {
+          return { ...movie, poster: "/image-not-found.jpg" };
+        }
+      }),
+    );
+  }, [movies]); */
+  useEffect(() => {
+    if (movies) {
+      Promise.all(
+        movies.map((movie: Movie) => {
+          if (movie.poster) {
+            return checkURL(movie.poster).then((result: boolean) => {
+              if (result) {
+                console.log("YES!");
+                return movie;
+              } else {
+                console.log("NO!");
+                return { ...movie, poster: "/image-not-found.jpg" };
+              }
+            });
+          } else {
+            return Promise.resolve({ ...movie, poster: "/image-not-found.jpg" });
+          }
+        })
+      ).then((updatedMovies) => {
+        setValidatedMovies(updatedMovies as Movie[]);
+      });
     }
-  }; */
+  }, [movies]);
 
-  return <>test</>;
+  async function checkURL(url: string): Promise<boolean> {
+    try {
+      const response = await fetch(url);
+      return response.ok;
+    } catch (error) {
+      return false;
+    }
+  }
+  
+  return (
+    <>
+      <p>movies: {movies?.filter(movie => typeof movie.poster != 'string' ).length}</p>
+      <p>ValidatedMovies: {validatedMovies?.filter(movie => typeof movie.poster != 'string' ).length}</p>
+    </>
+  );
 }
