@@ -1,87 +1,94 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import type { AxiosResponse } from "axios";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { api } from "~/utils/api";
+import { Movie } from "~/types/types";
 
-interface Movie {
-  id: number;
-  name: string;
-  image: {
-    medium: string;
-    original: string;
-  };
-  price: number;
-  genres: string[];
-}
-
-interface SearchProps {
+type SearchProps = {
   search: string | undefined;
   genre: string | undefined;
 }
 
+function generateRandomPrice() {
+  return Math.floor(Math.random() * 51 + 50);
+}
+
+async function checkURL(url: string): Promise<boolean> {
+  try {
+    const response = await fetch(url);
+    return response.ok;
+  } catch (error) {
+    return false;
+  }
+}
+
 export default function MovieList({ search, genre }: SearchProps) {
-  const [movies, setMovies] = useState<Movie[]>([]);
+  const [validatedMovies, setValidatedMovies] = useState<Movie[]>();
+
+  // const allMovies = api.movies.getAll.useQuery();
+  const movies = api.movies.first100.useQuery().data;
+
+  useEffect(() => {
+    if (movies) {
+      Promise.all(
+        movies.map((movie: Movie) => {
+          if (movie.poster) {
+            return checkURL(movie.poster).then((result: boolean) => {
+              if (result) {
+                console.log("YES!");
+                return movie;
+              } else {
+                console.log("NO!");
+                return { ...movie, poster: "/image-not-found.jpg" };
+              }
+            });
+          } else {
+            return Promise.resolve({ ...movie, poster: "/image-not-found.jpg" });
+          }
+        })
+      ).then((updatedMovies) => {
+        setValidatedMovies(updatedMovies as Movie[]);
+      });
+    }
+  }, [movies]);
 
   console.log("Search: ", search);
   console.log("Genre: ", genre);
 
-  useEffect(() => {
-    async function fetchMovies() {
-      try {
-        const response: AxiosResponse<Movie[]> = await axios.get(
-          "https://api.tvmaze.com/shows",
-        );
-
-        const moviesWithPricesAndGenres = response.data.map((movie) => ({
-          ...movie,
-          price: getRandomPrice(50, 100),
-          genres: movie.genres.length != 0 ? movie.genres : ["Unknown"],
-        }));
-
-        console.log(moviesWithPricesAndGenres[93]);
-
-        setMovies(moviesWithPricesAndGenres);
-      } catch (error) {
-        console.error("Error fetching movies:", error);
-      }
-    }
-    fetchMovies().catch((error) => console.error(error));
-  }, []);
   // Filter movies based on the Search
-  const filteredMovies = movies.filter((movie) => {
-    const isSearchMatch =
-      !search || movie.name.toLowerCase().includes(search.toLowerCase());
+  const filteredMovies = validatedMovies?.filter((movie: Movie) => {
+    if (movie) {
+      const isSearchMatch =
+        !search || movie.title.toLowerCase().includes(search.toLowerCase());
 
-    // Filter movies based on the selected genre
-    const isGenreMatch =
-      !genre ||
-      genre === "all" ||
-      movie.genres.map((g) => g.toLowerCase()).includes(genre.toLowerCase());
+      // Filter movies based on the selected genre
+      const isGenreMatch =
+        !genre ||
+        genre === "all" ||
+        movie.genres.map((g) => g.toLowerCase()).includes(genre.toLowerCase());
 
-    return isSearchMatch && isGenreMatch;
+      return isSearchMatch && isGenreMatch;
+    }
+    return false;
   });
-
-  function getRandomPrice(min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
+  // Slice the array to limit to the first 100 items
+  const limitedMovies = filteredMovies?.slice(0, 100);
   return (
     <div>
-      <ul className="mx-1 grid grid-cols-2 gap-1  md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
-        {filteredMovies.map((movie) => (
+      <ul className="mx-1 grid grid-cols-2 gap-1 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+        {limitedMovies?.map((movie) => (
           <li
             key={movie.id}
             className="flex flex-col items-center rounded-md border p-3"
           >
             <Link
               href="/movie-details/[movie]"
-              as={`/movie-details/${movie.name}`}
+              as={`/movie-details/${movie.title}`}
             >
               <div className="aspect-w-24 aspect-h-12 relative">
                 <Image
-                  src={movie.image.medium}
-                  alt={movie.name}
+                  src={movie.poster || "/image-not-found.jpg"}
+                  alt={movie.title}
                   width={600}
                   height={696}
                   priority
@@ -89,12 +96,12 @@ export default function MovieList({ search, genre }: SearchProps) {
                 />
               </div>
               <div className="text-center">
-                <div className="text-lg font-semibold">{movie.name}</div>
+                <div className="text-lg font-semibold">{movie.title}</div>
                 <div className="flex flex-col">
                   <h2>Genres:&nbsp;</h2>
                   <div>{movie.genres.join(", ")}</div>
                 </div>
-                <div>Price: {movie.price} kr</div>
+                <div>Price: {generateRandomPrice()} kr</div>
               </div>
             </Link>
           </li>

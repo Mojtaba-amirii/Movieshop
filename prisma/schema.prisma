@@ -1,69 +1,188 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "sqlite"
-    // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-    // Further reading:
-    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
-    url      = env("DATABASE_URL")
+  provider = "mongodb"
+  url      = env("MONGODB_URL")
 }
 
-model Example {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    @@index([name])
+type EmbeddedMoviesAwards {
+  nominations Int
+  text        String
+  wins        Int
 }
 
-// Necessary for Next auth
-model Account {
-    id                String  @id @default(cuid())
-    userId            String
-    type              String
-    provider          String
-    providerAccountId String
-    refresh_token     String? // @db.Text
-    access_token      String? // @db.Text
-    expires_at        Int?
-    token_type        String?
-    scope             String?
-    id_token          String? // @db.Text
-    session_state     String?
-    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-    @@unique([provider, providerAccountId])
+type EmbeddedMoviesImdb {
+  id     Int
+  /// Multiple data types found: String: 0.4%, Float: 99.6% out of 1000 sampled entries
+  rating Json
+  /// Multiple data types found: String: 0.4%, Int: 99.6% out of 1000 sampled entries
+  votes  Json
 }
 
-model Session {
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
-    userId       String
-    expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+type EmbeddedMoviesTomatoes {
+  boxOffice   String?
+  consensus   String?
+  critic      EmbeddedMoviesTomatoesCritic?
+  dvd         DateTime?                     @db.Date
+  fresh       Int?
+  lastUpdated DateTime                      @db.Date
+  production  String?
+  rotten      Int?
+  viewer      EmbeddedMoviesTomatoesViewer
+  website     String?
 }
 
-model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
+type EmbeddedMoviesTomatoesCritic {
+  meter      Int
+  numReviews Int?
+  rating     Float?
 }
 
-model VerificationToken {
-    identifier String
-    token      String   @unique
-    expires    DateTime
+type EmbeddedMoviesTomatoesViewer {
+  meter      Int?
+  numReviews Int
+  rating     Float?
+}
 
-    @@unique([identifier, token])
+type MoviesAwards {
+  nominations Int
+  text        String
+  wins        Int
+}
+
+type MoviesImdb {
+  id     Int
+  /// Multiple data types found: String: 0.5%, Float: 99.5% out of 1000 sampled entries
+  rating Json
+  /// Multiple data types found: String: 0.5%, Int: 99.5% out of 1000 sampled entries
+  votes  Json
+}
+
+type MoviesTomatoes {
+  boxOffice   String?
+  consensus   String?
+  critic      MoviesTomatoesCritic?
+  dvd         DateTime?             @db.Date
+  fresh       Int?
+  lastUpdated DateTime              @db.Date
+  production  String?
+  rotten      Int?
+  viewer      MoviesTomatoesViewer?
+  website     String?
+}
+
+type MoviesTomatoesCritic {
+  meter      Int?
+  numReviews Int?
+  rating     Float?
+}
+
+type MoviesTomatoesViewer {
+  meter      Int?
+  numReviews Int?
+  rating     Float?
+}
+
+type TheatersLocation {
+  address TheatersLocationAddress
+  geo     TheatersLocationGeo
+}
+
+type TheatersLocationAddress {
+  city    String
+  state   String
+  street1 String
+  street2 String?
+  zipcode String
+}
+
+type TheatersLocationGeo {
+  coordinates Float[]
+  type        String
+}
+
+model comments {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  date     DateTime @db.Date
+  email    String
+  movie_id String   @db.ObjectId
+  name     String
+  text     String
+}
+
+model embedded_movies {
+  id                 String                  @id @default(auto()) @map("_id") @db.ObjectId
+  awards             EmbeddedMoviesAwards
+  cast               String[]
+  countries          String[]
+  directors          String[]
+  fullplot           String?
+  genres             String[]
+  imdb               EmbeddedMoviesImdb
+  languages          String[]
+  lastupdated        String
+  metacritic         Int?
+  num_mflix_comments Int
+  plot               String?
+  plot_embedding     Float[]
+  poster             String?
+  rated              String?
+  released           DateTime?               @db.Date
+  runtime            Int?
+  title              String
+  tomatoes           EmbeddedMoviesTomatoes?
+  type               String
+  writers            String[]
+  /// Multiple data types found: String: 0.2%, Int: 99.8% out of 1000 sampled entries
+  year               Json
+}
+
+model movies {
+  id                 String          @id @default(auto()) @map("_id") @db.ObjectId
+  awards             MoviesAwards
+  cast               String[]
+  countries          String[]
+  directors          String[]
+  fullplot           String?
+  genres             String[]
+  imdb               MoviesImdb
+  languages          String[]
+  lastupdated        String
+  metacritic         Int?
+  num_mflix_comments Int
+  plot               String?
+  poster             String?
+  rated              String?
+  released           DateTime?       @db.Date
+  runtime            Int?
+  title              String
+  tomatoes           MoviesTomatoes?
+  type               String
+  writers            String[]
+  year               Json
+}
+
+model sessions {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  jwt     String
+  user_id String @unique(map: "user_id_1")
+}
+
+// model theaters {
+//   id        String           @id @default(auto()) @map("_id") @db.ObjectId
+//   location  TheatersLocation
+//   theaterId Int
+
+//   @@index([location.geo], map: "geo index")
+// }
+
+model users {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  email       String @unique(map: "email_1")
+  name        String
+  password    String
+  /// Nested objects had no data in the sample dataset to introspect a nested type.
+  preferences Json?
 }
