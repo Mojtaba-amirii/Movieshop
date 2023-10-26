@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import SignInOut from "~/components/signInOut";
 import { Movie } from "~/types/types";
 import { api } from "~/utils/api";
 
@@ -67,10 +68,8 @@ export default function () {
 
   return (
     <>
-      <p>
-        movies:{" "}
-        {movies?.filter((movie) => typeof movie.poster != "string").length}
-      </p>
+      <SignInOut />
+      {/* <p>movies: {movies?.filter(movie => typeof movie.poster != 'string' ).length}</p> */}
       <p>
         ValidatedMovies:{" "}
         {
