@@ -7,7 +7,7 @@ import { Movie } from "~/types/types";
 type SearchProps = {
   search: string | undefined;
   genre: string | undefined;
-}
+};
 
 function generateRandomPrice() {
   return Math.floor(Math.random() * 51 + 50);
@@ -43,9 +43,12 @@ export default function MovieList({ search, genre }: SearchProps) {
               }
             });
           } else {
-            return Promise.resolve({ ...movie, poster: "/image-not-found.jpg" });
+            return Promise.resolve({
+              ...movie,
+              poster: "/image-not-found.jpg",
+            });
           }
-        })
+        }),
       ).then((updatedMovies) => {
         setValidatedMovies(updatedMovies as Movie[]);
       });
@@ -85,7 +88,7 @@ export default function MovieList({ search, genre }: SearchProps) {
               href="/movie-details/[movie]"
               as={`/movie-details/${movie.title}`}
             >
-              <div className="aspect-w-24 aspect-h-12 relative">
+              <div className="aspect-w-24 aspect-h-12 ">
                 <Image
                   src={movie.poster || "/image-not-found.jpg"}
                   alt={movie.title}

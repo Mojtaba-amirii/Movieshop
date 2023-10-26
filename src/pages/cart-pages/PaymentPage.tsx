@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import type { Movie } from "../movie-details/[movie]";
-import axios from "axios";
-import type { AxiosResponse } from "axios";
+import { Movie } from "~/types/types";
 import { AiFillCloseCircle } from "react-icons/ai";
 import Image from "next/image";
 import {
@@ -13,47 +11,28 @@ import {
 } from "react-icons/fa";
 import { SiSamsungpay } from "react-icons/si";
 import Link from "next/link";
+import { useSelector, useDispatch } from "~/redux/store";
+import { RootState } from "~/redux/types";
+import { removeItem } from "~/redux/cartSlice";
 
+function generateRandomPrice() {
+  return Math.floor(Math.random() * 51 + 50);
+}
 export default function PaymentPage() {
-  const [cartMovies, setCartMovies] = useState<Movie[]>([]);
+  const cartMovies = useSelector((state: RootState) => state.cart.items);
   const [totalPrice, setTotalPrice] = useState<number>(0);
 
-  useEffect(() => {
-    async function fetchMovies() {
-      try {
-        const response: AxiosResponse<Movie[]> = await axios.get(
-          "https://api.tvmaze.com/shows",
-        );
-
-        const moviesWithPricesAndGenres = response.data.map((cartMovie) => ({
-          ...cartMovie,
-          price: getRandomPrice(50, 100),
-          genres:
-            cartMovie.genres.length !== 0 ? cartMovie.genres : ["Unknown"],
-        }));
-
-        setCartMovies(moviesWithPricesAndGenres.slice(0, 3));
-      } catch (error) {
-        console.error("Error fetching movies:", error);
-      }
-    }
-    fetchMovies().catch((error) => console.error(error));
-
-    function getRandomPrice(min: number, max: number): number {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-  }, []);
-
+  const dispatch = useDispatch();
   // Function to remove a movie from the cart
   const removeMovieFromCart = (movie: Movie) => {
-    const updatedCart = cartMovies.filter((cartMovie) => cartMovie !== movie);
-    setCartMovies(updatedCart);
+    // Dispatch an action to remove the item from the cart
+    dispatch(removeItem(movie));
   };
 
   // Calculate the total price using reduce
   useEffect(() => {
     const totalPrice = cartMovies.reduce(
-      (acc, movie) => acc + Number(movie.price),
+      (acc: number, movie: Movie) => acc + generateRandomPrice(),
       0,
     );
     setTotalPrice(totalPrice);
@@ -79,16 +58,16 @@ export default function PaymentPage() {
               className="mx-auto flex w-full max-w-screen-lg flex-row items-center gap-2 rounded-xl border bg-gray-200 p-2 md:gap-6"
             >
               <Image
-                src={movie.image.medium}
-                alt={movie.name}
+                src={movie.poster || "/image-not-found.jpg"}
+                alt={movie.title}
                 width={24}
                 height={40}
                 priority
                 className=" md:h-12 md:w-8 "
               />
               <div className="flex flex-row items-center gap-8">
-                <p className="text-sm ">{movie.name}</p>
-                <p className="text-xs">{`Price: ${movie.price} kr`}</p>
+                <p className="text-sm ">{movie.title}</p>
+                <p className="text-xs">{`Price: ${generateRandomPrice()} kr`}</p>
                 <button
                   title="button"
                   type="button"

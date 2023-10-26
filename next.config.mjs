@@ -29,8 +29,3 @@ const config = {
 };
 
 export default config;
-
-// fungerar
-// http://localhost:3000/_next/image?url=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FM%2FMV5BMTAxODk3NzI3ODdeQTJeQWpwZ15BbWU4MDQwMDEwMjIx._V1_SY1000_SX677_AL_.jpg&w=1200&q=75
-// fungerar inte
-// http://localhost:3000/_next/image?url=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FM%2FMV5BNzI0ODE3NzI3OV5BMl5BanBnXkFtZTgwMDIzMTkxMTE%40._V1_SY1000_SX677_AL_.jpg&w=1200&q=75

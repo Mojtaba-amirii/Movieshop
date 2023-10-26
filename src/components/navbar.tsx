@@ -1,8 +1,12 @@
 import { FaShoppingBasket } from "react-icons/fa";
 import HamburgerMenu from "./hamburger";
 import Link from "next/link";
+import React from "react";
+import { useAnimation } from "./AnimationContext";
+import "tailwindcss-animatecss";
 
 export default function Navbar() {
+  const { animationTriggered } = useAnimation();
   return (
     <header>
       <nav className=" sticky flex  w-full items-center justify-between bg-sky-400 px-6 py-4">
@@ -34,7 +38,10 @@ export default function Navbar() {
           </div>
         </div>
 
-        <Link href="/cart-pages/cart" className="text-2xl">
+        <Link
+          href="/cart-pages/cart"
+          className={`text-2xl ${animationTriggered ? "animate-bounce" : ""}`}
+        >
           <FaShoppingBasket />
         </Link>
       </nav>
