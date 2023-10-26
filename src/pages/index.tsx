@@ -3,6 +3,7 @@
 import { useState } from "react";
 import MovieList from "~/components/MovieList";
 import SearchBar from "~/components/Search";
+import SignInOut from "~/components/signInOut";
 
 // import { api } from "~/utils/api";
 
@@ -12,6 +13,7 @@ export default function Home() {
 
   return (
     <div>
+      <SignInOut />
       <SearchBar setSearch={setSearch} setGenre={setGenre} />
       <MovieList search={search} genre={genre} />
     </div>
