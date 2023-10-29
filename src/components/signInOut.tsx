@@ -5,8 +5,8 @@ export default function SignInOut() {
      const { data: sessionData } = useSession();
      return (
        <button
-         className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-         onClick={sessionData ? () => void signOut() : () => void signIn()}
+         className="text-black rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
+         onClick={sessionData ? () => signOut() : () => signIn()}
        >
          {sessionData ? "Sign out" : "Sign in"}
        </button>

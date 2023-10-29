@@ -68,7 +68,6 @@ export default function () {
 
   return (
     <>
-      <SignInOut />
       {/* <p>movies: {movies?.filter(movie => typeof movie.poster != 'string' ).length}</p> */}
       <p>
         ValidatedMovies:{" "}
