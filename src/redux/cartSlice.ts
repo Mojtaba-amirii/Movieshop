@@ -3,10 +3,12 @@ import { Movie } from "~/types/types";
 
 interface CartState {
   items: Movie[];
+  moviePrices: Record<string, number>;
 }
 
 const initialState: CartState = {
   items: [],
+  moviePrices: {},
 };
 
 const cartSlice = createSlice({
@@ -22,8 +24,15 @@ const cartSlice = createSlice({
     clearCart: (state) => {
       state.items = [];
     },
+    setMoviePrice: (
+      state,
+      action: PayloadAction<{ movieId: string; price: number }>,
+    ) => {
+      state.moviePrices[action.payload.movieId] = action.payload.price || 0;
+    },
   },
 });
 
-export const { addItem, removeItem, clearCart } = cartSlice.actions;
+export const { addItem, removeItem, clearCart, setMoviePrice } =
+  cartSlice.actions;
 export default cartSlice.reducer;

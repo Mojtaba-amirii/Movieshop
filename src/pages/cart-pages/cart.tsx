@@ -7,29 +7,27 @@ import { useSelector, useDispatch } from "~/redux/store";
 import { RootState } from "~/redux/types";
 import { removeItem } from "~/redux/cartSlice";
 
-function generateRandomPrice() {
-  return Math.floor(Math.random() * 51 + 50);
-}
-
 export default function ShoppingCart() {
   const cartMovies = useSelector((state: RootState) => state.cart.items);
+  const moviePrices =
+    useSelector((state: RootState) => state.cart.moviePrices) || {};
   const [totalPrice, setTotalPrice] = useState<number>(0);
-
   const dispatch = useDispatch();
-  // Function to remove a movie from the cart
+
   const removeMovieFromCart = (movie: Movie) => {
     // Dispatch an action to remove the item from the cart
     dispatch(removeItem(movie));
   };
-
-  // Calculate the total price using reduce
+  // Calculate the total price using the prices stored in the Redux store
   useEffect(() => {
-    const totalPrice = cartMovies.reduce(
-      (acc: number, movie: Movie) => acc + generateRandomPrice(),
-      0,
-    );
+    const totalPrice = cartMovies.reduce((acc: number, movie: Movie) => {
+      if (moviePrices && moviePrices[movie.id] !== undefined) {
+        return acc + moviePrices?.[movie?.id];
+      }
+      return acc;
+    }, 0);
     setTotalPrice(totalPrice);
-  }, [cartMovies]);
+  }, [cartMovies, moviePrices]);
 
   return (
     <div className="mx-auto my-10 flex w-full flex-col items-center gap-8">
@@ -41,8 +39,8 @@ export default function ShoppingCart() {
             className="mx-auto flex w-full flex-row items-center gap-6 rounded-xl border bg-gray-200 p-3"
           >
             <Image
-              src={movie.poster || "/image-not-found.jpg"}
-              alt={movie.title}
+              src={movie?.poster || "/image-not-found.jpg"}
+              alt={movie?.title}
               width={80}
               height={96}
               priority
@@ -50,10 +48,10 @@ export default function ShoppingCart() {
             />
             <div className="flex flex-1 flex-row items-center gap-8">
               <p className="sm:text-md md:text-l text-sm lg:text-xl xl:text-2xl">
-                {movie.title}
+                {movie?.title}
               </p>
               <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
-                {`Price: ${generateRandomPrice()} kr`}
+                {`Price: ${moviePrices?.[movie?.id] || 0} kr`}
               </p>
               <div className="flex items-center">
                 <button
