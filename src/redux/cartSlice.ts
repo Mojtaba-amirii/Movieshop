@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Movie } from "~/types/types";
+import type { Movie } from "~/types/types";
 
 interface CartState {
   items: Movie[];

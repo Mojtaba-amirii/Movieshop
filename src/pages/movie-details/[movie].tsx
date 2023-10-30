@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Movie } from "~/types/types";
+import type { Movie } from "~/types/types";
 import { api } from "~/utils/api";
 import { useDispatch } from "~/redux/store";
 import { addItem } from "~/redux/cartSlice";

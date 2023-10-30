@@ -4,30 +4,43 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import Link from "next/link";
 import Image from "next/image";
 import { useSelector, useDispatch } from "~/redux/store";
-import { RootState } from "~/redux/types";
+import type { RootState } from "~/redux/types";
 import { removeItem } from "~/redux/cartSlice";
 
+function generateRandomPrice() {
+  return Math.floor(Math.random() * 51 + 50);
+}
+
 export default function ShoppingCart() {
-  const cartMovies = useSelector((state: RootState) => state.cart.items);
-  const moviePrices =
-    useSelector((state: RootState) => state.cart.moviePrices) || {};
-  const [totalPrice, setTotalPrice] = useState<number>(0);
   const dispatch = useDispatch();
+  // const moviePrices =
+  //   useSelector((state: RootState) => state.cart.moviePrices) || {};
+  const cartMovies = useSelector((state: RootState) => state.cart.items);
+  const myMovies = useSelector((state: RootState) => state.cart.items);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
 
   const removeMovieFromCart = (movie: Movie) => {
     // Dispatch an action to remove the item from the cart
     dispatch(removeItem(movie));
   };
   // Calculate the total price using the prices stored in the Redux store
+  // useEffect(() => {
+  //   const totalPrice = cartMovies.reduce((acc: number, movie: Movie) => {
+  //     if (moviePrices && moviePrices?.[movie.id] !== undefined) {
+  //       return acc + moviePrices?.[movie?.id];
+  //     }
+  //     return acc;
+  //   }, 0);
+  //   setTotalPrice(totalPrice);
+  // }, [cartMovies, moviePrices]);
+
   useEffect(() => {
-    const totalPrice = cartMovies.reduce((acc: number, movie: Movie) => {
-      if (moviePrices && moviePrices[movie.id] !== undefined) {
-        return acc + moviePrices?.[movie?.id];
-      }
-      return acc;
-    }, 0);
+    const totalPrice = myMovies.reduce(
+      (acc: number, movie: Movie) => acc + generateRandomPrice(),
+      0,
+    );
     setTotalPrice(totalPrice);
-  }, [cartMovies, moviePrices]);
+  }, [myMovies]);
 
   return (
     <div className="mx-auto my-10 flex w-full flex-col items-center gap-8">
@@ -39,7 +52,7 @@ export default function ShoppingCart() {
             className="mx-auto flex w-full flex-row items-center gap-6 rounded-xl border bg-gray-200 p-3"
           >
             <Image
-              src={movie?.poster || "/image-not-found.jpg"}
+              src={movie?.poster ?? "/image-not-found.jpg"}
               alt={movie?.title}
               width={80}
               height={96}
@@ -51,7 +64,7 @@ export default function ShoppingCart() {
                 {movie?.title}
               </p>
               <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
-                {`Price: ${moviePrices?.[movie?.id] || 0} kr`}
+                {`Price: ${generateRandomPrice()} kr`}
               </p>
               <div className="flex items-center">
                 <button
