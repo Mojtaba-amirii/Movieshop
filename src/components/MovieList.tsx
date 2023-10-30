@@ -3,11 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { api } from "~/utils/api";
 import { Movie } from "~/types/types";
+import { useDispatch } from "react-redux";
+import { setMoviePrice } from "~/redux/cartSlice";
 
 type SearchProps = {
   search: string | undefined;
   genre: string | undefined;
-}
+};
 
 function generateRandomPrice() {
   return Math.floor(Math.random() * 51 + 50);
@@ -24,14 +26,16 @@ async function checkURL(url: string): Promise<boolean> {
 
 export default function MovieList({ search, genre }: SearchProps) {
   const [validatedMovies, setValidatedMovies] = useState<Movie[]>();
-
-  // const allMovies = api.movies.getAll.useQuery();
+  const dispatch = useDispatch();
   const movies = api.movies.first100.useQuery().data;
 
   useEffect(() => {
     if (movies) {
       Promise.all(
         movies.map((movie: Movie) => {
+          const randomPrice = generateRandomPrice();
+          dispatch(setMoviePrice({ movieId: movie.id, price: randomPrice }));
+
           if (movie.poster) {
             return checkURL(movie.poster).then((result: boolean) => {
               if (result) {
@@ -43,14 +47,17 @@ export default function MovieList({ search, genre }: SearchProps) {
               }
             });
           } else {
-            return Promise.resolve({ ...movie, poster: "/image-not-found.jpg" });
+            return Promise.resolve({
+              ...movie,
+              poster: "/image-not-found.jpg",
+            });
           }
-        })
+        }),
       ).then((updatedMovies) => {
-        setValidatedMovies(updatedMovies as Movie[]);
+        setValidatedMovies(updatedMovies);
       });
     }
-  }, [movies]);
+  }, [movies, dispatch]);
 
   console.log("Search: ", search);
   console.log("Genre: ", genre);
@@ -71,12 +78,11 @@ export default function MovieList({ search, genre }: SearchProps) {
     }
     return false;
   });
-  // Slice the array to limit to the first 100 items
-  const limitedMovies = filteredMovies?.slice(0, 100);
+
   return (
     <div>
       <ul className="mx-1 grid grid-cols-2 gap-1 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
-        {limitedMovies?.map((movie) => (
+        {filteredMovies?.map((movie) => (
           <li
             key={movie.id}
             className="flex flex-col items-center rounded-md border p-3"
@@ -85,7 +91,7 @@ export default function MovieList({ search, genre }: SearchProps) {
               href="/movie-details/[movie]"
               as={`/movie-details/${movie.title}`}
             >
-              <div className="aspect-w-24 aspect-h-12 relative">
+              <div className="aspect-w-24 aspect-h-12 ">
                 <Image
                   src={movie.poster || "/image-not-found.jpg"}
                   alt={movie.title}

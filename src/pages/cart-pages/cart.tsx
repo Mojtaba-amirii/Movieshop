@@ -1,73 +1,46 @@
 import React, { useState, useEffect } from "react";
-import type { Movie } from "../movie-details/[movie]";
-import axios from "axios";
-import type { AxiosResponse } from "axios";
+import type { Movie } from "~/types/types";
 import { AiFillCloseCircle } from "react-icons/ai";
 import Link from "next/link";
 import Image from "next/image";
+import { useSelector, useDispatch } from "~/redux/store";
+import { RootState } from "~/redux/types";
+import { removeItem } from "~/redux/cartSlice";
 
 export default function ShoppingCart() {
-  const [cartMovies, setCartMovies] = useState<Movie[]>([]);
+  const cartMovies = useSelector((state: RootState) => state.cart.items);
+  const moviePrices =
+    useSelector((state: RootState) => state.cart.moviePrices) || {};
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    async function fetchMovies() {
-      try {
-        const response: AxiosResponse<Movie[]> = await axios.get(
-          "https://api.tvmaze.com/shows",
-        );
-
-        const moviesWithPricesAndGenres = response.data.map((cartMovie) => ({
-          ...cartMovie,
-          price: getRandomPrice(50, 100),
-          genres:
-            cartMovie.genres.length !== 0 ? cartMovie.genres : ["Unknown"],
-        }));
-
-        setCartMovies(moviesWithPricesAndGenres.slice(0, 3));
-      } catch (error) {
-        console.error("Error fetching movies:", error);
-      }
-    }
-    fetchMovies().catch((error) => console.error(error));
-
-    function getRandomPrice(min: number, max: number): number {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-  }, []);
-
-  // Function to add a movie to the cart
-  // const addMovieToCart = (movie: Movie) => {
-  //   setCartMovies([...cartMovies, movie]);
-  // };
-
-  // Function to remove a movie from the cart
   const removeMovieFromCart = (movie: Movie) => {
-    const updatedCart = cartMovies.filter((cartMovie) => cartMovie !== movie);
-    setCartMovies(updatedCart);
+    // Dispatch an action to remove the item from the cart
+    dispatch(removeItem(movie));
   };
-
-  // Calculate the total price using reduce
+  // Calculate the total price using the prices stored in the Redux store
   useEffect(() => {
-    const totalPrice = cartMovies.reduce(
-      (acc, movie) => acc + Number(movie.price),
-      0,
-    );
+    const totalPrice = cartMovies.reduce((acc: number, movie: Movie) => {
+      if (moviePrices && moviePrices[movie.id] !== undefined) {
+        return acc + moviePrices?.[movie?.id];
+      }
+      return acc;
+    }, 0);
     setTotalPrice(totalPrice);
-  }, [cartMovies]);
+  }, [cartMovies, moviePrices]);
 
   return (
     <div className="mx-auto my-10 flex w-full flex-col items-center gap-8">
       <h1 className="text-center text-2xl font-semibold">Your Movies</h1>
       <ul className="flex flex-col gap-4">
-        {cartMovies.map((movie, index) => (
+        {cartMovies.map((movie: Movie, index: number) => (
           <li
             key={index}
             className="mx-auto flex w-full flex-row items-center gap-6 rounded-xl border bg-gray-200 p-3"
           >
             <Image
-              src={movie.image.medium}
-              alt={movie.name}
+              src={movie?.poster || "/image-not-found.jpg"}
+              alt={movie?.title}
               width={80}
               height={96}
               priority
@@ -75,10 +48,10 @@ export default function ShoppingCart() {
             />
             <div className="flex flex-1 flex-row items-center gap-8">
               <p className="sm:text-md md:text-l text-sm lg:text-xl xl:text-2xl">
-                {movie.name}
+                {movie?.title}
               </p>
               <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
-                {`Price: ${movie.price} kr`}
+                {`Price: ${moviePrices?.[movie?.id] || 0} kr`}
               </p>
               <div className="flex items-center">
                 <button
