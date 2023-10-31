@@ -34,15 +34,17 @@ export default function MovieDetails() {
   useEffect(() => {
     if (movie) {
       if (movie.poster) {
-        checkURL(movie.poster).then((result: boolean) => {
-          if (result) {
-            console.log("YES!");
-            setValidatedMovie(movie);
-          } else {
-            console.log("NO!");
-            setValidatedMovie({ ...movie, poster: "/image-not-found.jpg" });
-          }
-        });
+        checkURL(movie.poster)
+          .then((result: boolean) => {
+            if (result) {
+              console.log("YES!");
+              setValidatedMovie(movie);
+            } else {
+              console.log("NO!");
+              setValidatedMovie({ ...movie, poster: "/image-not-found.jpg" });
+            }
+          })
+          .catch((error) => console.log(error));
       } else {
         setValidatedMovie({ ...movie, poster: "/image-not-found.jpg" });
       }

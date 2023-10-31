@@ -79,7 +79,6 @@ export const getServerAuthSession = (ctx: {
 }) => {
   return getServerSession(ctx.req, ctx.res, authOptions);
 };
-function GoogleProvider(arg0: { clientId: string; clientSecret: string; }): import("next-auth/providers").Provider {
-  throw new Error("Function not implemented.");
-}
-
+// function GoogleProvider(arg0: { clientId: string; clientSecret: string; }): import("next-auth/providers").Provider {
+//   throw new Error("Function not implemented.");
+// }

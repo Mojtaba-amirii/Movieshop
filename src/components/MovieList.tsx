@@ -32,7 +32,7 @@ export default function MovieList({ search, genre }: SearchProps) {
   useEffect(() => {
     if (movies) {
       Promise.all(
-        movies.map((movie: Movie) => {
+        movies.map(async (movie: Movie) => {
           const randomPrice = generateRandomPrice();
           dispatch(setMoviePrice({ movieId: movie.id, price: randomPrice }));
 
@@ -53,9 +53,11 @@ export default function MovieList({ search, genre }: SearchProps) {
             });
           }
         }),
-      ).then((updatedMovies) => {
-        setValidatedMovies(updatedMovies);
-      });
+      )
+        .then((updatedMovies) => {
+          setValidatedMovies(updatedMovies);
+        })
+        .catch((error) => console.log(error));
     }
   }, [movies, dispatch]);
 

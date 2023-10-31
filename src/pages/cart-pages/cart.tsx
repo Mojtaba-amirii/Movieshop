@@ -16,7 +16,7 @@ export default function ShoppingCart() {
   // const moviePrices =
   //   useSelector((state: RootState) => state.cart.moviePrices) || {};
   const cartMovies = useSelector((state: RootState) => state.cart.items);
-  const myMovies = useSelector((state: RootState) => state.cart.items);
+
   const [totalPrice, setTotalPrice] = useState<number>(0);
 
   const removeMovieFromCart = (movie: Movie) => {
@@ -35,25 +35,25 @@ export default function ShoppingCart() {
   // }, [cartMovies, moviePrices]);
 
   useEffect(() => {
-    const totalPrice = myMovies.reduce(
-      (acc: number, movie: Movie) => acc + generateRandomPrice(),
+    const totalPrice = cartMovies.reduce(
+      (acc: number, _movie: Movie) => acc + generateRandomPrice(),
       0,
     );
     setTotalPrice(totalPrice);
-  }, [myMovies]);
+  }, [cartMovies]);
 
   return (
     <div className="mx-auto my-10 flex w-full flex-col items-center gap-8">
       <h1 className="text-center text-2xl font-semibold">Your Movies</h1>
       <ul className="flex flex-col gap-4">
-        {cartMovies.map((movie: Movie, index: number) => (
+        {cartMovies.map((_movie: Movie, index: number) => (
           <li
             key={index}
             className="mx-auto flex w-full flex-row items-center gap-6 rounded-xl border bg-gray-200 p-3"
           >
             <Image
-              src={movie?.poster ?? "/image-not-found.jpg"}
-              alt={movie?.title}
+              src={_movie?.poster ?? "/image-not-found.jpg"}
+              alt={_movie?.title}
               width={80}
               height={96}
               priority
@@ -61,7 +61,7 @@ export default function ShoppingCart() {
             />
             <div className="flex flex-1 flex-row items-center gap-8">
               <p className="sm:text-md md:text-l text-sm lg:text-xl xl:text-2xl">
-                {movie?.title}
+                {_movie?.title}
               </p>
               <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
                 {`Price: ${generateRandomPrice()} kr`}
@@ -70,7 +70,7 @@ export default function ShoppingCart() {
                 <button
                   title="button"
                   type="button"
-                  onClick={() => removeMovieFromCart(movie)}
+                  onClick={() => removeMovieFromCart(_movie)}
                   className="flex-0 text-2xl text-red-500 hover:text-red-700"
                 >
                   <AiFillCloseCircle />

@@ -32,7 +32,7 @@ export default function PaymentPage() {
   // Calculate the total price using reduce
   useEffect(() => {
     const totalPrice = cartMovies.reduce(
-      (acc: number, movie: Movie) => acc + generateRandomPrice(),
+      (acc: number, _movie: Movie) => acc + generateRandomPrice(),
       0,
     );
     setTotalPrice(totalPrice);

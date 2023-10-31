@@ -22,3 +22,14 @@ function MyApp({ Component, pageProps }: AppProps) {
 }
 
 export default api.withTRPC(MyApp);
+
+// const MyApp2: AppType<{ session: Session | null }> = ({
+//   Component,
+//   pageProps: { session, ...pageProps },
+// }) => {
+//   return (
+//     <SessionProvider session={session}>
+//       <Component {...pageProps} />
+//     </SessionProvider>
+//   );
+// };
