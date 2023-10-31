@@ -32,7 +32,7 @@ export default function PaymentPage() {
   // Calculate the total price using reduce
   useEffect(() => {
     const totalPrice = cartMovies.reduce(
-      (acc: number, movie: Movie) => acc + generateRandomPrice(),
+      (acc: number) => acc + generateRandomPrice(),
       0,
     );
     setTotalPrice(totalPrice);
@@ -50,7 +50,7 @@ export default function PaymentPage() {
           <SiSamsungpay size={48} color="#0a4b8e" />
           <FaApplePay size={48} color="#000000" />
         </div>
-        <h1 className="text-center text-xl font-semibold">Your Movies</h1>
+        <h1 className="text-center text-xl font-semibold">Your basket</h1>
         <ul className="flex flex-col gap-4 lg:flex-row">
           {cartMovies.map((movie, index) => (
             <li
