@@ -10,19 +10,6 @@ export default function Navbar() {
   const { animationTriggered } = useAnimation();
   const { data: sessionData } = useSession();
 
-  // async function handleSignInSignOut() {
-  //   try {
-  //     if (sessionData) {
-  //       await signOut();
-  //     } else {
-  //       await signIn();
-  //     }
-  //   } catch (error) {
-  //     // Handle any errors that may occur during sign-in/sign-out
-  //     console.error("Error:", error);
-  //   }
-  // }
-
   return (
     <header>
       <nav className=" sticky flex  w-full items-center justify-between bg-sky-400 px-6 py-4">
