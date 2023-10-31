@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { api } from "~/utils/api";
-import { Movie } from "~/types/types";
+import type { Movie } from "~/types/types";
 import { useDispatch } from "react-redux";
 import { setMoviePrice } from "~/redux/cartSlice";
 
@@ -53,9 +53,11 @@ export default function MovieList({ search, genre }: SearchProps) {
             });
           }
         }),
-      ).then((updatedMovies) => {
-        setValidatedMovies(updatedMovies);
-      });
+      )
+        .then((updatedMovies) => {
+          setValidatedMovies(updatedMovies);
+        })
+        .catch((error) => console.log(error));
     }
   }, [movies, dispatch]);
 
@@ -93,7 +95,7 @@ export default function MovieList({ search, genre }: SearchProps) {
             >
               <div className="aspect-w-24 aspect-h-12 ">
                 <Image
-                  src={movie.poster || "/image-not-found.jpg"}
+                  src={movie.poster ?? "/image-not-found.jpg"}
                   alt={movie.title}
                   width={600}
                   height={696}

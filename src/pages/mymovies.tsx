@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import type { Movie } from "~/types/types";
 import Image from "next/image";
 import { useSelector, useDispatch } from "~/redux/store";
-import { RootState } from "~/redux/types";
+import type { RootState } from "~/redux/types";
 import { removeItem } from "~/redux/cartSlice";
 
 function generateRandomPrice() {
@@ -39,7 +39,7 @@ export default function MyMovies() {
             className="mx-auto flex w-full flex-col items-center gap-6 rounded-xl border bg-gray-100 p-3"
           >
             <Image
-              src={movie.poster || "/image-notfound.jpg"}
+              src={movie.poster ?? "/image-notfound.jpg"}
               alt={movie.title}
               width={336}
               height={346}

@@ -1,81 +1,81 @@
-import { useEffect, useState } from "react";
-import SignInOut from "~/components/signInOut";
-import { Movie } from "~/types/types";
-import { api } from "~/utils/api";
+// import { useEffect, useState } from "react";
 
-export default function () {
-  const [validatedMovies, setValidatedMovies] = useState<Movie[]>();
+// import { Movie } from "~/types/types";
+// import { api } from "~/utils/api";
 
-  const movies = api.movies.first100.useQuery().data;
+// export default function () {
+//   const [validatedMovies, setValidatedMovies] = useState<Movie[]>();
 
-  console.log(movies);
-  console.log(validatedMovies);
+//   const movies = api.movies.first100.useQuery().data;
 
-  /* useEffect(() => {
-    return setValidatedMovies(
-      movies?.map((movie: Movie) => {
-        if (movie.poster) {
-          checkURL(movie.poster).then((result: boolean) => {
-            if (result) {
-              console.log("YES!");
-              return movie;
-            } else {
-              console.log("NO!");
-              return { ...movie, poster: "/image-not-found.jpg" };
-            }
-          });
-        } else {
-          return { ...movie, poster: "/image-not-found.jpg" };
-        }
-      }),
-    );
-  }, [movies]); */
-  useEffect(() => {
-    if (movies) {
-      Promise.all(
-        movies.map((movie: Movie) => {
-          if (movie.poster) {
-            return checkURL(movie.poster).then((result: boolean) => {
-              if (result) {
-                console.log("YES!");
-                return movie;
-              } else {
-                console.log("NO!");
-                return { ...movie, poster: "/image-not-found.jpg" };
-              }
-            });
-          } else {
-            return Promise.resolve({
-              ...movie,
-              poster: "/image-not-found.jpg",
-            });
-          }
-        }),
-      ).then((updatedMovies) => {
-        setValidatedMovies(updatedMovies as Movie[]);
-      });
-    }
-  }, [movies]);
+//   console.log(movies);
+//   console.log(validatedMovies);
 
-  async function checkURL(url: string): Promise<boolean> {
-    try {
-      const response = await fetch(url);
-      return response.ok;
-    } catch (error) {
-      return false;
-    }
-  }
+//   /* useEffect(() => {
+//     return setValidatedMovies(
+//       movies?.map((movie: Movie) => {
+//         if (movie.poster) {
+//           checkURL(movie.poster).then((result: boolean) => {
+//             if (result) {
+//               console.log("YES!");
+//               return movie;
+//             } else {
+//               console.log("NO!");
+//               return { ...movie, poster: "/image-not-found.jpg" };
+//             }
+//           });
+//         } else {
+//           return { ...movie, poster: "/image-not-found.jpg" };
+//         }
+//       }),
+//     );
+//   }, [movies]); */
+//   useEffect(() => {
+//     if (movies) {
+//       Promise.all(
+//         movies.map((movie: Movie) => {
+//           if (movie.poster) {
+//             return checkURL(movie.poster).then((result: boolean) => {
+//               if (result) {
+//                 console.log("YES!");
+//                 return movie;
+//               } else {
+//                 console.log("NO!");
+//                 return { ...movie, poster: "/image-not-found.jpg" };
+//               }
+//             });
+//           } else {
+//             return Promise.resolve({
+//               ...movie,
+//               poster: "/image-not-found.jpg",
+//             });
+//           }
+//         }),
+//       ).then((updatedMovies) => {
+//         setValidatedMovies(updatedMovies as Movie[]);
+//       });
+//     }
+//   }, [movies]);
 
-  return (
-    <>
-      {/* <p>movies: {movies?.filter(movie => typeof movie.poster != 'string' ).length}</p> */}
-      <p>
-        ValidatedMovies:{" "}
-        {
-          validatedMovies?.filter((movie) => typeof movie.poster != "string")
-            .length
-        }
-      </p>
-    </>
-  );
-}
+//   async function checkURL(url: string): Promise<boolean> {
+//     try {
+//       const response = await fetch(url);
+//       return response.ok;
+//     } catch (error) {
+//       return false;
+//     }
+//   }
+
+//   return (
+//     <>
+//       {/* <p>movies: {movies?.filter(movie => typeof movie.poster != 'string' ).length}</p> */}
+//       <p>
+//         ValidatedMovies:{" "}
+//         {
+//           validatedMovies?.filter((movie) => typeof movie.poster != "string")
+//             .length
+//         }
+//       </p>
+//     </>
+//   );
+// }

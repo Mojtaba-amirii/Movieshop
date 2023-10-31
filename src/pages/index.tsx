@@ -1,7 +1,6 @@
 import { useState } from "react";
 import MovieList from "~/components/MovieList";
 import SearchBar from "~/components/Search";
-import SignInOut from "~/components/signInOut";
 
 export default function Home() {
   const [search, setSearch] = useState<string | undefined>();
@@ -9,7 +8,6 @@ export default function Home() {
 
   return (
     <div>
-      <SignInOut />
       <SearchBar setSearch={setSearch} setGenre={setGenre} />
       <MovieList search={search} genre={genre} />
     </div>

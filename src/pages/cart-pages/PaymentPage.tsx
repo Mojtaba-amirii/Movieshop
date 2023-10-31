@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Movie } from "~/types/types";
+import type { Movie } from "~/types/types";
 import { AiFillCloseCircle } from "react-icons/ai";
 import Image from "next/image";
 import {
@@ -12,7 +12,7 @@ import {
 import { SiSamsungpay } from "react-icons/si";
 import Link from "next/link";
 import { useSelector, useDispatch } from "~/redux/store";
-import { RootState } from "~/redux/types";
+import type { RootState } from "~/redux/types";
 import { removeItem } from "~/redux/cartSlice";
 
 function generateRandomPrice() {
@@ -58,7 +58,7 @@ export default function PaymentPage() {
               className="mx-auto flex w-full max-w-screen-lg flex-row items-center gap-2 rounded-xl border bg-gray-200 p-2 md:gap-6"
             >
               <Image
-                src={movie.poster || "/image-not-found.jpg"}
+                src={movie.poster ?? "/image-not-found.jpg"}
                 alt={movie.title}
                 width={24}
                 height={40}
