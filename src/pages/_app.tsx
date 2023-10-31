@@ -1,12 +1,12 @@
 import { SessionProvider } from "next-auth/react";
-import type { AppProps, AppType } from "next/app";
+import type { AppType } from "next/app";
 import { Provider } from "react-redux";
 import store from "~/redux/store";
 import Layout from "~/components/layout";
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { AnimationProvider } from "~/components/AnimationContext";
-import { Session } from "next-auth";
+import type { Session } from "next-auth";
 
 // function MyApp({ Component, pageProps }: AppProps) {
 //   return (

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import type { Movie } from "~/types/types";
+// import type { Movie } from "~/types/types";
 import Image from "next/image";
-import { useSelector, useDispatch } from "~/redux/store";
+import { useSelector/* , useDispatch */ } from "~/redux/store";
 import type { RootState } from "~/redux/types";
-import { removeItem } from "~/redux/cartSlice";
+// import { removeItem } from "~/redux/cartSlice";
 
 function generateRandomPrice() {
   return Math.floor(Math.random() * 51 + 50);
@@ -13,17 +13,18 @@ export default function MyMovies() {
   const myMovies = useSelector((state: RootState) => state.cart.items);
   const [totalPrice, setTotalPrice] = useState<number>(0);
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   // Function to remove a movie from the cart
-  const removeMovieFromCart = (movie: Movie) => {
-    // Dispatch an action to remove the item from the cart
-    dispatch(removeItem(movie));
-  };
+
+  // const removeMovieFromCart = (movie: Movie) => {
+  //   // Dispatch an action to remove the item from the cart
+  //   dispatch(removeItem(movie));
+  // };
 
   // Calculate the total price using reduce
   useEffect(() => {
     const totalPrice = myMovies.reduce(
-      (acc: number, movie: Movie) => acc + generateRandomPrice(),
+      (acc: number) => acc + generateRandomPrice(),
       0,
     );
     setTotalPrice(totalPrice);
@@ -57,6 +58,7 @@ export default function MyMovies() {
           </li>
         ))}
       </ul>
+      <p>{totalPrice}</p>
     </div>
   );
 }

@@ -36,7 +36,7 @@ export default function ShoppingCart() {
 
   useEffect(() => {
     const totalPrice = myMovies.reduce(
-      (acc: number, movie: Movie) => acc + generateRandomPrice(),
+      (acc: number) => acc + generateRandomPrice(),
       0,
     );
     setTotalPrice(totalPrice);
@@ -44,7 +44,7 @@ export default function ShoppingCart() {
 
   return (
     <div className="mx-auto my-10 flex w-full flex-col items-center gap-8">
-      <h1 className="text-center text-2xl font-semibold">Your Movies</h1>
+      <h1 className="text-center text-2xl font-semibold">Your basket</h1>
       <ul className="flex flex-col gap-4">
         {cartMovies.map((movie: Movie, index: number) => (
           <li
