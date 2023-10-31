@@ -6,6 +6,46 @@ import { GiHamburgerMenu } from "react-icons/gi";
 export default function HamburgerMenu() {
   const { data: sessionData } = useSession();
 
+  // async function handleSignInSignOut() {
+  //   try {
+  //     if (sessionData) {
+  //       await signOut();
+  //     } else {
+  //       await signIn();
+  //     }
+  //   } catch (error) {
+  //     // Handle any errors that may occur during sign-in/sign-out
+  //     console.error("Error:", error);
+  //   }
+  // }
+
+  // async function handleSignInSignOut() {
+  //   try {
+  //     if (sessionData) {
+  //       await signOut()
+  //         .then(() => {
+  //           // Handle sign-out success, if needed
+  //         })
+  //         .catch((error) => {
+  //           // Handle any sign-out errors
+  //           console.error("Sign-out Error:", error);
+  //         });
+  //     } else {
+  //       await signIn()
+  //         .then(() => {
+  //           // Handle sign-in success, if needed
+  //         })
+  //         .catch((error) => {
+  //           // Handle any sign-in errors
+  //           console.error("Sign-in Error:", error);
+  //         });
+  //     }
+  //   } catch (error) {
+  //     // Handle any other errors
+  //     console.error("Error:", error);
+  //   }
+  // }
+
   function Links() {
     return (
       <>
