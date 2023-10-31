@@ -10,18 +10,18 @@ export default function Navbar() {
   const { animationTriggered } = useAnimation();
   const { data: sessionData } = useSession();
 
-  async function handleSignInSignOut() {
-    try {
-      if (sessionData) {
-        await signOut();
-      } else {
-        await signIn();
-      }
-    } catch (error) {
-      // Handle any errors that may occur during sign-in/sign-out
-      console.error("Error:", error);
-    }
-  }
+  // async function handleSignInSignOut() {
+  //   try {
+  //     if (sessionData) {
+  //       await signOut();
+  //     } else {
+  //       await signIn();
+  //     }
+  //   } catch (error) {
+  //     // Handle any errors that may occur during sign-in/sign-out
+  //     console.error("Error:", error);
+  //   }
+  // }
 
   return (
     <header>
@@ -39,7 +39,9 @@ export default function Navbar() {
                 <button
                   className="border-r-2 border-black pr-4"
                   type="button"
-                  onClick={handleSignInSignOut}
+                  onClick={
+                    sessionData ? () => void signOut() : () => void signIn()
+                  }
                 >
                   {sessionData ? "Sign out" : "Sign in"}
                 </button>

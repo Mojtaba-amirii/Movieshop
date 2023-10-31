@@ -53,9 +53,11 @@ export default function MovieList({ search, genre }: SearchProps) {
             });
           }
         }),
-      ).then((updatedMovies) => {
-        setValidatedMovies(updatedMovies);
-      });
+      )
+        .then((updatedMovies) => {
+          setValidatedMovies(updatedMovies);
+        })
+        .catch((error) => console.log(error));
     }
   }, [movies, dispatch]);
 
