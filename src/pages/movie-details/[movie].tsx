@@ -6,6 +6,7 @@ import { api } from "~/utils/api";
 import { useDispatch } from "~/redux/store";
 import { addItem } from "~/redux/cartSlice";
 import { useAnimation } from "~/components/AnimationContext";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 function generateRandomPrice() {
   return Math.floor(Math.random() * 51 + 50);
@@ -24,6 +25,7 @@ export default function MovieDetails() {
   const [validatedMovie, setValidatedMovie] = useState<Movie>();
   const { setAnimationTriggered } = useAnimation();
   const router = useRouter();
+  const { data: sessionData } = useSession();
   console.log(router.query.movie);
 
   const movie = api.movies.findByTitle.useQuery({
@@ -90,13 +92,22 @@ export default function MovieDetails() {
             }}
           ></div>
           <p className="text-lg font-semibold">{generateRandomPrice()} kr</p>
-          <button
+          {sessionData ? <button
             type="button"
             className="sm:text-md md:text-l rounded-md border border-black bg-sky-400 px-4 py-2 text-sm lg:text-xl xl:text-2xl"
             onClick={handleAddToCart}
           >
             Add to Cart
-          </button>
+          </button> : (<div className="flex flex-col items-center"><button
+            type="button"
+            className="sm:text-md md:text-l rounded-md border border-black bg-sky-400 opacity-20 px-4 py-2 text-sm lg:text-xl xl:text-2xl w-fit"
+            onClick={handleAddToCart}
+            disabled
+          >
+            Add to Cart
+          </button> 
+          <p className="text-red-400 text-lg">Sign in to add movie to cart</p></div>)}
+          
         </div>
       ) : (
         "Loading..."

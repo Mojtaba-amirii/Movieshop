@@ -58,7 +58,7 @@ export default function MyMovies() {
           </li>
         ))}
       </ul>
-      <p>{totalPrice}</p>
+      <p>{myMovies.length !=0 ? totalPrice : " "}</p>
     </div>
   );
 }

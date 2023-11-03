@@ -68,7 +68,7 @@ export default function Navbar() {
           href="/cart-pages/cart"
           className={`text-2xl ${animationTriggered ? "animate-bounce" : ""}`}
         >
-          <FaShoppingBasket />
+          {sessionData ? <FaShoppingBasket /> : " "}
         </Link>
       </nav>
     </header>

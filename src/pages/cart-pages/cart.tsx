@@ -6,13 +6,34 @@ import Image from "next/image";
 import { useSelector, useDispatch } from "~/redux/store";
 import type { RootState } from "~/redux/types";
 import { removeItem } from "~/redux/cartSlice";
+import { useRouter } from "next/router";
+import { getSession, useSession } from "next-auth/react";
+import { GetServerSidePropsContext } from "next";
 
 function generateRandomPrice() {
   return Math.floor(Math.random() * 51 + 50);
 }
 
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/", // Redirect to the login page
+        permanent: false,
+      },
+    };
+  }
+  // If the user is authenticated, continue to render the page
+  return {
+    props: {}, // No additional props required
+  };
+}
+
+
 export default function ShoppingCart() {
   const dispatch = useDispatch();
+  const { data: sessionData } = useSession();
   // const moviePrices =
   //   useSelector((state: RootState) => state.cart.moviePrices) || {};
   const cartMovies = useSelector((state: RootState) => state.cart.items);
@@ -33,6 +54,13 @@ export default function ShoppingCart() {
   //   }, 0);
   //   setTotalPrice(totalPrice);
   // }, [cartMovies, moviePrices]);
+// const router = useRouter();
+// useEffect(() => {
+//   if (!sessionData) {
+//     router.push("/");
+//   }
+// }, []);
+
 
   useEffect(() => {
     const totalPrice = cartMovies.reduce(
