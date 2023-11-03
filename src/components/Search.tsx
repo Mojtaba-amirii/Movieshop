@@ -17,12 +17,14 @@ export default function SearchBar({ setSearch, setGenre }: SearchBarProps) {
   return (
     <div className="min-w-sm mt-4 flex flex-col items-center justify-center gap-2 pb-4 md:flex-row ">
       <input
+        name="Search"
         className="w-2/3 rounded-md border border-black p-1 pl-10"
         placeholder="Search..."
         type="text"
         onChange={handleSearchChange}
       />
       <select
+        name="Genre"
         title="Genre"
         defaultValue="all"
         onChange={handleGenreChange}

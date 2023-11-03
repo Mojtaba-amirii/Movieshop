@@ -22,6 +22,9 @@
     "@trpc/react-query": "^10.37.1",
     "@trpc/server": "^10.37.1",
     "axios": "^1.5.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "helmet": "^7.0.0",
     "next": "^13.4.19",
     "next-auth": "^4.23.0",
     "react": "18.2.0",
@@ -35,7 +38,9 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.15",
     "@types/eslint": "^8.44.2",
+    "@types/express": "^4.17.20",
     "@types/mongodb": "^4.0.7",
     "@types/node": "^18.16.0",
     "@types/react": "^18.2.20",

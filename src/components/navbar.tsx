@@ -64,6 +64,7 @@ export default function Navbar() {
           </div>
         </div>
         <Link
+          title="ShoppingBasket"
           href="/cart-pages/cart"
           className={`text-2xl ${animationTriggered ? "animate-bounce" : ""}`}
         >

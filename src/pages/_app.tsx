@@ -8,20 +8,6 @@ import "~/styles/globals.css";
 import { AnimationProvider } from "~/components/AnimationContext";
 import type { Session } from "next-auth";
 
-// function MyApp({ Component, pageProps }: AppProps) {
-//   return (
-//     <SessionProvider session={pageProps.session}>
-//       <Provider store={store}>
-//         <AnimationProvider>
-//           <Layout>
-//             <Component {...pageProps} />
-//           </Layout>
-//         </AnimationProvider>
-//       </Provider>
-//     </SessionProvider>
-//   );
-// }
-
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
