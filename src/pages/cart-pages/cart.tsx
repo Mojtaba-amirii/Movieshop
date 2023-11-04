@@ -30,37 +30,15 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   };
 }
 
-
 export default function ShoppingCart() {
   const dispatch = useDispatch();
   const { data: sessionData } = useSession();
-  // const moviePrices =
-  //   useSelector((state: RootState) => state.cart.moviePrices) || {};
   const cartMovies = useSelector((state: RootState) => state.cart.items);
-
   const [totalPrice, setTotalPrice] = useState<number>(0);
-
   const removeMovieFromCart = (movie: Movie) => {
     // Dispatch an action to remove the item from the cart
     dispatch(removeItem(movie));
   };
-  // Calculate the total price using the prices stored in the Redux store
-  // useEffect(() => {
-  //   const totalPrice = cartMovies.reduce((acc: number, movie: Movie) => {
-  //     if (moviePrices && moviePrices?.[movie.id] !== undefined) {
-  //       return acc + moviePrices?.[movie?.id];
-  //     }
-  //     return acc;
-  //   }, 0);
-  //   setTotalPrice(totalPrice);
-  // }, [cartMovies, moviePrices]);
-// const router = useRouter();
-// useEffect(() => {
-//   if (!sessionData) {
-//     router.push("/");
-//   }
-// }, []);
-
 
   useEffect(() => {
     const totalPrice = cartMovies.reduce(
