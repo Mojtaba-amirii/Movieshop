@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Head from "next/head";
+import Image from "next/image";
 
 export default function Myprofile() {
   const [userData, setUserData] = useState({
@@ -9,6 +10,7 @@ export default function Myprofile() {
     phoneNumber: "123-456-7890",
     profilePicture: "/default-profile-picture1-300x300.jpg",
   });
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
@@ -23,7 +25,6 @@ export default function Myprofile() {
             }) as typeof prevUserData,
         );
       };
-
       reader.readAsDataURL(file);
     }
   };
@@ -37,7 +38,7 @@ export default function Myprofile() {
         <div className="flex flex-col items-center rounded-lg bg-sky-200 p-6 shadow-md">
           <h1 className="mb-4 text-xl font-semibold">My Profile</h1>
           <div className="mb-4 flex  flex-col items-center gap-4">
-            <img
+            <Image
               src={userData.profilePicture}
               alt="Profile"
               className="h-16 w-16 rounded-full"
@@ -54,7 +55,7 @@ export default function Myprofile() {
                 type="file"
                 accept="image/*"
                 onChange={handleFileChange}
-                className=" w-40 text-center"
+                className="w-40 text-center"
               />
             </div>
           </div>

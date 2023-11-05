@@ -19,7 +19,7 @@ export default function About() {
           </p>
           <p>
             Our mission is to make your movie-watching experience enjoyable and
-            convenient. Whether you're a cinephile or just looking for a great
+            convenient. Whether you,re a cinephile or just looking for a great
             flick to watch, MovieShop has something for everyone.
           </p>
         </div>
