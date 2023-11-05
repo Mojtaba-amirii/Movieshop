@@ -56,7 +56,7 @@ export default function Navbar() {
                 ""
               )}
               <li>
-                <Link href="/about" className="pl-4 font-bold">
+                <Link href="/About" className="pl-4 font-bold">
                   About
                 </Link>
               </li>

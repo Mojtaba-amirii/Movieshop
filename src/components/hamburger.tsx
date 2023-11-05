@@ -31,7 +31,7 @@ export default function HamburgerMenu() {
           ) : (
             ""
           )}
-          <Link href="/about" className="p-4 ">
+          <Link href="/About" className="p-4 ">
             About
           </Link>
         </div>
