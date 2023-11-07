@@ -6,54 +6,60 @@ import Image from "next/image";
 import { useSelector, useDispatch } from "~/redux/store";
 import type { RootState } from "~/redux/types";
 import { removeItem } from "~/redux/cartSlice";
+import { useRouter } from "next/router";
+import { getSession, useSession } from "next-auth/react";
+import { GetServerSidePropsContext } from "next";
 
 function generateRandomPrice() {
   return Math.floor(Math.random() * 51 + 50);
 }
 
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/", // Redirect to the login page
+        permanent: false,
+      },
+    };
+  }
+  // If the user is authenticated, continue to render the page
+  return {
+    props: {}, // No additional props required
+  };
+}
+
 export default function ShoppingCart() {
   const dispatch = useDispatch();
-  // const moviePrices =
-  //   useSelector((state: RootState) => state.cart.moviePrices) || {};
+  const { data: sessionData } = useSession();
   const cartMovies = useSelector((state: RootState) => state.cart.items);
-  const myMovies = useSelector((state: RootState) => state.cart.items);
   const [totalPrice, setTotalPrice] = useState<number>(0);
-
   const removeMovieFromCart = (movie: Movie) => {
     // Dispatch an action to remove the item from the cart
     dispatch(removeItem(movie));
   };
-  // Calculate the total price using the prices stored in the Redux store
-  // useEffect(() => {
-  //   const totalPrice = cartMovies.reduce((acc: number, movie: Movie) => {
-  //     if (moviePrices && moviePrices?.[movie.id] !== undefined) {
-  //       return acc + moviePrices?.[movie?.id];
-  //     }
-  //     return acc;
-  //   }, 0);
-  //   setTotalPrice(totalPrice);
-  // }, [cartMovies, moviePrices]);
 
   useEffect(() => {
-    const totalPrice = myMovies.reduce(
-      (acc: number) => acc + generateRandomPrice(),
+    const totalPrice = cartMovies.reduce(
+      (acc: number, _movie: Movie) => acc + generateRandomPrice(),
       0,
     );
     setTotalPrice(totalPrice);
-  }, [myMovies]);
+  }, [cartMovies]);
 
   return (
     <div className="mx-auto my-10 flex w-full flex-col items-center gap-8">
       <h1 className="text-center text-2xl font-semibold">Your basket</h1>
       <ul className="flex flex-col gap-4">
-        {cartMovies.map((movie: Movie, index: number) => (
+        {cartMovies.map((_movie: Movie, index: number) => (
           <li
             key={index}
             className="mx-auto flex w-full flex-row items-center gap-6 rounded-xl border bg-gray-200 p-3"
           >
             <Image
-              src={movie?.poster ?? "/image-not-found.jpg"}
-              alt={movie?.title}
+              src={_movie?.poster ?? "/image-not-found.jpg"}
+              alt={_movie?.title}
               width={80}
               height={96}
               priority
@@ -61,7 +67,7 @@ export default function ShoppingCart() {
             />
             <div className="flex flex-1 flex-row items-center gap-8">
               <p className="sm:text-md md:text-l text-sm lg:text-xl xl:text-2xl">
-                {movie?.title}
+                {_movie?.title}
               </p>
               <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
                 {`Price: ${generateRandomPrice()} kr`}
@@ -70,7 +76,7 @@ export default function ShoppingCart() {
                 <button
                   title="button"
                   type="button"
-                  onClick={() => removeMovieFromCart(movie)}
+                  onClick={() => removeMovieFromCart(_movie)}
                   className="flex-0 text-2xl text-red-500 hover:text-red-700"
                 >
                   <AiFillCloseCircle />

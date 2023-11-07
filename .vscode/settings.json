@@ -1,14 +1,27 @@
 {
   "cSpell.words": [
     "animatecss",
+    "cinephile",
+    "frameguard",
+    "fullplot",
+    "MOVIESHOP",
     "mymovies",
     "myprofile",
     "nextjs",
     "reduxjs",
+    "Samsungpay",
     "superjson",
     "tailwindcss",
     "tanstack",
     "trpc",
     "webbshop"
-  ]
+  ],
+  "cSpell.customDictionaries": {
+    "custom-dictionary-workspace": {
+      "name": "custom-dictionary-workspace",
+      "path": "${workspaceFolder:webbshop}/.cspell/custom-dictionary-workspace.txt",
+      "addWords": true,
+      "scope": "workspace"
+    }
+  }
 }

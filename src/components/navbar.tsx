@@ -10,23 +10,10 @@ export default function Navbar() {
   const { animationTriggered } = useAnimation();
   const { data: sessionData } = useSession();
 
-  // async function handleSignInSignOut() {
-  //   try {
-  //     if (sessionData) {
-  //       await signOut();
-  //     } else {
-  //       await signIn();
-  //     }
-  //   } catch (error) {
-  //     // Handle any errors that may occur during sign-in/sign-out
-  //     console.error("Error:", error);
-  //   }
-  // }
-
   return (
     <header>
       <nav className=" sticky flex  w-full items-center justify-between bg-sky-400 px-6 py-4">
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-10">
           <Link href="/" className="text-2xl font-bold">
             <h1>MOVIESHOP</h1>
           </Link>
@@ -69,7 +56,7 @@ export default function Navbar() {
                 ""
               )}
               <li>
-                <Link href="/about" className="pl-4 font-bold">
+                <Link href="/About" className="pl-4 font-bold">
                   About
                 </Link>
               </li>
@@ -77,10 +64,11 @@ export default function Navbar() {
           </div>
         </div>
         <Link
+          title="ShoppingBasket"
           href="/cart-pages/cart"
           className={`text-2xl ${animationTriggered ? "animate-bounce" : ""}`}
         >
-          <FaShoppingBasket />
+          {sessionData ? <FaShoppingBasket /> : " "}
         </Link>
       </nav>
     </header>

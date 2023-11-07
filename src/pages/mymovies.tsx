@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import type { Movie } from "~/types/types";
 import Image from "next/image";
-import { useSelector/* , useDispatch */ } from "~/redux/store";
+import { useSelector /* , useDispatch */ } from "~/redux/store";
 import type { RootState } from "~/redux/types";
 // import { removeItem } from "~/redux/cartSlice";
 
@@ -58,7 +58,7 @@ export default function MyMovies() {
           </li>
         ))}
       </ul>
-      <p>{totalPrice}</p>
+      <p>{myMovies.length !=0 ? totalPrice : " "}</p>
     </div>
   );
 }
