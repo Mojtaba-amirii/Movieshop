@@ -1,22 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { Movie } from "~/types/types";
+import type { Movie, MovieWithPrice } from "~/types/types";
 
 interface CartState {
-  items: Movie[];
-  moviePrices: Record<string, number>;
+  items: MovieWithPrice[];
+  /* moviePrices: Record<string, number>; */
 }
 
 const initialState: CartState = {
   items: [],
-  moviePrices: {},
+  /* moviePrices: {}, */
 };
 
 const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addItem: (state, action: PayloadAction<Movie>) => {
+    addItem: (state, action: PayloadAction<MovieWithPrice>) => {
       state.items.push(action.payload);
     },
     removeItem: (state, action: PayloadAction<Movie>) => {
@@ -25,15 +25,15 @@ const cartSlice = createSlice({
     clearCart: (state) => {
       state.items = [];
     },
-    setMoviePrice: (
+    /* setMoviePrice: (
       state,
       action: PayloadAction<{ movieId: string; price: number }>,
     ) => {
       state.moviePrices[action.payload.movieId] = action.payload.price || 0;
-    },
+    }, */
   },
 });
 
-export const { addItem, removeItem, clearCart, setMoviePrice } =
+export const { addItem, removeItem, clearCart, /* setMoviePrice */ } =
   cartSlice.actions;
 export default cartSlice.reducer;

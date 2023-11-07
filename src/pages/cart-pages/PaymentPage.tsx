@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import type { Movie } from "~/types/types";
+import type { Movie, MovieWithPrice } from "~/types/types";
 import { AiFillCloseCircle } from "react-icons/ai";
 import Image from "next/image";
 import {
@@ -48,7 +48,7 @@ export default function PaymentPage() {
  
   const dispatch = useDispatch();
   // Function to remove a movie from the cart
-  const removeMovieFromCart = (movie: Movie) => {
+  const removeMovieFromCart = (movie: MovieWithPrice) => {
     // Dispatch an action to remove the item from the cart
     dispatch(removeItem(movie));
   };
@@ -62,7 +62,7 @@ export default function PaymentPage() {
   // Calculate the total price using reduce
   useEffect(() => {
     const totalPrice = cartMovies.reduce(
-      (acc: number) => acc + generateRandomPrice(),
+      (acc: number, _movie: MovieWithPrice) => acc + _movie.price,
       0,
     );
     setTotalPrice(totalPrice);
@@ -97,7 +97,7 @@ export default function PaymentPage() {
               />
               <div className="flex flex-row items-center gap-8">
                 <p className="text-sm ">{movie.title}</p>
-                <p className="text-xs">{`Price: ${generateRandomPrice()} kr`}</p>
+                <p className="text-xs">{`Price: ${movie.price} kr`}</p>
                 <button
                   title="button"
                   type="button"

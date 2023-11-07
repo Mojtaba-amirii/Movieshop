@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import type { Movie } from "~/types/types";
+import type { Movie, MovieWithPrice } from "~/types/types";
 import { api } from "~/utils/api";
 import { useDispatch } from "~/redux/store";
 import { addItem } from "~/redux/cartSlice";
@@ -22,11 +22,12 @@ async function checkURL(url: string): Promise<boolean> {
 }
 
 export default function MovieDetails() {
-  const [validatedMovie, setValidatedMovie] = useState<Movie>();
+  const [validatedMovie, setValidatedMovie] = useState<MovieWithPrice>();
   const { setAnimationTriggered } = useAnimation();
   const router = useRouter();
   const { data: sessionData } = useSession();
   console.log(router.query.movie);
+  console.log(router.query.price);
 
   const movie = api.movies.findByTitle.useQuery({
     title: router.query.movie as string,
@@ -34,21 +35,24 @@ export default function MovieDetails() {
   console.log(movie);
 
   useEffect(() => {
+    console.log('hejsan')
     if (movie) {
-      if (movie.poster) {
-        checkURL(movie.poster)
+      const movieWithPrice = {...movie, price: Number(router.query.price)}
+      console.log(movieWithPrice)
+      if (movieWithPrice.poster) {
+        checkURL(movieWithPrice.poster)
           .then((result: boolean) => {
             if (result) {
               console.log("YES!");
-              setValidatedMovie(movie);
+              setValidatedMovie(movieWithPrice);
             } else {
               console.log("NO!");
-              setValidatedMovie({ ...movie, poster: "/image-not-found.jpg" });
+              setValidatedMovie({ ...movieWithPrice, poster: "/image-not-found.jpg" });
             }
           })
           .catch((error) => console.log(error));
       } else {
-        setValidatedMovie({ ...movie, poster: "/image-not-found.jpg" });
+        setValidatedMovie({ ...movieWithPrice, poster: "/image-not-found.jpg" });
       }
     }
   }, [movie]);
@@ -91,7 +95,7 @@ export default function MovieDetails() {
                 : "No Plot Available",
             }}
           ></div>
-          <p className="text-lg font-semibold">{generateRandomPrice()} kr</p>
+          <p className="text-lg font-semibold">{validatedMovie.price} kr</p>
           {sessionData ? <button
             type="button"
             className="sm:text-md md:text-l rounded-md border border-black bg-sky-400 px-4 py-2 text-sm lg:text-xl xl:text-2xl"

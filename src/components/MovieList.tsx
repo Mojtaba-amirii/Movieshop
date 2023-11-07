@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { api } from "~/utils/api";
-import type { Movie } from "~/types/types";
+import type { Movie, MovieWithPrice } from "~/types/types";
 import { useDispatch } from "react-redux";
 import { setMoviePrice } from "~/redux/cartSlice";
 
@@ -25,16 +25,20 @@ async function checkURL(url: string): Promise<boolean> {
 }
 
 export default function MovieList({ search, genre }: SearchProps) {
-  const [validatedMovies, setValidatedMovies] = useState<Movie[]>();
-  const dispatch = useDispatch();
+  const [validatedMovies, setValidatedMovies] = useState<MovieWithPrice[]>();
+  //const dispatch = useDispatch();
   const movies = api.movies.first100.useQuery().data;
 
   useEffect(() => {
+    console.log('hej')
     if (movies) {
+      const moviesWithPrice = movies?.map(movie => {
+        return {...movie, price: generateRandomPrice()}
+      })
       Promise.all(
-        movies.map(async (movie: Movie) => {
-          const randomPrice = generateRandomPrice();
-          dispatch(setMoviePrice({ movieId: movie.id, price: randomPrice }));
+        moviesWithPrice.map(async (movie: MovieWithPrice) => {
+          /* const randomPrice = generateRandomPrice();
+          dispatch(setMoviePrice({ movieId: movie.id, price: randomPrice })); */
 
           if (movie.poster) {
             return checkURL(movie.poster).then((result: boolean) => {
@@ -59,7 +63,7 @@ export default function MovieList({ search, genre }: SearchProps) {
         })
         .catch((error) => console.log(error));
     }
-  }, [movies, dispatch]);
+  }, [movies]);
 
   console.log("Search: ", search);
   console.log("Genre: ", genre);
@@ -90,7 +94,12 @@ export default function MovieList({ search, genre }: SearchProps) {
             className="flex flex-col items-center rounded-md border p-3"
           >
             <Link
-              href="/movie-details/[movie]"
+              href={{
+                pathname: "/movie-details/[movie]", 
+                query: {
+                  price: movie.price
+                }
+              }}
               as={`/movie-details/${movie.title}`}
             >
               <div className="aspect-w-24 aspect-h-12 ">
@@ -109,7 +118,7 @@ export default function MovieList({ search, genre }: SearchProps) {
                   <h2>Genres:&nbsp;</h2>
                   <div>{movie.genres.join(", ")}</div>
                 </div>
-                <div>Price: {generateRandomPrice()} kr</div>
+                <div>Price: {movie.price} kr</div>
               </div>
             </Link>
           </li>
