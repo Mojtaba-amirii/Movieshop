@@ -36,4 +36,17 @@ export const moviesRouter = createTRPCRouter({
         },
       });
     }),
+    /* addPurchasedMovie: publicProcedure
+    .input(z.object({ userId: z.string(), movieId: z.number() }))
+    .mutation(({ input, ctx }) => {
+      return ctx.db.user.update({
+        where: {
+          id: input.userId,
+        },
+        data: {
+          
+        },
+      });
+    }), */
 });
+

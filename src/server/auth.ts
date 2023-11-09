@@ -144,7 +144,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     }, */
 
-    session: ({ session, user }) => ({
+    /* session: ({ session, user }) => ({
       ...session,
       user: {
         ...session.user,
@@ -168,9 +168,40 @@ export const authOptions: NextAuthOptions = {
   
         return true;
       },
-    }),
+    }), */
+    /* session: ({ session, user }) => ({
+      ...session,
+      user: {
+        ...session.user,
+        id: user.id,
+      },
+    }), */
+
+    async signIn(params) {
+      const { email } = params.profile || {}; // Access user's email from the profile
+
+      // Save the list of purchased movie IDs to the user's account in the MongoDB database
+      await clientPromise.then(async (client) => {
+        const db = client.db();
+        const usersCollection = db.collection("User");
+
+        // Check if the user already has a purchasedMovies field
+        const userExists = await usersCollection.findOne({ email: email });
+        if (!userExists?.purchasedMovies) {
+          // If the field doesn't exist, create it with the purchasedMovies array
+          await usersCollection.updateOne(
+            { email: email },
+            { $set: { purchasedMovies: [] } }
+          );
+        }
+      });
+
+      return true;
+    },
   },
+
   adapter: MongoDBAdapter(clientPromise) /* PrismaAdapter(db) */,
+  
   providers: [
     DiscordProvider({
       clientId: env.DISCORD_CLIENT_ID,
