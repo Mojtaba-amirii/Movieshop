@@ -4,7 +4,7 @@ import Link from "next/link";
 import { api } from "~/utils/api";
 import type { Movie, MovieWithPrice } from "~/types/types";
 import { useDispatch } from "react-redux";
-import { setMoviePrice } from "~/redux/cartSlice";
+//import { setMoviePrice } from "~/redux/cartSlice";
 
 type SearchProps = {
   search: string | undefined;
