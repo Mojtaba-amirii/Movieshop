@@ -15,9 +15,10 @@ import { useSelector, useDispatch } from "~/redux/store";
 import type { RootState } from "~/redux/types";
 import { removeItem } from "~/redux/cartSlice";
 // import { useRouter } from "next/router";
-import { getSession, /* useSession */ } from "next-auth/react";
+import { getSession, useSession, /* useSession */ } from "next-auth/react";
 import type { GetServerSidePropsContext } from "next";
 import { Session } from "next-auth";
+import { api } from "~/utils/api";
 
 
 
@@ -42,9 +43,12 @@ function generateRandomPrice() {
   return Math.floor(Math.random() * 51 + 50);
 }
 export default function PaymentPage() {
+  const { data: sessionData } = useSession();
+
   const cartMovies = useSelector((state: RootState) => state.cart.items);
   const [totalPrice, setTotalPrice] = useState<number>(0);
 
+  const addPurchasedMovie = api.movies.addPurchasedMovie.useMutation()
  
   const dispatch = useDispatch();
   // Function to remove a movie from the cart
@@ -67,6 +71,16 @@ export default function PaymentPage() {
     );
     setTotalPrice(totalPrice);
   }, [cartMovies]);
+
+  async function handlePurchase() {
+    if (sessionData) {
+      await addPurchasedMovie.mutateAsync({
+        userId: sessionData.user.id,
+        movieId: cartMovies.map(movie => movie.id)
+      });
+    }
+    
+  }
 
   return (
     <div className="mx-auto my-10  flex w-full flex-col items-center gap-4 md:gap-8">
@@ -120,6 +134,7 @@ export default function PaymentPage() {
         <button
           type="button"
           className="sm:text-md md:text-l rounded-md bg-sky-400 px-4 py-2 text-sm lg:text-xl xl:text-2xl"
+          onClick={handlePurchase}
         >
           Purchase
         </button>

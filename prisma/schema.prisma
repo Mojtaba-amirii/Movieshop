@@ -218,6 +218,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    purchasedMovies String[]
 }
 // model VerificationToken {
 //     identifier String
