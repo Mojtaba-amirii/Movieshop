@@ -36,29 +36,14 @@ export const moviesRouter = createTRPCRouter({
         },
       });
     }),
-  addPurchasedMovie: publicProcedure
-    .input(z.object({ movieId: z.array(z.string()), userId: z.string() }))
-    .mutation(({ input, ctx }) => {
-      return ctx.db.user.update({
+  findById: publicProcedure
+    .input(z.object({ movieIds: z.array(z.string()) }))
+    .query(({ ctx, input }) => {
+      return ctx.db.movies.findMany({
         where: {
-          id: input.userId,
-        },
-        data: {
-          purchasedMovies: {
-            push: input.movieId,
+          id: {
+            in: input.movieIds
           },
-        },
-      });
-    }),
-  getMyMovies: protectedProcedure
-    .input(z.object({ userId: z.string() }))
-    .query(({ input, ctx }) => {
-      return ctx.db.user.findFirst({
-        where: {
-          id: input.userId,
-        },
-        select: {
-          purchasedMovies: true,
         },
       });
     }),

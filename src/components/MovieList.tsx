@@ -32,7 +32,7 @@ export default function MovieList({ search, genre }: SearchProps) {
   useEffect(() => {
     console.log('hej')
     if (movies) {
-      const moviesWithPrice = movies?.map(movie => {
+      const moviesWithPrice = movies.map(movie => {
         return {...movie, price: generateRandomPrice()}
       })
       Promise.all(
@@ -69,7 +69,7 @@ export default function MovieList({ search, genre }: SearchProps) {
   console.log("Genre: ", genre);
 
   // Filter movies based on the Search
-  const filteredMovies = validatedMovies?.filter((movie: Movie) => {
+  const filteredMovies = validatedMovies?.filter((movie: MovieWithPrice) => {
     if (movie) {
       const isSearchMatch =
         !search || movie.title.toLowerCase().includes(search.toLowerCase());

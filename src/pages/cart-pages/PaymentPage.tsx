@@ -15,7 +15,7 @@ import { useSelector, useDispatch } from "~/redux/store";
 import type { RootState } from "~/redux/types";
 import { removeItem } from "~/redux/cartSlice";
 // import { useRouter } from "next/router";
-import { getSession, useSession, /* useSession */ } from "next-auth/react";
+import { getSession, useSession} from "next-auth/react";
 import type { GetServerSidePropsContext } from "next";
 import { Session } from "next-auth";
 import { api } from "~/utils/api";
@@ -48,7 +48,7 @@ export default function PaymentPage() {
   const cartMovies = useSelector((state: RootState) => state.cart.items);
   const [totalPrice, setTotalPrice] = useState<number>(0);
 
-  const addPurchasedMovie = api.movies.addPurchasedMovie.useMutation()
+  const addPurchasedMovie = api.user.addPurchasedMovie.useMutation()
  
   const dispatch = useDispatch();
   // Function to remove a movie from the cart
