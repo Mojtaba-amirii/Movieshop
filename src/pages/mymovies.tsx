@@ -4,13 +4,39 @@ import Image from "next/image";
 import { useSelector /* , useDispatch */ } from "~/redux/store";
 import type { RootState } from "~/redux/types";
 // import { removeItem } from "~/redux/cartSlice";
+import { GetServerSidePropsContext } from "next";
+import { getSession, useSession } from "next-auth/react";
+import { api } from "~/utils/api";
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/", // Redirect to the login page
+        permanent: false,
+      },
+    };
+  }
+  // If the user is authenticated, continue to render the page
+  return {
+    props: {}, // No additional props required
+  };
+}
 
 function generateRandomPrice() {
   return Math.floor(Math.random() * 51 + 50);
 }
 
 export default function MyMovies() {
-  const myMovies = useSelector((state: RootState) => state.cart.items);
+  const { data: sessionData } = useSession();
+  const { data: myMovies } = api.movies.getMyMovies.useQuery({
+    userId: sessionData?.user.id
+  } // no input
+    { enabled: sessionData?.user !== undefined },
+  );
+  /* const myMovies = useSelector((state: RootState) => state.cart.items); */
+
   const [totalPrice, setTotalPrice] = useState<number>(0);
 
   // const dispatch = useDispatch();
@@ -58,7 +84,7 @@ export default function MyMovies() {
           </li>
         ))}
       </ul>
-      <p>{myMovies.length !=0 ? totalPrice : " "}</p>
+      <p>{myMovies.length != 0 ? totalPrice : " "}</p>
     </div>
   );
 }
