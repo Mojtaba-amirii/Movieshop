@@ -41,7 +41,9 @@ export default function Myprofile() {
             <Image
               src={userData.profilePicture}
               alt="Profile"
-              className="h-16 w-16 rounded-full"
+              width={64}
+              height={64}
+              className="rounded-full"
             />
             <div className="flex flex-col items-center gap-2">
               <p className="text-lg font-semibold">

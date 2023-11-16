@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import type { Movie } from "~/types/types";
+import type { MovieWithPrice } from "~/types/types";
 import { AiFillCloseCircle } from "react-icons/ai";
 import Image from "next/image";
 import {
@@ -13,16 +13,14 @@ import { SiSamsungpay } from "react-icons/si";
 import Link from "next/link";
 import { useSelector, useDispatch } from "~/redux/store";
 import type { RootState } from "~/redux/types";
-import { removeItem } from "~/redux/cartSlice";
+import { removeItem, clearCart } from "~/redux/cartSlice";
 // import { useRouter } from "next/router";
-import { getSession, /* useSession */ } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import type { GetServerSidePropsContext } from "next";
-import { Session } from "next-auth";
+import { api } from "~/utils/api";
 
-
-
-export async function getServerSideProps(context:GetServerSidePropsContext) {
-const session = await getSession(context);
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getSession(context);
   if (!session) {
     return {
       redirect: {
@@ -33,40 +31,53 @@ const session = await getSession(context);
   }
   // If the user is authenticated, continue to render the page
   return {
-    props: {} // No additional props required
+    props: {}, // No additional props required
   };
 }
 
-
-function generateRandomPrice() {
-  return Math.floor(Math.random() * 51 + 50);
-}
 export default function PaymentPage() {
+  const { data: sessionData } = useSession();
+
   const cartMovies = useSelector((state: RootState) => state.cart.items);
   const [totalPrice, setTotalPrice] = useState<number>(0);
 
- 
+  const addPurchasedMovie = api.user.addPurchasedMovie.useMutation();
+
   const dispatch = useDispatch();
   // Function to remove a movie from the cart
-  const removeMovieFromCart = (movie: Movie) => {
+  const removeMovieFromCart = (movie: MovieWithPrice) => {
     // Dispatch an action to remove the item from the cart
     dispatch(removeItem(movie));
   };
-// const router = useRouter();
-// useEffect(() => {
-//   if (!sessionData) {
-//     router.push("/");
-//   }
-// }, []);
+  //function to clear cart
+  const handleClearCart = () => {
+    dispatch(clearCart());
+  };
+  // const router = useRouter();
+  // useEffect(() => {
+  //   if (!sessionData) {
+  //     router.push("/");
+  //   }
+  // }, []);
 
   // Calculate the total price using reduce
   useEffect(() => {
     const totalPrice = cartMovies.reduce(
-      (acc: number) => acc + generateRandomPrice(),
+      (acc: number, _movie: MovieWithPrice) => acc + _movie.price,
       0,
     );
     setTotalPrice(totalPrice);
   }, [cartMovies]);
+
+  function handlePurchase() {
+    if (sessionData) {
+      addPurchasedMovie.mutate({
+        userId: sessionData.user.id,
+        movieId: cartMovies.map((movie) => movie.id),
+      });
+      handleClearCart();
+    }
+  }
 
   return (
     <div className="mx-auto my-10  flex w-full flex-col items-center gap-4 md:gap-8">
@@ -97,7 +108,7 @@ export default function PaymentPage() {
               />
               <div className="flex flex-row items-center gap-8">
                 <p className="text-sm ">{movie.title}</p>
-                <p className="text-xs">{`Price: ${generateRandomPrice()} kr`}</p>
+                <p className="text-xs">{`Price: ${movie.price} kr`}</p>
                 <button
                   title="button"
                   type="button"
@@ -120,6 +131,7 @@ export default function PaymentPage() {
         <button
           type="button"
           className="sm:text-md md:text-l rounded-md bg-sky-400 px-4 py-2 text-sm lg:text-xl xl:text-2xl"
+          onClick={handlePurchase}
         >
           Purchase
         </button>

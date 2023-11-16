@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from "react";
-import type { Movie } from "~/types/types";
+import type { MovieWithPrice } from "~/types/types";
 import { AiFillCloseCircle } from "react-icons/ai";
 import Link from "next/link";
 import Image from "next/image";
 import { useSelector, useDispatch } from "~/redux/store";
 import type { RootState } from "~/redux/types";
 import { removeItem } from "~/redux/cartSlice";
-import { useRouter } from "next/router";
-import { getSession, useSession } from "next-auth/react";
-import { GetServerSidePropsContext } from "next";
-
-function generateRandomPrice() {
-  return Math.floor(Math.random() * 51 + 50);
-}
+import { getSession } from "next-auth/react";
+import type { GetServerSidePropsContext } from "next";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
@@ -32,17 +27,16 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
 export default function ShoppingCart() {
   const dispatch = useDispatch();
-  const { data: sessionData } = useSession();
   const cartMovies = useSelector((state: RootState) => state.cart.items);
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const removeMovieFromCart = (movie: Movie) => {
+  const removeMovieFromCart = (movie: MovieWithPrice) => {
     // Dispatch an action to remove the item from the cart
     dispatch(removeItem(movie));
   };
 
   useEffect(() => {
     const totalPrice = cartMovies.reduce(
-      (acc: number, _movie: Movie) => acc + generateRandomPrice(),
+      (acc: number, _movie: MovieWithPrice) => acc + _movie.price,
       0,
     );
     setTotalPrice(totalPrice);
@@ -52,7 +46,7 @@ export default function ShoppingCart() {
     <div className="mx-auto my-10 flex w-full flex-col items-center gap-8">
       <h1 className="text-center text-2xl font-semibold">Your basket</h1>
       <ul className="flex flex-col gap-4">
-        {cartMovies.map((_movie: Movie, index: number) => (
+        {cartMovies.map((_movie: MovieWithPrice, index: number) => (
           <li
             key={index}
             className="mx-auto flex w-full flex-row items-center gap-6 rounded-xl border bg-gray-200 p-3"
@@ -70,7 +64,7 @@ export default function ShoppingCart() {
                 {_movie?.title}
               </p>
               <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
-                {`Price: ${generateRandomPrice()} kr`}
+                {`Price: ${_movie.price} kr`}
               </p>
               <div className="flex items-center">
                 <button
