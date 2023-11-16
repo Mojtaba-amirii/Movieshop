@@ -15,25 +15,25 @@ import { useSelector, useDispatch } from "~/redux/store";
 import type { RootState } from "~/redux/types";
 import { removeItem, clearCart } from "~/redux/cartSlice";
 // import { useRouter } from "next/router";
-import { getSession, useSession } from "next-auth/react";
-import type { GetServerSidePropsContext } from "next";
+import { /* getSession, */ useSession } from "next-auth/react";
+// import type { GetServerSidePropsContext } from "next";
 import { api } from "~/utils/api";
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getSession(context);
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/", // Redirect to the login page
-        permanent: false,
-      },
-    };
-  }
-  // If the user is authenticated, continue to render the page
-  return {
-    props: {}, // No additional props required
-  };
-}
+// export async function getServerSideProps(context: GetServerSidePropsContext) {
+//   const session = await getSession(context);
+//   if (!session) {
+//     return {
+//       redirect: {
+//         destination: "/", // Redirect to the login page
+//         permanent: false,
+//       },
+//     };
+//   }
+//   // If the user is authenticated, continue to render the page
+//   return {
+//     props: {}, // No additional props required
+//   };
+// }
 
 export default function PaymentPage() {
   const { data: sessionData } = useSession();

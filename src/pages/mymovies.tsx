@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import type { GetServerSidePropsContext } from "next";
-import { getSession, useSession } from "next-auth/react";
+/* import type { GetServerSidePropsContext } from "next"; */
+import { /* getSession, */ useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import type { Movie } from "~/types/types";
 import SearchBar from "~/components/Search";
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getSession(context);
-  console.log("Session:", session);
-  if (!session) {
-    console.log("Redirecting to login page");
-    return {
-      redirect: {
-        destination: "/", // Redirect to the login page
-        permanent: false,
-      },
-    };
-  }
-  console.log("User is authenticated. Rendering the page.");
-  // If the user is authenticated, continue to render the page
-  return {
-    props: {}, // No additional props required
-  };
-}
+// export async function getServerSideProps(context: GetServerSidePropsContext) {
+//   const session = await getSession(context);
+//   console.log("Session:", session);
+//   if (!session) {
+//     console.log("Redirecting to login page");
+//     return {
+//       redirect: {
+//         destination: "/", // Redirect to the login page
+//         permanent: false,
+//       },
+//     };
+//   }
+//   console.log("User is authenticated. Rendering the page.");
+//   // If the user is authenticated, continue to render the page
+//   return {
+//     props: {}, // No additional props required
+//   };
+// }
 
 async function checkURL(url: string): Promise<boolean> {
   try {
