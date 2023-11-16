@@ -8,7 +8,9 @@ import SearchBar from "~/components/Search";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
+  console.log("Session:", session);
   if (!session) {
+    console.log("Redirecting to login page");
     return {
       redirect: {
         destination: "/", // Redirect to the login page
@@ -16,6 +18,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       },
     };
   }
+  console.log("User is authenticated. Rendering the page.");
   // If the user is authenticated, continue to render the page
   return {
     props: {}, // No additional props required
