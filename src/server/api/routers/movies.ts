@@ -1,10 +1,6 @@
 import { z } from "zod";
 
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const moviesRouter = createTRPCRouter({
   /* createExercise: publicProcedure
@@ -42,7 +38,7 @@ export const moviesRouter = createTRPCRouter({
       return ctx.db.movies.findMany({
         where: {
           id: {
-            in: input.movieIds
+            in: input.movieIds,
           },
         },
       });

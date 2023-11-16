@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
-// import type { Movie } from "~/types/types";
 import Image from "next/image";
-import { useSelector /* , useDispatch */ } from "~/redux/store";
-import type { RootState } from "~/redux/types";
-// import { removeItem } from "~/redux/cartSlice";
-import { GetServerSidePropsContext } from "next";
+import type { GetServerSidePropsContext } from "next";
 import { getSession, useSession } from "next-auth/react";
 import { api } from "~/utils/api";
-import { Movie, MovieWithPrice } from "~/types/types";
+import type { Movie } from "~/types/types";
 import SearchBar from "~/components/Search";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -24,10 +20,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     props: {}, // No additional props required
   };
-}
-
-function generateRandomPrice() {
-  return Math.floor(Math.random() * 51 + 50);
 }
 
 async function checkURL(url: string): Promise<boolean> {
@@ -86,7 +78,7 @@ export default function MyMovies() {
         }),
       )
         .then((updatedMovies) => {
-          console.log('updatedMovies', updatedMovies)
+          console.log("updatedMovies", updatedMovies);
           setValidatedMovies(updatedMovies);
         })
         .catch((error) => console.log(error));

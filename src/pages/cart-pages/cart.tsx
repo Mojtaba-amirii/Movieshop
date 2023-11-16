@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from "react";
-import type { Movie, MovieWithPrice } from "~/types/types";
+import type { MovieWithPrice } from "~/types/types";
 import { AiFillCloseCircle } from "react-icons/ai";
 import Link from "next/link";
 import Image from "next/image";
 import { useSelector, useDispatch } from "~/redux/store";
 import type { RootState } from "~/redux/types";
 import { removeItem } from "~/redux/cartSlice";
-import { useRouter } from "next/router";
-import { getSession, useSession } from "next-auth/react";
-import { GetServerSidePropsContext } from "next";
-
-function generateRandomPrice() {
-  return Math.floor(Math.random() * 51 + 50);
-}
+import { getSession } from "next-auth/react";
+import type { GetServerSidePropsContext } from "next";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
@@ -32,7 +27,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
 export default function ShoppingCart() {
   const dispatch = useDispatch();
-  const { data: sessionData } = useSession();
   const cartMovies = useSelector((state: RootState) => state.cart.items);
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const removeMovieFromCart = (movie: MovieWithPrice) => {
