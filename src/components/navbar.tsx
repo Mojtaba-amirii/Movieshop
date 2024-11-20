@@ -12,7 +12,7 @@ export default function Navbar() {
 
   return (
     <header>
-      <nav className=" sticky flex  w-full items-center justify-between bg-sky-400 px-6 py-4">
+      <nav className="sticky flex w-full items-center justify-between bg-sky-400 px-6 py-4">
         <div className="flex items-center gap-10">
           <Link href="/" className="text-2xl font-bold">
             <h1>MOVIESHOP</h1>
@@ -21,7 +21,7 @@ export default function Navbar() {
             <HamburgerMenu />
           </div>
           <div className="hidden lg:block">
-            <ul className="flex  font-bold">
+            <ul className="flex font-bold">
               <li>
                 <button
                   className="border-r-2 border-black pr-4"
@@ -37,7 +37,7 @@ export default function Navbar() {
                 <>
                   <li>
                     <Link
-                      href="/myprofile"
+                      href="/my-profile"
                       className="border-r-2 border-black px-4 font-bold"
                     >
                       My Profile
@@ -45,8 +45,8 @@ export default function Navbar() {
                   </li>
                   <li>
                     <Link
-                      href="/mymovies"
-                      className="border-r-2 border-black px-4  font-bold "
+                      href="/my-movies"
+                      className="border-r-2 border-black px-4 font-bold"
                     >
                       My Movies
                     </Link>
@@ -68,7 +68,7 @@ export default function Navbar() {
           href="/cart-pages/cart"
           className={`text-2xl ${animationTriggered ? "animate-bounce" : ""}`}
         >
-          {sessionData ? <FaShoppingBasket /> : " "}
+          {sessionData && <FaShoppingBasket />}
         </Link>
       </nav>
     </header>

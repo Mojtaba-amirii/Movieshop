@@ -3,6 +3,7 @@ import React, {
   useContext,
   useState,
   type ReactNode,
+  type FC,
 } from "react";
 
 type AnimationContextType = {
@@ -18,9 +19,7 @@ type AnimationProviderProps = {
   children: ReactNode;
 };
 
-export const AnimationProvider: React.FC<AnimationProviderProps> = ({
-  children,
-}) => {
+export const AnimationProvider: FC<AnimationProviderProps> = ({ children }) => {
   const [animationTriggered, setAnimationTriggered] = useState(false);
 
   return (
@@ -32,7 +31,7 @@ export const AnimationProvider: React.FC<AnimationProviderProps> = ({
   );
 };
 
-export const useAnimation = () => {
+export const useAnimation = (): AnimationContextType => {
   const context = useContext(AnimationContext);
   if (!context) {
     throw new Error("useAnimation must be used within an AnimationProvider");

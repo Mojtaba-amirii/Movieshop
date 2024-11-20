@@ -4,12 +4,12 @@ import type { Movie, MovieWithPrice } from "~/types/types";
 
 interface CartState {
   items: MovieWithPrice[];
-  /* moviePrices: Record<string, number>; */
+  moviePrices: Record<string, number>;
 }
 
 const initialState: CartState = {
   items: [],
-  /* moviePrices: {}, */
+  moviePrices: {},
 };
 
 const cartSlice = createSlice({
@@ -25,15 +25,15 @@ const cartSlice = createSlice({
     clearCart: (state) => {
       state.items = [];
     },
-    /* setMoviePrice: (
+    setMoviePrice: (
       state,
       action: PayloadAction<{ movieId: string; price: number }>,
     ) => {
       state.moviePrices[action.payload.movieId] = action.payload.price || 0;
-    }, */
+    },
   },
 });
 
-export const { addItem, removeItem, clearCart, /* setMoviePrice */ } =
+export const { addItem, removeItem, clearCart /* setMoviePrice */ } =
   cartSlice.actions;
 export default cartSlice.reducer;

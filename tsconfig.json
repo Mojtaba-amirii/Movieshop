@@ -1,24 +1,30 @@
 {
   "compilerOptions": {
-    "target": "es2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "typeRoots": ["node_modules/@types"],
-
-    // "types": ["mongodb", "client-promise" /* other types */],
-    "allowJs": true,
-    "checkJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
+    /* Base Options: */
     "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "target": "es2022",
+    "allowJs": true,
     "resolveJsonModule": true,
+    "moduleDetection": "force",
     "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
+
+    /* Strictness */
+    "strict": true,
     "noUncheckedIndexedAccess": true,
+    "checkJs": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Bundled projects */
+    "lib": ["dom", "dom.iterable", "ES2022"],
+    "noEmit": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "preserve",
+    "plugins": [{ "name": "next" }],
+    "incremental": true,
+
+    /* Path Aliases */
     "baseUrl": ".",
     "paths": {
       "~/*": ["./src/*"]
@@ -30,9 +36,8 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.cjs",
-    "**/*.mjs",
-    "src",
-    "declare module"
+    "**/*.js",
+    ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

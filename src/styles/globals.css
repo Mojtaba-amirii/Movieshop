@@ -2,17 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  box-sizing: border-box;
+}
+
 html {
   -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+}
+
+#__next {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .bm-burger-button {
   width: 24px;
   height: 24px;
-  /* left: 36px;
-
-  top: 36px; */
 }
 
 .bm-burger-bars {

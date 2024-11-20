@@ -80,8 +80,8 @@ export default function PaymentPage() {
   }
 
   return (
-    <div className="mx-auto my-10  flex w-full flex-col items-center gap-4 md:gap-8">
-      <div className="flex  flex-col items-center gap-4 md:gap-6 lg:gap-8">
+    <div className="mx-auto my-10 flex w-full flex-col items-center gap-4 md:gap-8">
+      <div className="flex flex-col items-center gap-4 md:gap-6 lg:gap-8">
         <h1 className="text-xl font-semibold">Payment Methods</h1>
         <div className="grid grid-cols-2 items-center justify-center gap-4 md:grid-cols-3 md:gap-16 lg:grid-cols-6 lg:gap-28">
           <FaCcVisa size={32} color="#1a1f71" />
@@ -99,15 +99,15 @@ export default function PaymentPage() {
               className="mx-auto flex w-full max-w-screen-lg flex-row items-center gap-2 rounded-xl border bg-gray-200 p-2 md:gap-6"
             >
               <Image
-                src={movie.poster ?? "/image-not-found.jpg"}
+                src={movie.poster ?? "/imgs/image-not-found.jpg"}
                 alt={movie.title}
                 width={24}
                 height={40}
                 priority
-                className=" md:h-12 md:w-8 "
+                className="md:h-12 md:w-8"
               />
               <div className="flex flex-row items-center gap-8">
-                <p className="text-sm ">{movie.title}</p>
+                <p className="text-sm">{movie.title}</p>
                 <p className="text-xs">{`Price: ${movie.price} kr`}</p>
                 <button
                   title="button"
@@ -122,7 +122,7 @@ export default function PaymentPage() {
           ))}
         </ul>
         {totalPrice !== 0 && (
-          <p className="md:text-l text-md  lg:text-xl xl:text-2xl">
+          <p className="md:text-l text-md lg:text-xl xl:text-2xl">
             {`Total: ${totalPrice} kr`}
           </p>
         )}

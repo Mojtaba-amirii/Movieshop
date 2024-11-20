@@ -37,7 +37,7 @@ export default function Myprofile() {
       <div className="container mx-auto mt-20 p-4">
         <div className="flex flex-col items-center rounded-lg bg-sky-200 p-6 shadow-md">
           <h1 className="mb-4 text-xl font-semibold">My Profile</h1>
-          <div className="mb-4 flex  flex-col items-center gap-4">
+          <div className="mb-4 flex flex-col items-center gap-4">
             <Image
               src={userData.profilePicture}
               alt="Profile"

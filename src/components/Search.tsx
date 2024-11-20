@@ -1,21 +1,21 @@
-import React from "react";
+import React, { ChangeEvent, Dispatch, SetStateAction } from "react";
 
 interface SearchBarProps {
-  setSearch: React.Dispatch<React.SetStateAction<string | undefined>>;
-  setGenre: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setSearch: Dispatch<SetStateAction<string | undefined>>;
+  setGenre: Dispatch<SetStateAction<string | undefined>>;
 }
 
 export default function SearchBar({ setSearch, setGenre }: SearchBarProps) {
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
-  const handleGenreChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleGenreChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setGenre(e.target.value);
   };
 
   return (
-    <div className="min-w-sm mt-4 flex flex-col items-center justify-center gap-2 pb-4 md:flex-row ">
+    <div className="min-w-sm mt-4 flex flex-col items-center justify-center gap-2 pb-4 md:flex-row">
       <input
         name="Search"
         className="w-2/3 rounded-md border border-black p-1 pl-10"

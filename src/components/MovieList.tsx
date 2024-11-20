@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "~/redux/store";
 import Image from "next/image";
 import Link from "next/link";
-import { api } from "~/utils/api";
-import type { MovieWithPrice } from "~/types/types";
 import { useSession } from "next-auth/react";
+
+import { api } from "~/utils/api";
+import type { MovieWithPrice, SearchProps } from "~/types/types";
+import { useSelector } from "~/redux/store";
 import type { RootState } from "~/redux/types";
-
-type SearchProps = {
-  search: string | undefined;
-  genre: string | undefined;
-};
-
-function generateRandomPrice() {
-  return Math.floor(Math.random() * 51 + 50);
-}
+import { generateRandomPrice } from "~/utils/utils";
+import { ShoppingCart, Star } from "lucide-react";
 
 async function checkURL(url: string): Promise<boolean> {
   try {
@@ -28,15 +22,15 @@ async function checkURL(url: string): Promise<boolean> {
 export default function MovieList({ search, genre }: SearchProps) {
   const { data: sessionData } = useSession();
   const [validatedMovies, setValidatedMovies] = useState<MovieWithPrice[]>();
-
   const myMoviesIds = api.user.getMyMovies.useQuery(
-    { userId: sessionData?.user?.id ? sessionData.user.id : "" },
-    { enabled: sessionData !== null },
+    { userId: sessionData?.user?.id ?? "" },
+    {
+      queryKey: ["user.getMyMovies", { userId: sessionData?.user?.id ?? "" }],
+      enabled: sessionData !== null,
+    },
   ).data?.purchasedMovies;
-
   const cartMovies = useSelector((state: RootState) => state.cart.items);
 
-  //const dispatch = useDispatch();
   const movies = api.movies.first100.useQuery().data;
 
   useEffect(() => {
@@ -47,9 +41,6 @@ export default function MovieList({ search, genre }: SearchProps) {
       });
       Promise.all(
         moviesWithPrice.map(async (movie: MovieWithPrice) => {
-          /* const randomPrice = generateRandomPrice();
-          dispatch(setMoviePrice({ movieId: movie.id, price: randomPrice })); */
-
           if (movie.poster) {
             return checkURL(movie.poster).then((result: boolean) => {
               if (result) {
@@ -57,7 +48,7 @@ export default function MovieList({ search, genre }: SearchProps) {
                 return movie;
               } else {
                 console.log("NO!");
-                return { ...movie, poster: "/image-not-found.jpg" };
+                return { ...movie, poster: "/imgs/image-not-found.jpg" };
               }
             });
           } else {
@@ -103,13 +94,13 @@ export default function MovieList({ search, genre }: SearchProps) {
   });
 
   return (
-    <div>
-      <ul className="mx-1 grid grid-cols-2 gap-1 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+    <div className="container mx-auto px-4 py-8">
+      <ul className="grid grid-cols-2 gap-7 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
         {filteredMovies?.map((movie) =>
           sessionData ? (
             <li
               key={movie.id}
-              className="flex flex-col items-center rounded-md border p-3"
+              className="relative overflow-hidden rounded-lg bg-gray-300 shadow-lg"
             >
               <Link
                 href={{
@@ -124,43 +115,47 @@ export default function MovieList({ search, genre }: SearchProps) {
                   className={`${
                     cartMovies.filter((cartMovie) => cartMovie.id === movie.id)
                       .length !== 0 && "opacity-40"
-                  }  aspect-w-24 aspect-h-12`}
+                  } aspect-w-2 aspect-h-3`}
                 >
                   <Image
-                    src={movie.poster ?? "/image-not-found.jpg"}
+                    src={movie.poster ?? "/imgs/image-not-found.jpg"}
                     alt={movie.title}
                     width={600}
                     height={696}
                     priority
-                    className="mx-auto mb-2 h-auto w-full "
+                    className="object-cover transition-opacity duration-300 hover:opacity-75"
                   />
                 </div>
-                <div
-                  className={`${
-                    cartMovies.filter((cartMovie) => cartMovie.id === movie.id)
-                      .length !== 0 && "opacity-40"
-                  } text-center`}
-                >
-                  <div className="text-lg font-semibold">{movie.title}</div>
-                  <div className="flex flex-col">
-                    <h2>Genres:&nbsp;</h2>
-                    <div>{movie.genres.join(", ")}</div>
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                  <h3 className="mb-1 text-lg font-semibold text-white">
+                    {movie.title}
+                  </h3>
+                  <h4 className="mb-1 text-sm text-gray-300">
+                    {movie.genres.join(", ")}
+                  </h4>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <Star className="mr-1 h-4 w-4 text-yellow-400" />
+                      <span className="text-sm text-gray-300">
+                        {(Math.random() * 2 + 3).toFixed(1)}
+                      </span>
+                    </div>
+                    <span className="text-sm font-bold text-green-400">
+                      ${movie.price}
+                    </span>
                   </div>
-                  <div>Price: {movie.price} kr</div>
                 </div>
-                {cartMovies.filter((cartMovie) => cartMovie.id === movie.id)
-                  .length !== 0 && (
-                  <p className="text-center font-bold text-red-500">
-                    {" "}
-                    Added to cart{" "}
-                  </p>
+                {cartMovies.some((cartMovie) => cartMovie.id === movie.id) && (
+                  <div className="absolute right-2 top-2 rounded-full bg-green-500 p-2">
+                    <ShoppingCart className="h-4 w-4 text-white" />
+                  </div>
                 )}
               </Link>
             </li>
           ) : (
             <li
               key={movie.id}
-              className="flex flex-col items-center rounded-md border p-3"
+              className="relative overflow-hidden rounded-lg bg-gray-300 shadow-lg"
             >
               <Link
                 href={{
@@ -171,23 +166,34 @@ export default function MovieList({ search, genre }: SearchProps) {
                 }}
                 as={`/movie-details/${movie.title}`}
               >
-                <div className="aspect-w-24 aspect-h-12 ">
+                <div className="aspect-w-2 aspect-h-3">
                   <Image
-                    src={movie.poster ?? "/image-not-found.jpg"}
+                    src={movie.poster ?? "/imgs/image-not-found.jpg"}
                     alt={movie.title}
                     width={600}
                     height={696}
                     priority
-                    className="mx-auto mb-2 h-auto w-full "
+                    className="object-cover transition-opacity duration-300 hover:opacity-75"
                   />
                 </div>
-                <div className="text-center">
-                  <div className="text-lg font-semibold">{movie.title}</div>
-                  <div className="flex flex-col">
-                    <h2>Genres:&nbsp;</h2>
-                    <div>{movie.genres.join(", ")}</div>
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                  <h3 className="mb-1 text-lg font-semibold text-white">
+                    {movie.title}
+                  </h3>
+                  <h4 className="mb-1 text-sm text-gray-300">
+                    {movie.genres.join(", ")}
+                  </h4>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <Star className="mr-1 h-4 w-4 text-yellow-400" />
+                      <span className="text-sm text-gray-300">
+                        {(Math.random() * 2 + 3).toFixed(1)}
+                      </span>
+                    </div>
+                    <span className="text-sm font-bold text-green-400">
+                      ${movie.price}
+                    </span>
                   </div>
-                  <div>Price: {movie.price} kr</div>
                 </div>
               </Link>
             </li>

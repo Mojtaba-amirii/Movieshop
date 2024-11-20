@@ -6,7 +6,7 @@ export default function PaymentConfirmation() {
     <div className="my-12 flex flex-col items-center justify-center gap-8">
       <h1 className="text-xl font-semibold">Movie Purchased</h1>
       <div className="flex flex-col items-center gap-4">
-        <Link href="../mymovies">
+        <Link href="../my-movies">
           <button
             type="button"
             title="button"

@@ -22,7 +22,7 @@ export default function MovieDetails() {
   const [validatedMovie, setValidatedMovie] = useState<MovieWithPrice>();
   const [cartDuplicate, setCartDuplicate] = useState(false);
   const cartMovies = useSelector((state: RootState) => state.cart.items);
-
+  const dispatch = useDispatch();
   const { setAnimationTriggered } = useAnimation();
   const router = useRouter();
   const { data: sessionData } = useSession();
@@ -33,12 +33,6 @@ export default function MovieDetails() {
   console.log(movie);
 
   useEffect(() => {
-    // if() {
-    // }
-  }, []);
-
-  useEffect(() => {
-    console.log("hejsan");
     if (movie) {
       const movieWithPrice = { ...movie, price: Number(router.query.price) };
       console.log(movieWithPrice);
@@ -52,7 +46,7 @@ export default function MovieDetails() {
               console.log("NO!");
               setValidatedMovie({
                 ...movieWithPrice,
-                poster: "/image-not-found.jpg",
+                poster: "/imgs/image-not-found.jpg",
               });
             }
           })
@@ -60,7 +54,7 @@ export default function MovieDetails() {
       } else {
         setValidatedMovie({
           ...movieWithPrice,
-          poster: "/image-not-found.jpg",
+          poster: "/imgs/image-not-found.jpg",
         });
       }
       if (
@@ -70,8 +64,6 @@ export default function MovieDetails() {
       }
     }
   }, [movie, cartMovies, router.query.price]);
-
-  const dispatch = useDispatch();
 
   const handleAddToCart = () => {
     if (validatedMovie) {
@@ -107,8 +99,8 @@ export default function MovieDetails() {
               __html: validatedMovie.fullplot
                 ? validatedMovie.fullplot
                 : validatedMovie.plot
-                ? validatedMovie.plot
-                : "No Plot Available",
+                  ? validatedMovie.plot
+                  : "No Plot Available",
             }}
           ></div>
           <p className="text-lg font-semibold">{validatedMovie.price} kr</p>
@@ -116,7 +108,7 @@ export default function MovieDetails() {
             <div>
               <button
                 type="button"
-                className="sm:text-md md:text-l rounded-md  border border-black bg-sky-400 px-4 py-2 text-sm disabled:opacity-40 lg:text-xl xl:text-2xl"
+                className="sm:text-md md:text-l rounded-md border border-black bg-sky-400 px-4 py-2 text-sm disabled:opacity-40 lg:text-xl xl:text-2xl"
                 onClick={handleAddToCart}
                 disabled={cartDuplicate}
               >

@@ -6,6 +6,7 @@ export type Movie = {
   fullplot: string | null;
   plot: string | null;
 };
+
 export type MovieWithPrice = {
   id: string;
   title: string;
@@ -13,5 +14,10 @@ export type MovieWithPrice = {
   genres: string[];
   fullplot: string | null;
   plot: string | null;
-  price: number
+  price: number;
+};
+
+export type SearchProps = {
+  search: string | undefined;
+  genre: string | undefined;
 };

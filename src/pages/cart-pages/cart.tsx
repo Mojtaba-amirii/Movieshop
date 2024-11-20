@@ -52,12 +52,12 @@ export default function ShoppingCart() {
             className="mx-auto flex w-full flex-row items-center gap-6 rounded-xl border bg-gray-200 p-3"
           >
             <Image
-              src={_movie?.poster ?? "/image-not-found.jpg"}
+              src={_movie?.poster ?? "/imgs/image-not-found.jpg"}
               alt={_movie?.title}
               width={80}
               height={96}
               priority
-              className=" sm:h-32 sm:w-24 md:h-40 md:w-32 lg:h-48 lg:w-36 xl:h-56 xl:w-40"
+              className="sm:h-32 sm:w-24 md:h-40 md:w-32 lg:h-48 lg:w-36 xl:h-56 xl:w-40"
             />
             <div className="flex flex-1 flex-row items-center gap-8">
               <p className="sm:text-md md:text-l text-sm lg:text-xl xl:text-2xl">
