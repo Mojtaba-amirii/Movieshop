@@ -1,2 +1,10 @@
 CLIENTVAR
+cuid
+datasource
+imdb
+Imdb
+lastupdated
+metacritic
+mflix
 NEXTAUTH
+zipcode

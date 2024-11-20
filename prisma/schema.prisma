@@ -55,9 +55,9 @@ type MoviesAwards {
 type MoviesImdb {
   id     Int
   /// Multiple data types found: String: 0.5%, Float: 99.5% out of 1000 sampled entries
-  rating Json
+  rating Float
   /// Multiple data types found: String: 0.5%, Int: 99.5% out of 1000 sampled entries
-  votes  Json
+  votes  Int
 }
 
 type MoviesTomatoes {

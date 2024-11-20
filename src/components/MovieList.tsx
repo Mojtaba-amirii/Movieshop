@@ -34,27 +34,28 @@ export default function MovieList({ search, genre }: SearchProps) {
   const movies = api.movies.first100.useQuery().data;
 
   useEffect(() => {
-    console.log("hej");
     if (movies) {
       const moviesWithPrice = movies.map((movie) => {
-        return { ...movie, price: generateRandomPrice() };
+        return {
+          ...movie,
+          price: generateRandomPrice(),
+          imdb: { ...movie.imdb, id: Number(movie.imdb.id) },
+        };
       });
       Promise.all(
-        moviesWithPrice.map(async (movie: MovieWithPrice) => {
+        moviesWithPrice.map(async (movie) => {
           if (movie.poster) {
             return checkURL(movie.poster).then((result: boolean) => {
               if (result) {
-                console.log("YES!");
                 return movie;
               } else {
-                console.log("NO!");
                 return { ...movie, poster: "/imgs/image-not-found.jpg" };
               }
             });
           } else {
             return Promise.resolve({
               ...movie,
-              poster: "/image-not-found.jpg",
+              poster: "/imgs/image-not-found.jpg",
             });
           }
         }),
@@ -72,9 +73,6 @@ export default function MovieList({ search, genre }: SearchProps) {
         .catch((error) => console.log(error));
     }
   }, [movies, sessionData, myMoviesIds]);
-
-  console.log("Search: ", search);
-  console.log("Genre: ", genre);
 
   // Filter movies based on the Search
   const filteredMovies = validatedMovies?.filter((movie: MovieWithPrice) => {
@@ -100,7 +98,7 @@ export default function MovieList({ search, genre }: SearchProps) {
           sessionData ? (
             <li
               key={movie.id}
-              className="relative overflow-hidden rounded-lg bg-gray-300 shadow-lg"
+              className="relative -z-10 overflow-hidden rounded-lg bg-gray-300 shadow-lg"
             >
               <Link
                 href={{
@@ -137,7 +135,9 @@ export default function MovieList({ search, genre }: SearchProps) {
                     <div className="flex items-center">
                       <Star className="mr-1 h-4 w-4 text-yellow-400" />
                       <span className="text-sm text-gray-300">
-                        {(Math.random() * 2 + 3).toFixed(1)}
+                        {movie.imdb?.rating
+                          ? movie.imdb.rating.toFixed(1)
+                          : "N/A"}
                       </span>
                     </div>
                     <span className="text-sm font-bold text-green-400">
@@ -155,7 +155,7 @@ export default function MovieList({ search, genre }: SearchProps) {
           ) : (
             <li
               key={movie.id}
-              className="relative overflow-hidden rounded-lg bg-gray-300 shadow-lg"
+              className="relative -z-10 overflow-hidden rounded-lg bg-gray-300 shadow-lg"
             >
               <Link
                 href={{
@@ -187,7 +187,9 @@ export default function MovieList({ search, genre }: SearchProps) {
                     <div className="flex items-center">
                       <Star className="mr-1 h-4 w-4 text-yellow-400" />
                       <span className="text-sm text-gray-300">
-                        {(Math.random() * 2 + 3).toFixed(1)}
+                        {movie.imdb?.rating
+                          ? movie.imdb.rating.toFixed(1)
+                          : "N/A"}
                       </span>
                     </div>
                     <span className="text-sm font-bold text-green-400">

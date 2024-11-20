@@ -15,7 +15,20 @@ const config = {
   reactStrictMode: true,
 
   images: {
-    domains: ["m.media-amazon.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "m.media-amazon.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "m.media-amazon.com/images/M",
+        port: "",
+        pathname: "/**",
+      },
+    ],
   },
   /**
    * If you are using `appDir` then you must comment the below `i18n` config out.
