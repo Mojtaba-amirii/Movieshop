@@ -4,6 +4,7 @@
     "cinephile",
     "frameguard",
     "fullplot",
+    "googleusercontent",
     "MOVIESHOP",
     "mymovies",
     "myprofile",
@@ -14,6 +15,8 @@
     "tailwindcss",
     "tanstack",
     "trpc",
+    "typesafety",
+    "vercel",
     "webbshop"
   ],
   "cSpell.customDictionaries": {

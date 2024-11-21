@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { Movie, MovieWithPrice } from "~/types/types";
+import type { MovieWithPrice } from "~/types/types";
 
 interface CartState {
   items: MovieWithPrice[];
@@ -19,7 +19,7 @@ const cartSlice = createSlice({
     addItem: (state, action: PayloadAction<MovieWithPrice>) => {
       state.items.push(action.payload);
     },
-    removeItem: (state, action: PayloadAction<Movie>) => {
+    removeItem: (state, action: PayloadAction<MovieWithPrice>) => {
       state.items = state.items.filter((item) => item.id !== action.payload.id);
     },
     clearCart: (state) => {
@@ -34,6 +34,6 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addItem, removeItem, clearCart /* setMoviePrice */ } =
+export const { addItem, removeItem, clearCart, setMoviePrice } =
   cartSlice.actions;
 export default cartSlice.reducer;

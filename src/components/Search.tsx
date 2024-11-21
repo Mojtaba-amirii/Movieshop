@@ -1,16 +1,16 @@
-import React, { ChangeEvent, Dispatch, SetStateAction } from "react";
+import React from "react";
 
 interface SearchBarProps {
-  setSearch: Dispatch<SetStateAction<string | undefined>>;
-  setGenre: Dispatch<SetStateAction<string | undefined>>;
+  setSearch: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setGenre: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 export default function SearchBar({ setSearch, setGenre }: SearchBarProps) {
-  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
-  const handleGenreChange = (e: ChangeEvent<HTMLSelectElement>) => {
+  const handleGenreChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setGenre(e.target.value);
   };
 

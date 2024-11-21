@@ -2,7 +2,7 @@ import { FaShoppingBasket } from "react-icons/fa";
 import HamburgerMenu from "./hamburger";
 import Link from "next/link";
 import React from "react";
-import { useAnimation } from "./AnimationContext";
+import { useAnimation } from "../context/AnimationContext";
 import "tailwindcss-animatecss";
 import { signIn, signOut, useSession } from "next-auth/react";
 
@@ -56,7 +56,7 @@ export default function Navbar() {
                 ""
               )}
               <li>
-                <Link href="/About" className="pl-4 font-bold">
+                <Link href="/about" className="pl-4 font-bold">
                   About
                 </Link>
               </li>

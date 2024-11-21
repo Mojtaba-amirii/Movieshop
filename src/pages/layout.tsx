@@ -1,5 +1,5 @@
-import Navbar from "./navbar";
-import Footer from "./footer"; // Make sure to import the Footer component
+import Navbar from "../components/navbar";
+import Footer from "../components/footer"; // Make sure to import the Footer component
 import React from "react";
 import type { ReactNode } from "react";
 
@@ -11,7 +11,7 @@ export default function Layout({ children }: LayoutProps) {
   return (
     <>
       <Navbar />
-      <main>{children}</main>
+      <main className="container mx-auto p-4">{children}</main>
       <Footer />
     </>
   );

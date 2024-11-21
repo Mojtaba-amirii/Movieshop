@@ -5,15 +5,15 @@ import type { MovieWithPrice } from "~/types/types";
 import { api } from "~/utils/api";
 import { useDispatch, useSelector } from "~/redux/store";
 import { addItem } from "~/redux/cartSlice";
-import { useAnimation } from "~/components/AnimationContext";
+import { useAnimation } from "~/context/AnimationContext";
 import { useSession } from "next-auth/react";
-import type { RootState } from "~/redux/types";
 
 async function checkURL(url: string): Promise<boolean> {
   try {
     const response = await fetch(url);
     return response.ok;
   } catch (error) {
+    console.error(error);
     return false;
   }
 }
@@ -21,7 +21,7 @@ async function checkURL(url: string): Promise<boolean> {
 export default function MovieDetails() {
   const [validatedMovie, setValidatedMovie] = useState<MovieWithPrice>();
   const [cartDuplicate, setCartDuplicate] = useState(false);
-  const cartMovies = useSelector((state: RootState) => state.cart.items);
+  const cartMovies = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
   const { setAnimationTriggered } = useAnimation();
   const router = useRouter();
@@ -78,23 +78,24 @@ export default function MovieDetails() {
   };
 
   return (
-    <div>
+    <div className="container mx-auto p-4">
       {validatedMovie ? (
-        <div className="mx-auto flex w-[90%] flex-col items-center">
-          <h1 className="text-2xl font-bold">{validatedMovie.title}</h1>
+        <div className="flex flex-col items-center space-y-4">
+          <h1 className="text-3xl font-bold">{validatedMovie.title}</h1>
           <Image
             src={validatedMovie.poster ? validatedMovie.poster : ""}
             alt={validatedMovie.title}
-            width={80}
-            height={96}
+            width={160}
+            height={240}
             priority
-            className="mb-2 sm:h-32 sm:w-24 md:h-44 md:w-36 lg:h-56 lg:w-40 xl:h-64 xl:w-56"
+            className="rounded-lg shadow-lg"
           />
-          <div className="flex">
-            <h2>Genres:&nbsp;</h2>
+          <div className="flex space-x-2">
+            <h2 className="font-semibold">Genres:</h2>
             <div>{validatedMovie.genres.join(", ")}</div>
           </div>
           <div
+            className="text-center"
             dangerouslySetInnerHTML={{
               __html: validatedMovie.fullplot
                 ? validatedMovie.fullplot
@@ -103,12 +104,12 @@ export default function MovieDetails() {
                   : "No Plot Available",
             }}
           ></div>
-          <p className="text-lg font-semibold">{validatedMovie.price} kr</p>
+          <p className="text-xl font-semibold">{validatedMovie.price} kr</p>
           {sessionData ? (
-            <div>
+            <div className="flex flex-col items-center space-y-2">
               <button
                 type="button"
-                className="sm:text-md md:text-l rounded-md border border-black bg-sky-400 px-4 py-2 text-sm disabled:opacity-40 lg:text-xl xl:text-2xl"
+                className="rounded-md border border-black bg-sky-400 px-4 py-2 text-lg disabled:opacity-40"
                 onClick={handleAddToCart}
                 disabled={cartDuplicate}
               >
@@ -119,10 +120,10 @@ export default function MovieDetails() {
               )}
             </div>
           ) : (
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center space-y-2">
               <button
                 type="button"
-                className="sm:text-md md:text-l w-fit rounded-md border border-black bg-sky-400 px-4 py-2 text-sm opacity-20 lg:text-xl xl:text-2xl"
+                className="w-fit rounded-md border border-black bg-sky-400 px-4 py-2 text-lg opacity-20"
                 onClick={handleAddToCart}
                 disabled
               >
@@ -135,7 +136,7 @@ export default function MovieDetails() {
           )}
         </div>
       ) : (
-        "Loading..."
+        <div className="text-center text-xl">Loading...</div>
       )}
     </div>
   );

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import type { MovieWithPrice } from "~/types/types";
 import { AiFillCloseCircle } from "react-icons/ai";
 import Image from "next/image";
 import {
@@ -11,54 +10,36 @@ import {
 } from "react-icons/fa";
 import { SiSamsungpay } from "react-icons/si";
 import Link from "next/link";
-import { useSelector, useDispatch } from "~/redux/store";
-import type { RootState } from "~/redux/types";
-import { removeItem, clearCart } from "~/redux/cartSlice";
-// import { useRouter } from "next/router";
-import { /* getSession, */ useSession } from "next-auth/react";
-// import type { GetServerSidePropsContext } from "next";
-import { api } from "~/utils/api";
+import { useSession } from "next-auth/react";
 
-// export async function getServerSideProps(context: GetServerSidePropsContext) {
-//   const session = await getSession(context);
-//   if (!session) {
-//     return {
-//       redirect: {
-//         destination: "/", // Redirect to the login page
-//         permanent: false,
-//       },
-//     };
-//   }
-//   // If the user is authenticated, continue to render the page
-//   return {
-//     props: {}, // No additional props required
-//   };
-// }
+import type { MovieWithPrice } from "~/types/types";
+import { useSelector, useDispatch } from "~/redux/store";
+import { removeItem, clearCart } from "~/redux/cartSlice";
+import { api } from "~/utils/api";
+import { useRouter } from "next/navigation";
 
 export default function PaymentPage() {
   const { data: sessionData } = useSession();
+  const router = useRouter();
 
-  const cartMovies = useSelector((state: RootState) => state.cart.items);
+  useEffect(() => {
+    if (!sessionData) {
+      router.push("/");
+    }
+  }, [router, sessionData]);
+
+  const cartMovies = useSelector((state) => state.cart.items);
   const [totalPrice, setTotalPrice] = useState<number>(0);
-
   const addPurchasedMovie = api.user.addPurchasedMovie.useMutation();
-
   const dispatch = useDispatch();
-  // Function to remove a movie from the cart
+
   const removeMovieFromCart = (movie: MovieWithPrice) => {
-    // Dispatch an action to remove the item from the cart
     dispatch(removeItem(movie));
   };
-  //function to clear cart
+
   const handleClearCart = () => {
     dispatch(clearCart());
   };
-  // const router = useRouter();
-  // useEffect(() => {
-  //   if (!sessionData) {
-  //     router.push("/");
-  //   }
-  // }, []);
 
   // Calculate the total price using reduce
   useEffect(() => {
@@ -80,35 +61,35 @@ export default function PaymentPage() {
   }
 
   return (
-    <div className="mx-auto my-10 flex w-full flex-col items-center gap-4 md:gap-8">
-      <div className="flex flex-col items-center gap-4 md:gap-6 lg:gap-8">
-        <h1 className="text-xl font-semibold">Payment Methods</h1>
-        <div className="grid grid-cols-2 items-center justify-center gap-4 md:grid-cols-3 md:gap-16 lg:grid-cols-6 lg:gap-28">
-          <FaCcVisa size={32} color="#1a1f71" />
-          <FaCcMastercard size={32} color="#0061a8" />
-          <FaPaypal size={32} color="#003087" />
+    <div className="mx-auto my-10 flex w-full flex-col items-center gap-6 md:gap-10">
+      <div className="flex flex-col items-center gap-6 md:gap-8 lg:gap-10">
+        <h1 className="text-2xl font-bold">Payment Methods</h1>
+        <div className="grid grid-cols-2 items-center justify-center gap-6 md:grid-cols-3 md:gap-12 lg:grid-cols-6 lg:gap-16">
+          <FaCcVisa size={40} color="#1a1f71" />
+          <FaCcMastercard size={40} color="#0061a8" />
+          <FaPaypal size={40} color="#003087" />
           <FaGooglePay size={48} color="#4285f4" />
           <SiSamsungpay size={48} color="#0a4b8e" />
           <FaApplePay size={48} color="#000000" />
         </div>
-        <h1 className="text-center text-xl font-semibold">Your basket</h1>
-        <ul className="flex flex-col gap-4 lg:flex-row">
+        <h1 className="text-center text-2xl font-bold">Your Basket</h1>
+        <ul className="flex flex-col gap-6 lg:flex-row">
           {cartMovies.map((movie, index) => (
             <li
               key={index}
-              className="mx-auto flex w-full max-w-screen-lg flex-row items-center gap-2 rounded-xl border bg-gray-200 p-2 md:gap-6"
+              className="mx-auto flex w-full max-w-screen-lg flex-row items-center gap-4 rounded-xl border bg-gray-200 p-4 md:gap-8"
             >
               <Image
                 src={movie.poster ?? "/imgs/image-not-found.jpg"}
                 alt={movie.title}
-                width={24}
-                height={40}
+                width={48}
+                height={72}
                 priority
-                className="md:h-12 md:w-8"
+                className="md:h-16 md:w-12"
               />
               <div className="flex flex-row items-center gap-8">
-                <p className="text-sm">{movie.title}</p>
-                <p className="text-xs">{`Price: ${movie.price} kr`}</p>
+                <p className="text-lg font-medium">{movie.title}</p>
+                <p className="text-md">{`Price: ${movie.price} kr`}</p>
                 <button
                   title="button"
                   type="button"
@@ -122,7 +103,7 @@ export default function PaymentPage() {
           ))}
         </ul>
         {totalPrice !== 0 && (
-          <p className="md:text-l text-md lg:text-xl xl:text-2xl">
+          <p className="text-lg font-semibold lg:text-xl xl:text-2xl">
             {`Total: ${totalPrice} kr`}
           </p>
         )}
@@ -130,7 +111,7 @@ export default function PaymentPage() {
       <Link href="/cart-pages/PayConfirm">
         <button
           type="button"
-          className="sm:text-md md:text-l rounded-md bg-sky-400 px-4 py-2 text-sm lg:text-xl xl:text-2xl"
+          className="rounded-md bg-sky-500 px-6 py-3 text-lg font-semibold text-white hover:bg-sky-600 lg:text-xl xl:text-2xl"
           onClick={handlePurchase}
         >
           Purchase

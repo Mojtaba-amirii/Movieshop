@@ -2,18 +2,11 @@
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
  * for Docker builds.
  */
-let env;
-try {
-  env = await import("./src/env.mjs");
-} catch (error) {
-  console.error("Error loading environment configuration:", error);
-  env = {}; // Provide a default configuration or empty object
-}
+import "./src/env.js";
 
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
-
   images: {
     remotePatterns: [
       {
@@ -28,8 +21,37 @@ const config = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
+
+  headers: async () => {
+    return [
+      {
+        source: "/imgs/(.*)",
+        headers: [
+          {
+            key: "Access-Control-Allow-Origin",
+            value: "*",
+          },
+          {
+            key: "Access-Control-Allow-Methods",
+            value: "GET, OPTIONS",
+          },
+          {
+            key: "Access-Control-Allow-Headers",
+            value: "Content-Type, Authorization",
+          },
+        ],
+      },
+    ];
+  },
+
   /**
    * If you are using `appDir` then you must comment the below `i18n` config out.
    *

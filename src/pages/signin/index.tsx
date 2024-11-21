@@ -1,6 +1,6 @@
 export default function SignInPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center  bg-gray-50">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50">
       <div className="w-96 rounded-3xl bg-white p-8 shadow-md">
         <h2 className="mb-4 text-2xl font-semibold">Sign in</h2>
         <form>

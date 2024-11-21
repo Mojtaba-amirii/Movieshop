@@ -6,10 +6,16 @@ import {
   type TypedUseSelectorHook,
 } from "react-redux";
 
+const store = configureStore({
+  reducer: { cart: cartReducer },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+});
+
 export type ReduxState = ReturnType<typeof store.getState>;
 export type ReduxDispatch = typeof store.dispatch;
-
-const store = configureStore({ reducer: { cart: cartReducer } });
 
 export default store;
 

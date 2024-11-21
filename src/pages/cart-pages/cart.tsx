@@ -1,36 +1,17 @@
 import React, { useState, useEffect } from "react";
-import type { MovieWithPrice } from "~/types/types";
 import { AiFillCloseCircle } from "react-icons/ai";
 import Link from "next/link";
 import Image from "next/image";
-import { useSelector, useDispatch } from "~/redux/store";
-import type { RootState } from "~/redux/types";
-import { removeItem } from "~/redux/cartSlice";
-// import { getSession } from "next-auth/react";
-// import type { GetServerSidePropsContext } from "next";
 
-// export async function getServerSideProps(context: GetServerSidePropsContext) {
-//   const session = await getSession(context);
-//   if (!session) {
-//     return {
-//       redirect: {
-//         destination: "/", // Redirect to the login page
-//         permanent: false,
-//       },
-//     };
-//   }
-//   // If the user is authenticated, continue to render the page
-//   return {
-//     props: {}, // No additional props required
-//   };
-// }
+import { useSelector, useDispatch } from "~/redux/store";
+import type { MovieWithPrice } from "~/types/types";
+import { removeItem } from "~/redux/cartSlice";
 
 export default function ShoppingCart() {
   const dispatch = useDispatch();
-  const cartMovies = useSelector((state: RootState) => state.cart.items);
+  const cartMovies = useSelector((state) => state.cart.items);
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const removeMovieFromCart = (movie: MovieWithPrice) => {
-    // Dispatch an action to remove the item from the cart
     dispatch(removeItem(movie));
   };
 

@@ -6,7 +6,6 @@ import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import type { MovieWithPrice, SearchProps } from "~/types/types";
 import { useSelector } from "~/redux/store";
-import type { RootState } from "~/redux/types";
 import { generateRandomPrice } from "~/utils/utils";
 import { ShoppingCart, Star } from "lucide-react";
 
@@ -15,6 +14,7 @@ async function checkURL(url: string): Promise<boolean> {
     const response = await fetch(url);
     return response.ok;
   } catch (error) {
+    console.error(error);
     return false;
   }
 }
@@ -29,7 +29,8 @@ export default function MovieList({ search, genre }: SearchProps) {
       enabled: sessionData !== null,
     },
   ).data?.purchasedMovies;
-  const cartMovies = useSelector((state: RootState) => state.cart.items);
+
+  const cartMovies = useSelector((state) => state.cart.items);
 
   const movies = api.movies.first100.useQuery().data;
 
@@ -98,7 +99,7 @@ export default function MovieList({ search, genre }: SearchProps) {
           sessionData ? (
             <li
               key={movie.id}
-              className="relative -z-10 overflow-hidden rounded-lg bg-gray-300 shadow-lg"
+              className="relative h-80 w-56 overflow-hidden rounded-lg bg-gray-300 shadow-lg"
             >
               <Link
                 href={{
@@ -111,17 +112,18 @@ export default function MovieList({ search, genre }: SearchProps) {
               >
                 <div
                   className={`${
-                    cartMovies.filter((cartMovie) => cartMovie.id === movie.id)
-                      .length !== 0 && "opacity-40"
-                  } aspect-w-2 aspect-h-3`}
+                    cartMovies.filter(
+                      (cartMovie: MovieWithPrice) => cartMovie.id === movie.id,
+                    ).length !== 0 && "opacity-40"
+                  } h-full w-full`}
                 >
                   <Image
                     src={movie.poster ?? "/imgs/image-not-found.jpg"}
                     alt={movie.title}
-                    width={600}
-                    height={696}
+                    width={250}
+                    height={350}
                     priority
-                    className="object-cover transition-opacity duration-300 hover:opacity-75"
+                    className="h-full w-full object-cover transition-opacity duration-300 hover:opacity-75"
                   />
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
@@ -141,11 +143,13 @@ export default function MovieList({ search, genre }: SearchProps) {
                       </span>
                     </div>
                     <span className="text-sm font-bold text-green-400">
-                      ${movie.price}
+                      {movie.price}kr
                     </span>
                   </div>
                 </div>
-                {cartMovies.some((cartMovie) => cartMovie.id === movie.id) && (
+                {cartMovies.some(
+                  (cartMovie: MovieWithPrice) => cartMovie.id === movie.id,
+                ) && (
                   <div className="absolute right-2 top-2 rounded-full bg-green-500 p-2">
                     <ShoppingCart className="h-4 w-4 text-white" />
                   </div>
@@ -155,7 +159,7 @@ export default function MovieList({ search, genre }: SearchProps) {
           ) : (
             <li
               key={movie.id}
-              className="relative -z-10 overflow-hidden rounded-lg bg-gray-300 shadow-lg"
+              className="relative h-80 w-56 overflow-hidden rounded-lg bg-gray-300 shadow-lg"
             >
               <Link
                 href={{
@@ -166,14 +170,14 @@ export default function MovieList({ search, genre }: SearchProps) {
                 }}
                 as={`/movie-details/${movie.title}`}
               >
-                <div className="aspect-w-2 aspect-h-3">
+                <div className="h-full w-full">
                   <Image
                     src={movie.poster ?? "/imgs/image-not-found.jpg"}
                     alt={movie.title}
-                    width={600}
-                    height={696}
+                    width={250}
+                    height={350}
                     priority
-                    className="object-cover transition-opacity duration-300 hover:opacity-75"
+                    className="h-full w-full object-cover transition-opacity duration-300 hover:opacity-75"
                   />
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
@@ -193,7 +197,7 @@ export default function MovieList({ search, genre }: SearchProps) {
                       </span>
                     </div>
                     <span className="text-sm font-bold text-green-400">
-                      ${movie.price}
+                      {movie.price}kr
                     </span>
                   </div>
                 </div>

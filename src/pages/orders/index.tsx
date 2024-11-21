@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Admin() {
+export default function Orders() {
   const [search, setSearch] = useState("");
 
   return (
