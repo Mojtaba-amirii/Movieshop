@@ -11,8 +11,8 @@ export default function Navbar() {
   const { data: sessionData } = useSession();
 
   return (
-    <header>
-      <nav className="sticky flex w-full items-center justify-between bg-sky-400 px-6 py-4">
+    <header className="sticky top-0 z-40 bg-white p-6 shadow">
+      <nav className="sticky flex w-full items-center justify-between">
         <div className="flex items-center gap-10">
           <Link href="/" className="text-2xl font-bold">
             <h1>MOVIESHOP</h1>

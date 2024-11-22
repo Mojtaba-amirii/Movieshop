@@ -1,9 +1,10 @@
 import React from "react";
-import { Facebook, Twitter, Instagram } from "lucide-react";
+import { FaTwitter } from "react-icons/fa";
+import { SiFacebook, SiInstagram } from "react-icons/si";
 
 const Footer = () => {
   return (
-    <footer className="mt-auto bg-sky-400 py-4">
+    <footer className="mt-auto py-6 shadow">
       <div className="container mx-auto flex flex-col items-center justify-between md:flex-row">
         <div className="mb-4 md:mb-0">
           <h2 className="text-lg font-bold">MOVIESHOP</h2>
@@ -11,13 +12,13 @@ const Footer = () => {
         </div>
         <div className="flex space-x-4">
           <a href="#" aria-label="Facebook">
-            <Facebook className="h-6 w-6" />
+            <SiFacebook className="h-6 w-6" />
           </a>
           <a href="#" aria-label="Twitter">
-            <Twitter className="h-6 w-6" />
+            <FaTwitter className="h-6 w-6" />
           </a>
           <a href="#" aria-label="Instagram">
-            <Instagram className="h-6 w-6" />
+            <SiInstagram className="h-6 w-6" />
           </a>
         </div>
         <div className="text-sm">

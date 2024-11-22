@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { AiFillCloseCircle } from "react-icons/ai";
+import { X, ShoppingBag, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-
 import { useSelector, useDispatch } from "~/redux/store";
 import type { MovieWithPrice } from "~/types/types";
 import { removeItem } from "~/redux/cartSlice";
@@ -11,6 +10,7 @@ export default function ShoppingCart() {
   const dispatch = useDispatch();
   const cartMovies = useSelector((state) => state.cart.items);
   const [totalPrice, setTotalPrice] = useState<number>(0);
+
   const removeMovieFromCart = (movie: MovieWithPrice) => {
     dispatch(removeItem(movie));
   };
@@ -24,56 +24,87 @@ export default function ShoppingCart() {
   }, [cartMovies]);
 
   return (
-    <div className="mx-auto my-10 flex w-full flex-col items-center gap-8">
-      <h1 className="text-center text-2xl font-semibold">Your basket</h1>
-      <ul className="flex flex-col gap-4">
-        {cartMovies.map((_movie: MovieWithPrice, index: number) => (
-          <li
-            key={index}
-            className="mx-auto flex w-full flex-row items-center gap-6 rounded-xl border bg-gray-200 p-3"
-          >
-            <Image
-              src={_movie?.poster ?? "/imgs/image-not-found.jpg"}
-              alt={_movie?.title}
-              width={80}
-              height={96}
-              priority
-              className="sm:h-32 sm:w-24 md:h-40 md:w-32 lg:h-48 lg:w-36 xl:h-56 xl:w-40"
-            />
-            <div className="flex flex-1 flex-row items-center gap-8">
-              <p className="sm:text-md md:text-l text-sm lg:text-xl xl:text-2xl">
-                {_movie?.title}
-              </p>
-              <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
-                {`Price: ${_movie.price} kr`}
-              </p>
-              <div className="flex items-center">
+    <div className="mx-auto my-10 max-w-4xl p-4">
+      <h1 className="mb-8 text-center text-3xl font-bold">
+        Your Shopping Cart
+      </h1>
+      {cartMovies.length === 0 ? (
+        <div className="flex flex-col items-center justify-center rounded-lg bg-gray-100 p-8 text-center">
+          <ShoppingBag className="mb-4 h-16 w-16 text-gray-400" />
+          <p className="mb-4 text-xl font-semibold text-gray-600">
+            Your cart is empty
+          </p>
+          <Link href="/">
+            <button
+              type="button"
+              className="rounded-full bg-blue-500 px-6 py-2 text-white transition-colors hover:bg-blue-600"
+            >
+              Continue Shopping
+            </button>
+          </Link>
+        </div>
+      ) : (
+        <>
+          <ul className="mb-8 divide-y divide-gray-200">
+            {cartMovies.map((_movie: MovieWithPrice, index: number) => (
+              <li key={index} className="flex items-center py-6">
+                <Image
+                  src={_movie?.poster ?? "/imgs/image-not-found.jpg"}
+                  alt={_movie?.title}
+                  width={80}
+                  height={120}
+                  priority
+                  className="rounded-md object-cover"
+                />
+                <div className="ml-4 flex flex-1 flex-col">
+                  <div className="flex justify-between">
+                    <h2 className="text-lg font-medium text-gray-900">
+                      {_movie?.title}
+                    </h2>
+                    <p className="text-lg font-medium text-gray-900">{`${_movie.price} kr`}</p>
+                  </div>
+                  <p className="mt-1 text-sm text-gray-500">
+                    {_movie.genres.slice(0, 3).join(", ")}
+                  </p>
+                </div>
                 <button
-                  title="button"
+                  title="Remove"
                   type="button"
                   onClick={() => removeMovieFromCart(_movie)}
-                  className="flex-0 text-2xl text-red-500 hover:text-red-700"
+                  className="ml-4 text-gray-400 hover:text-gray-500"
                 >
-                  <AiFillCloseCircle />
+                  <X className="h-6 w-6" />
                 </button>
-              </div>
+              </li>
+            ))}
+          </ul>
+          <div className="rounded-lg bg-gray-50 p-6">
+            <div className="flex justify-between">
+              <p className="text-lg font-medium text-gray-900">Total</p>
+              <p className="text-lg font-medium text-gray-900">{`${totalPrice} kr`}</p>
             </div>
-          </li>
-        ))}
-      </ul>
-      {totalPrice !== 0 && (
-        <p className="sm:text-md md:text-l text-sm lg:text-xl xl:text-2xl">
-          {`Total: ${totalPrice} kr`}
-        </p>
+            <p className="mt-0.5 text-sm text-gray-500">
+              Shipping and taxes calculated at checkout.
+            </p>
+            <div className="mt-6">
+              <Link href="/cart-pages/PaymentPage">
+                <button
+                  type="button"
+                  className="w-full rounded-full bg-blue-500 px-6 py-3 text-center text-base font-medium text-white shadow-sm transition-colors hover:bg-blue-600"
+                >
+                  Proceed to Checkout
+                </button>
+              </Link>
+            </div>
+            <div className="mt-6 flex items-center justify-center">
+              <AlertCircle className="mr-2 h-5 w-5 text-blue-500" />
+              <p className="text-sm text-gray-500">
+                Secure checkout powered by Stripe
+              </p>
+            </div>
+          </div>
+        </>
       )}
-      <Link href="/cart-pages/PaymentPage">
-        <button
-          type="button"
-          className="sm:text-md md:text-l rounded-md border border-black bg-sky-400 px-4 py-2 text-sm lg:text-xl xl:text-2xl"
-        >
-          To Payment
-        </button>
-      </Link>
     </div>
   );
 }

@@ -1,122 +1,193 @@
 import React, { useState, useEffect } from "react";
-import { AiFillCloseCircle } from "react-icons/ai";
+import { X, CreditCard } from "lucide-react";
 import Image from "next/image";
-import {
-  FaCcVisa,
-  FaCcMastercard,
-  FaPaypal,
-  FaGooglePay,
-  FaApplePay,
-} from "react-icons/fa";
-import { SiSamsungpay } from "react-icons/si";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import {
+  Elements,
+  CardElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
 
 import type { MovieWithPrice } from "~/types/types";
 import { useSelector, useDispatch } from "~/redux/store";
 import { removeItem, clearCart } from "~/redux/cartSlice";
 import { api } from "~/utils/api";
-import { useRouter } from "next/navigation";
+import { getStripe } from "~/libs/stripe";
+
+interface CheckoutFormProps {
+  totalPrice: number;
+  handlePurchase: () => void;
+}
+
+function CheckoutForm({ totalPrice, handlePurchase }: CheckoutFormProps) {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [error, setError] = useState<string | null>(null);
+  const [processing, setProcessing] = useState(false);
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (!stripe || !elements) {
+      return;
+    }
+
+    setProcessing(true);
+
+    const cardElement = elements.getElement(CardElement);
+
+    if (cardElement) {
+      const { error, paymentMethod } = await stripe.createPaymentMethod({
+        type: "card",
+        card: cardElement,
+      });
+
+      if (error) {
+        setError(error.message ?? "An unknown error occurred");
+        setProcessing(false);
+      } else {
+        //send the paymentMethod.id to server
+        console.log("PaymentMethod:", paymentMethod);
+        handlePurchase();
+        setProcessing(false);
+      }
+    } else {
+      setError("Card element not found");
+      setProcessing(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+      <div className="rounded-md shadow-sm">
+        <CardElement
+          options={{
+            style: {
+              base: {
+                fontSize: "16px",
+                color: "#424770",
+                "::placeholder": {
+                  color: "#aab7c4",
+                },
+              },
+              invalid: {
+                color: "#9e2146",
+              },
+            },
+          }}
+          className="rounded-md border border-gray-300 px-3 py-2"
+          onChange={(event) => {
+            if (event.error) {
+              setError(event.error.message);
+            } else {
+              setError(null);
+            }
+          }}
+        />
+      </div>
+      {error && <div className="text-red-500">{error}</div>}
+      <button
+        type="submit"
+        disabled={!stripe || processing}
+        className="w-full rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600 disabled:opacity-50"
+      >
+        {processing ? "Processing..." : `Pay ${totalPrice} kr`}
+      </button>
+    </form>
+  );
+}
 
 export default function PaymentPage() {
   const { data: sessionData } = useSession();
   const router = useRouter();
-
-  useEffect(() => {
-    if (!sessionData) {
-      router.push("/");
-    }
-  }, [router, sessionData]);
-
   const cartMovies = useSelector((state) => state.cart.items);
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const addPurchasedMovie = api.user.addPurchasedMovie.useMutation();
   const dispatch = useDispatch();
 
-  const removeMovieFromCart = (movie: MovieWithPrice) => {
-    dispatch(removeItem(movie));
-  };
+  useEffect(() => {
+    if (!sessionData) {
+      void router.push("/");
+    }
+  }, [router, sessionData]);
 
-  const handleClearCart = () => {
-    dispatch(clearCart());
-  };
-
-  // Calculate the total price using reduce
   useEffect(() => {
     const totalPrice = cartMovies.reduce(
-      (acc: number, _movie: MovieWithPrice) => acc + _movie.price,
+      (acc: number, movie: MovieWithPrice) => acc + movie.price,
       0,
     );
     setTotalPrice(totalPrice);
   }, [cartMovies]);
 
-  function handlePurchase() {
-    if (sessionData) {
+  const removeMovieFromCart = (movie: MovieWithPrice) => {
+    dispatch(removeItem(movie));
+  };
+
+  const handlePurchase = () => {
+    if (sessionData?.user?.id) {
       addPurchasedMovie.mutate({
         userId: sessionData.user.id,
         movieId: cartMovies.map((movie) => movie.id),
       });
-      handleClearCart();
+      dispatch(clearCart());
+      void router.push("/cart-pages/PayConfirm");
     }
-  }
+  };
 
   return (
-    <div className="mx-auto my-10 flex w-full flex-col items-center gap-6 md:gap-10">
-      <div className="flex flex-col items-center gap-6 md:gap-8 lg:gap-10">
-        <h1 className="text-2xl font-bold">Payment Methods</h1>
-        <div className="grid grid-cols-2 items-center justify-center gap-6 md:grid-cols-3 md:gap-12 lg:grid-cols-6 lg:gap-16">
-          <FaCcVisa size={40} color="#1a1f71" />
-          <FaCcMastercard size={40} color="#0061a8" />
-          <FaPaypal size={40} color="#003087" />
-          <FaGooglePay size={48} color="#4285f4" />
-          <SiSamsungpay size={48} color="#0a4b8e" />
-          <FaApplePay size={48} color="#000000" />
-        </div>
-        <h1 className="text-center text-2xl font-bold">Your Basket</h1>
-        <ul className="flex flex-col gap-6 lg:flex-row">
-          {cartMovies.map((movie, index) => (
-            <li
-              key={index}
-              className="mx-auto flex w-full max-w-screen-lg flex-row items-center gap-4 rounded-xl border bg-gray-200 p-4 md:gap-8"
-            >
-              <Image
-                src={movie.poster ?? "/imgs/image-not-found.jpg"}
-                alt={movie.title}
-                width={48}
-                height={72}
-                priority
-                className="md:h-16 md:w-12"
-              />
-              <div className="flex flex-row items-center gap-8">
-                <p className="text-lg font-medium">{movie.title}</p>
-                <p className="text-md">{`Price: ${movie.price} kr`}</p>
+    <div className="mx-auto my-10 max-w-4xl p-4">
+      <h1 className="mb-8 text-center text-3xl font-bold">Checkout</h1>
+      <div className="grid gap-8 md:grid-cols-2">
+        <div>
+          <h2 className="mb-4 text-xl font-semibold">Your Cart</h2>
+          <ul className="space-y-4">
+            {cartMovies.map((movie, index) => (
+              <li
+                key={index}
+                className="flex items-center space-x-4 rounded-lg bg-gray-100 p-4"
+              >
+                <Image
+                  src={movie.poster ?? "/imgs/image-not-found.jpg"}
+                  alt={movie.title}
+                  width={48}
+                  height={72}
+                  className="rounded"
+                />
+                <div className="flex-1">
+                  <h3 className="font-medium">{movie.title}</h3>
+                  <p className="text-sm text-gray-600">{`${movie.price} kr`}</p>
+                </div>
                 <button
-                  title="button"
                   type="button"
+                  title="Remove from cart"
                   onClick={() => removeMovieFromCart(movie)}
-                  className="text-2xl text-red-500 hover:text-red-700"
+                  className="text-gray-400 hover:text-gray-600"
                 >
-                  <AiFillCloseCircle />
+                  <X size={20} />
                 </button>
-              </div>
-            </li>
-          ))}
-        </ul>
-        {totalPrice !== 0 && (
-          <p className="text-lg font-semibold lg:text-xl xl:text-2xl">
-            {`Total: ${totalPrice} kr`}
-          </p>
-        )}
+              </li>
+            ))}
+          </ul>
+          <div className="mt-4 text-right text-xl font-semibold">
+            Total: {totalPrice} kr
+          </div>
+        </div>
+        <div>
+          <h2 className="mb-4 text-xl font-semibold">Payment Details</h2>
+          <Elements stripe={getStripe()}>
+            <CheckoutForm
+              totalPrice={totalPrice}
+              handlePurchase={handlePurchase}
+            />
+          </Elements>
+          <div className="mt-6 flex items-center justify-center text-sm text-gray-500">
+            <CreditCard className="mr-2 h-5 w-5" />
+            <p>Payments are secure and encrypted</p>
+          </div>
+        </div>
       </div>
-      <Link href="/cart-pages/PayConfirm">
-        <button
-          type="button"
-          className="rounded-md bg-sky-500 px-6 py-3 text-lg font-semibold text-white hover:bg-sky-600 lg:text-xl xl:text-2xl"
-          onClick={handlePurchase}
-        >
-          Purchase
-        </button>
-      </Link>
     </div>
   );
 }

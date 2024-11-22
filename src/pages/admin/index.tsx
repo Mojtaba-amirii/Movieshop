@@ -3,26 +3,24 @@ import React from "react";
 
 export default function Admin() {
   return (
-    <div className="flex flex-col items-center">
-      <h1 className="my-10 text-center text-5xl">Admin</h1>
-      <Link href={"./products"}>
-        <button
-          type="button"
-          className="my-7 w-40 rounded-xl border-4 border-solid border-black bg-sky-400 px-4 py-2 text-2xl text-black"
+    <div className="flex flex-col items-center p-5">
+      <h1 className="my-10 text-center text-5xl font-bold text-gray-800">
+        Admin Dashboard
+      </h1>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <Link
+          href="/admin/products"
+          className="flex transform items-center justify-center rounded-full bg-sky-400 px-6 py-4 text-2xl font-semibold text-black transition-transform hover:scale-105"
         >
           Products
-        </button>
-      </Link>
-      <br />
-
-      <Link href={"./orders"}>
-        <button
-          type="button"
-          className="my-3 w-40 rounded-xl border-4 border-solid border-black bg-sky-400 px-4 py-2 text-2xl"
+        </Link>
+        <Link
+          href="/admin/orders"
+          className="flex transform items-center justify-center rounded-full bg-sky-400 px-6 py-4 text-2xl font-semibold text-black transition-transform hover:scale-105"
         >
           Orders
-        </button>
-      </Link>
+        </Link>
+      </div>
     </div>
   );
 }

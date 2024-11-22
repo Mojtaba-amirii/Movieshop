@@ -63,10 +63,10 @@ export default function MyProfile() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="container mx-auto px-4 py-8"
+      className="px-4 py-8"
     >
       <h1 className="mb-8 text-center text-3xl font-bold">My Profile</h1>
-      <div className="mx-auto max-w-2xl overflow-hidden rounded-lg bg-white shadow-md">
+      <div className="mx-auto max-w-2xl overflow-hidden rounded-lg p-4 shadow-md">
         <div className="md:flex">
           <div className="md:flex-shrink-0">
             <div className="relative h-48 w-full md:w-48">
@@ -132,7 +132,7 @@ export default function MyProfile() {
             </motion.div>
           </div>
         </div>
-        <div className="bg-gray-50 px-8 py-4">
+        <div className="px-8 py-4">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

@@ -8,6 +8,7 @@ import type { MovieWithPrice, SearchProps } from "~/types/types";
 import { useSelector } from "~/redux/store";
 import { generateRandomPrice } from "~/utils/utils";
 import { ShoppingCart, Star } from "lucide-react";
+import { MovieListSkeleton } from "./Skeleton";
 
 async function checkURL(url: string): Promise<boolean> {
   try {
@@ -22,6 +23,7 @@ async function checkURL(url: string): Promise<boolean> {
 export default function MovieList({ search, genre }: SearchProps) {
   const { data: sessionData } = useSession();
   const [validatedMovies, setValidatedMovies] = useState<MovieWithPrice[]>();
+  const [isLoading, setIsLoading] = useState(true);
   const myMoviesIds = api.user.getMyMovies.useQuery(
     { userId: sessionData?.user?.id ?? "" },
     {
@@ -70,8 +72,12 @@ export default function MovieList({ search, genre }: SearchProps) {
           } else {
             setValidatedMovies(updatedMovies);
           }
+          setIsLoading(false);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.error(error);
+          setIsLoading(false);
+        });
     }
   }, [movies, sessionData, myMoviesIds]);
 
@@ -92,6 +98,10 @@ export default function MovieList({ search, genre }: SearchProps) {
     return false;
   });
 
+  if (isLoading) {
+    return <MovieListSkeleton />;
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <ul className="grid grid-cols-2 gap-7 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
@@ -99,7 +109,7 @@ export default function MovieList({ search, genre }: SearchProps) {
           sessionData ? (
             <li
               key={movie.id}
-              className="relative h-80 w-56 overflow-hidden rounded-lg bg-gray-300 shadow-lg"
+              className="relative max-h-80 min-h-44 w-full overflow-hidden rounded-lg bg-gray-300 shadow-lg"
             >
               <Link
                 href={{
@@ -159,7 +169,7 @@ export default function MovieList({ search, genre }: SearchProps) {
           ) : (
             <li
               key={movie.id}
-              className="relative h-80 w-56 overflow-hidden rounded-lg bg-gray-300 shadow-lg"
+              className="relative max-h-80 min-h-44 w-full overflow-hidden rounded-lg bg-gray-300 shadow-lg"
             >
               <Link
                 href={{
