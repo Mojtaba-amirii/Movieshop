@@ -16,10 +16,32 @@ export const moviesRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.db.movies.findMany();
   }),
-  first100: publicProcedure.query(({ ctx }) => {
-    return ctx.db.movies.findMany({
-      take: 100,
-    });
+  first100: publicProcedure.query(async ({ ctx }) => {
+    const movies = (await ctx.db.movies.findMany({ take: 100 })) as Array<{
+      type: string;
+      title: string;
+      id: string;
+      poster: string | null;
+      cast: string[];
+      countries: string[];
+      directors: string[];
+      plot: string | null;
+      fullplot: string | null;
+      genres: string[];
+      languages: string[];
+      lastupdated: string;
+      metacritic: number | null;
+      imdb: { id: number; rating: number | null; votes: number };
+      tomatoes:
+        | ({ viewer: { rating: number } } & { lastUpdated: string })
+        | null;
+      price?: number;
+    }>;
+    return movies.map((movie) => ({
+      ...movie,
+      price:
+        movie.price ?? (movie.imdb?.rating ? movie.imdb.rating * 10 + 50 : 100),
+    }));
   }),
   findByTitle: publicProcedure
     .input(z.object({ title: z.string() }))

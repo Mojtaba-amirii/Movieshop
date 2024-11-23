@@ -3,7 +3,7 @@ import { X, ShoppingBag, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSelector, useDispatch } from "~/redux/store";
-import type { MovieWithPrice } from "~/types/types";
+import type { Movie } from "~/types/types";
 import { removeItem } from "~/redux/cartSlice";
 
 export default function ShoppingCart() {
@@ -11,13 +11,13 @@ export default function ShoppingCart() {
   const cartMovies = useSelector((state) => state.cart.items);
   const [totalPrice, setTotalPrice] = useState<number>(0);
 
-  const removeMovieFromCart = (movie: MovieWithPrice) => {
+  const removeMovieFromCart = (movie: Movie) => {
     dispatch(removeItem(movie));
   };
 
   useEffect(() => {
     const totalPrice = cartMovies.reduce(
-      (acc: number, _movie: MovieWithPrice) => acc + _movie.price,
+      (acc: number, _movie: Movie) => acc + (_movie.price ?? 0),
       0,
     );
     setTotalPrice(totalPrice);
@@ -46,7 +46,7 @@ export default function ShoppingCart() {
       ) : (
         <>
           <ul className="mb-8 divide-y divide-gray-200">
-            {cartMovies.map((_movie: MovieWithPrice, index: number) => (
+            {cartMovies.map((_movie: Movie, index: number) => (
               <li key={index} className="flex items-center py-6">
                 <Image
                   src={_movie?.poster ?? "/imgs/image-not-found.jpg"}

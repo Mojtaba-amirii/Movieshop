@@ -10,10 +10,7 @@ export type Movie = {
     rating: number | null;
     votes: number;
   };
-};
-
-export type MovieWithPrice = Movie & {
-  price: number;
+  price?: number | null;
 };
 
 export type SearchProps = {

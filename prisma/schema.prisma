@@ -162,6 +162,7 @@ model movies {
   type               String
   writers            String[]
   year               Json
+  price              Float?  
 }
 
 model sessions {

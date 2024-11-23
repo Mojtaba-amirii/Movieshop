@@ -1,12 +1,13 @@
 import { FaShoppingBasket } from "react-icons/fa";
-import HamburgerMenu from "./hamburger";
+import HamburgerMenu from "../hamburger";
 import Link from "next/link";
 import React from "react";
-import { useAnimation } from "../context/AnimationContext";
+import { useAnimation } from "~/context/AnimationContext";
 import "tailwindcss-animatecss";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { LogIn, LogOut } from "lucide-react";
 
-export default function Navbar() {
+export default function Navar() {
   const { animationTriggered } = useAnimation();
   const { data: sessionData } = useSession();
 
@@ -24,13 +25,21 @@ export default function Navbar() {
             <ul className="flex font-bold">
               <li>
                 <button
-                  className="border-r-2 border-black pr-4"
+                  className="flex items-center gap-1 border-r-2 border-black pr-4"
                   type="button"
                   onClick={
                     sessionData ? () => void signOut() : () => void signIn()
                   }
                 >
-                  {sessionData ? "Sign out" : "Sign in"}
+                  {sessionData ? (
+                    <>
+                      Sign out <LogOut className="text-red-500" />
+                    </>
+                  ) : (
+                    <>
+                      Sign in <LogIn className="text-green-400" />
+                    </>
+                  )}
                 </button>
               </li>
               {sessionData ? (

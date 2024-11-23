@@ -1,21 +1,27 @@
-import React from "react";
+import React, {
+  type SetStateAction,
+  type Dispatch,
+  type ChangeEvent,
+  memo,
+  type FC,
+} from "react";
 
 interface SearchBarProps {
-  setSearch: React.Dispatch<React.SetStateAction<string | undefined>>;
-  setGenre: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setSearch: Dispatch<SetStateAction<string | undefined>>;
+  setGenre: Dispatch<SetStateAction<string | undefined>>;
   genres?: string[];
 }
 
-export default function SearchBar({
+const SearchBar: FC<SearchBarProps> = ({
   setSearch,
   setGenre,
   genres = ["all", "drama", "action", "horror", "comedy"],
-}: SearchBarProps) {
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+}: SearchBarProps) => {
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
-  const handleGenreChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleGenreChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setGenre(e.target.value);
   };
 
@@ -51,4 +57,6 @@ export default function SearchBar({
       </select>
     </div>
   );
-}
+};
+
+export default memo(SearchBar);

@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import type { MovieWithPrice } from "~/types/types";
+import type { Movie } from "~/types/types";
 import { api } from "~/utils/api";
 import { useDispatch, useSelector } from "~/redux/store";
 import { addItem } from "~/redux/cartSlice";
@@ -21,7 +21,7 @@ async function checkURL(url: string): Promise<boolean> {
 }
 
 export default function MovieDetails() {
-  const [validatedMovie, setValidatedMovie] = useState<MovieWithPrice>();
+  const [validatedMovie, setValidatedMovie] = useState<Movie>();
   const [cartDuplicate, setCartDuplicate] = useState(false);
   const cartMovies = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
@@ -97,7 +97,7 @@ export default function MovieDetails() {
               width={300}
               height={450}
               priority
-              className="rounded-lg shadow-lg"
+              className="h-auto w-auto rounded-lg object-cover shadow-lg"
             />
           </div>
           <div className="mt-4 md:mt-0 md:w-2/3">

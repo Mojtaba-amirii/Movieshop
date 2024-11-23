@@ -44,13 +44,14 @@ export default function MyMovies() {
     try {
       const updatedMovies = await Promise.all(
         movies.map(async (movie) => {
-          if (movie.poster) {
-            const isValid = await checkURL(movie.poster);
+          const movieWithPrice = { ...movie, price: movie.price ?? 0 };
+          if (movieWithPrice.poster) {
+            const isValid = await checkURL(movieWithPrice.poster);
             return isValid
-              ? movie
-              : { ...movie, poster: "/imgs/image-not-found.jpg" };
+              ? movieWithPrice
+              : { ...movieWithPrice, poster: "/imgs/image-not-found.jpg" };
           } else {
-            return { ...movie, poster: "/imgs/image-not-found.jpg" };
+            return { ...movieWithPrice, poster: "/imgs/image-not-found.jpg" };
           }
         }),
       );
@@ -62,9 +63,9 @@ export default function MyMovies() {
 
   useEffect(() => {
     if (movies) {
-      validateMovies(movies).catch((error) =>
-        console.error("Error validating movies:", error),
-      );
+      validateMovies(movies).catch((error) => {
+        console.error("Error validating movies:", error);
+      });
     }
   }, [movies, validateMovies]);
 

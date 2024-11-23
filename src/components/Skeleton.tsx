@@ -1,10 +1,10 @@
-import React from "react";
+import React, { type FC } from "react";
 
 interface SkeletonProps {
   className?: string;
 }
 
-export const Skeleton: React.FC<SkeletonProps> = ({ className = "" }) => {
+export const Skeleton: FC<SkeletonProps> = ({ className = "" }) => {
   return <div className={`animate-pulse rounded bg-gray-300 ${className}`} />;
 };
 
@@ -32,7 +32,7 @@ export function MovieDetailsSkeleton() {
   );
 }
 
-export const MovieCardSkeleton: React.FC = () => {
+export const MovieCardSkeleton: FC = () => {
   return (
     <div className="relative max-h-80 min-h-44 w-full overflow-hidden rounded-lg bg-gray-200 shadow-lg">
       <Skeleton className="h-full w-full" />
@@ -48,7 +48,7 @@ export const MovieCardSkeleton: React.FC = () => {
   );
 };
 
-export const MovieListSkeleton: React.FC = () => {
+export const MovieListSkeleton: FC = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <ul className="grid grid-cols-2 gap-7 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">

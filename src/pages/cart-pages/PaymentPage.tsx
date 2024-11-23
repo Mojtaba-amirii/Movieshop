@@ -10,7 +10,7 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 
-import type { MovieWithPrice } from "~/types/types";
+import type { Movie } from "~/types/types";
 import { useSelector, useDispatch } from "~/redux/store";
 import { removeItem, clearCart } from "~/redux/cartSlice";
 import { api } from "~/utils/api";
@@ -115,13 +115,13 @@ export default function PaymentPage() {
 
   useEffect(() => {
     const totalPrice = cartMovies.reduce(
-      (acc: number, movie: MovieWithPrice) => acc + movie.price,
+      (acc: number, movie: Movie) => acc + (movie.price ?? 0),
       0,
     );
     setTotalPrice(totalPrice);
   }, [cartMovies]);
 
-  const removeMovieFromCart = (movie: MovieWithPrice) => {
+  const removeMovieFromCart = (movie: Movie) => {
     dispatch(removeItem(movie));
   };
 
