@@ -69,7 +69,7 @@ export default function MovieDetails() {
       setAnimationTriggered(true);
       setTimeout(() => {
         setAnimationTriggered(false);
-      }, 1000);
+      }, 1500);
 
       setCartDuplicate(true);
     }
@@ -85,6 +85,7 @@ export default function MovieDetails() {
         <div className="flex flex-col md:flex-row md:space-x-8">
           <div className="md:w-1/3">
             <button
+              type="button"
               onClick={() => router.back()}
               className="mb-4 flex items-center text-blue-500 hover:text-blue-600"
             >
@@ -157,18 +158,9 @@ export default function MovieDetails() {
                   </button>
                 </>
               ) : (
-                <div className="text-center">
-                  <button
-                    type="button"
-                    className="rounded-md bg-gray-300 px-6 py-2 text-lg font-semibold text-gray-500"
-                    disabled
-                  >
-                    Add to Cart
-                  </button>
-                  <p className="mt-2 text-sm text-red-500">
-                    Sign in to add movie to cart
-                  </p>
-                </div>
+                <p className="mt-2 text-base text-red-500">
+                  Sign in to add movie to cart
+                </p>
               )}
             </div>
           </div>

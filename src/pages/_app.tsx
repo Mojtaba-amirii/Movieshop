@@ -1,7 +1,7 @@
 import { SessionProvider } from "next-auth/react";
 import type { AppType } from "next/app";
 import { Provider } from "react-redux";
-import store from "~/redux/store";
+import { store } from "~/redux/store";
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { AnimationProvider } from "~/context/AnimationContext";

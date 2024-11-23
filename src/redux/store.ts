@@ -6,7 +6,7 @@ import {
   type TypedUseSelectorHook,
 } from "react-redux";
 
-const store = configureStore({
+export const store = configureStore({
   reducer: { cart: cartReducer },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

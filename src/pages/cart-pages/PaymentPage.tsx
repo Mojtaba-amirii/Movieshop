@@ -122,7 +122,7 @@ export default function PaymentPage() {
   }, [cartMovies]);
 
   const removeMovieFromCart = (movie: Movie) => {
-    dispatch(removeItem(movie));
+    dispatch(removeItem(movie.id));
   };
 
   const handlePurchase = () => {

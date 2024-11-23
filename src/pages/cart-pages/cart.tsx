@@ -12,7 +12,7 @@ export default function ShoppingCart() {
   const [totalPrice, setTotalPrice] = useState<number>(0);
 
   const removeMovieFromCart = (movie: Movie) => {
-    dispatch(removeItem(movie));
+    dispatch(removeItem(movie.id));
   };
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function ShoppingCart() {
   }, [cartMovies]);
 
   return (
-    <div className="mx-auto my-10 max-w-4xl p-4">
+    <section className="mx-auto my-10 max-w-4xl p-4">
       <h1 className="mb-8 text-center text-3xl font-bold">
         Your Shopping Cart
       </h1>
@@ -63,18 +63,20 @@ export default function ShoppingCart() {
                     </h2>
                     <p className="text-lg font-medium text-gray-900">{`${_movie.price} kr`}</p>
                   </div>
-                  <p className="mt-1 text-sm text-gray-500">
-                    {_movie.genres.slice(0, 3).join(", ")}
-                  </p>
+                  <div className="flex justify-between">
+                    <p className="mt-1 text-sm text-gray-500">
+                      {_movie.genres.slice(0, 3).join(", ")}
+                    </p>
+                    <button
+                      title="Remove"
+                      type="button"
+                      onClick={() => removeMovieFromCart(_movie)}
+                      className="ml-4 text-red-400 hover:text-red-500"
+                    >
+                      <X className="h-6 w-6" />
+                    </button>
+                  </div>
                 </div>
-                <button
-                  title="Remove"
-                  type="button"
-                  onClick={() => removeMovieFromCart(_movie)}
-                  className="ml-4 text-gray-400 hover:text-gray-500"
-                >
-                  <X className="h-6 w-6" />
-                </button>
               </li>
             ))}
           </ul>
@@ -105,6 +107,6 @@ export default function ShoppingCart() {
           </div>
         </>
       )}
-    </div>
+    </section>
   );
 }

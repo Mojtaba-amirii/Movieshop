@@ -1,15 +1,18 @@
-import { FaShoppingBasket } from "react-icons/fa";
 import HamburgerMenu from "../hamburger";
 import Link from "next/link";
 import React from "react";
 import { useAnimation } from "~/context/AnimationContext";
 import "tailwindcss-animatecss";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { LogIn, LogOut } from "lucide-react";
+import { LogIn, LogOut, ShoppingBasket } from "lucide-react";
+import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
+import { selectCartItemsCount } from "~/redux/cartSlice";
 
 export default function Navar() {
   const { animationTriggered } = useAnimation();
   const { data: sessionData } = useSession();
+  const cartItemsCount = useSelector(selectCartItemsCount);
 
   return (
     <header className="sticky top-0 z-40 bg-white p-6 shadow">
@@ -75,9 +78,27 @@ export default function Navar() {
         <Link
           title="ShoppingBasket"
           href="/cart-pages/cart"
-          className={`text-2xl ${animationTriggered ? "animate-bounce" : ""}`}
+          className={`text-2xl ${animationTriggered && "animate-bounce transition-transform duration-200 ease-in-out"}`}
         >
-          {sessionData && <FaShoppingBasket />}
+          {sessionData && (
+            <Link
+              href="/cart-pages/cart"
+              title="Shopping Basket"
+              className="relative"
+            >
+              <motion.div
+                animate={animationTriggered ? { y: [0, -10, 0] } : {}}
+                transition={{ duration: 0.5 }}
+              >
+                <ShoppingBasket size={24} />
+                {cartItemsCount > 0 && (
+                  <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-green-500 text-xs text-white">
+                    {cartItemsCount}
+                  </span>
+                )}
+              </motion.div>
+            </Link>
+          )}
         </Link>
       </nav>
     </header>
