@@ -21,7 +21,6 @@ const MovieList: FC<SearchProps> = ({ search, genre }) => {
 
   const cartMovies = useSelector((state) => state.cart.items);
   const movies = api.movies.first100.useQuery().data;
-  console.log(movies);
 
   useEffect(() => {
     if (movies) {
