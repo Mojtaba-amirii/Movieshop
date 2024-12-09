@@ -26,7 +26,7 @@ const SearchBar: FC<SearchBarProps> = ({
   };
 
   return (
-    <div className="min-w-sm mt-4 flex flex-col items-center justify-center gap-2 pb-4 md:flex-row">
+    <section className="min-w-sm mt-4 flex flex-col items-center justify-center gap-2 pb-4 md:flex-row">
       <label htmlFor="search" className="sr-only">
         Search
       </label>
@@ -55,7 +55,7 @@ const SearchBar: FC<SearchBarProps> = ({
           </option>
         ))}
       </select>
-    </div>
+    </section>
   );
 };
 

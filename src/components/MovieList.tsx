@@ -50,7 +50,7 @@ const MovieList: FC<SearchProps> = ({ search, genre }) => {
   if (isLoading) return <MovieListSkeleton />;
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <section className="container mx-auto px-4 py-8">
       <ul className="grid grid-cols-2 gap-7 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
         {filteredMovies.map((movie) => (
           <li
@@ -77,6 +77,11 @@ const MovieList: FC<SearchProps> = ({ search, genre }) => {
                   width={250}
                   height={350}
                   priority
+                  unoptimized
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src =
+                      "/imgs/image-not-found.jpg";
+                  }}
                   className="h-auto w-full object-cover transition-opacity duration-300 hover:opacity-75"
                 />
               </div>
@@ -110,7 +115,7 @@ const MovieList: FC<SearchProps> = ({ search, genre }) => {
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   );
 };
 
