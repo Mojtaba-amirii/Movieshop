@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Edit2, Mail, Phone, Camera } from "lucide-react";
-import { useSession } from "next-auth/react";
+import { useSession, getSession } from "next-auth/react";
+import type { GetServerSideProps } from "next";
 
 const MAX_IMAGE_SIZE = 1024 * 1024; // 1MB
 
@@ -146,3 +147,20 @@ export default function MyProfile() {
     </motion.section>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
+};

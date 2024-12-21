@@ -1,10 +1,28 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import type { Movie } from "~/types/types";
 import SearchBar from "~/components/Search";
 import { Star } from "lucide-react";
+import type { GetServerSideProps } from "next";
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
+};
 
 async function checkURL(url: string): Promise<boolean> {
   try {
