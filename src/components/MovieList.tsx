@@ -2,11 +2,11 @@ import React, { type FC, memo, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { ShoppingCart, Star } from "lucide-react";
 
 import { api } from "~/utils/api";
 import type { Movie, SearchProps } from "~/types/types";
 import { useSelector } from "~/redux/store";
-import { ShoppingCart, Star } from "lucide-react";
 import { MovieListSkeleton } from "./Skeleton";
 
 const MovieList: FC<SearchProps> = ({ search, genre }) => {
