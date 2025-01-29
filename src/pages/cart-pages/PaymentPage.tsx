@@ -61,7 +61,7 @@ function CheckoutForm({ totalPrice, handlePurchase }: CheckoutFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-      <div className="rounded-md shadow-sm">
+      <div className="rounded-md shadow-xs">
         <CardElement
           options={{
             style: {
@@ -153,7 +153,7 @@ export default function PaymentPage() {
                   alt={movie.title}
                   width={48}
                   height={72}
-                  className="rounded"
+                  className="rounded-sm"
                 />
                 <div className="flex-1">
                   <h3 className="font-medium">{movie.title}</h3>

@@ -5,7 +5,7 @@ interface SkeletonProps {
 }
 
 export const Skeleton: FC<SkeletonProps> = ({ className = "" }) => {
-  return <div className={`animate-pulse rounded bg-gray-300 ${className}`} />;
+  return <div className={`animate-pulse rounded-sm bg-gray-300 ${className}`} />;
 };
 
 export function MovieDetailsSkeleton() {
@@ -36,7 +36,7 @@ export const MovieCardSkeleton: FC = () => {
   return (
     <div className="relative max-h-80 min-h-44 w-full overflow-hidden rounded-lg bg-gray-200 shadow-lg">
       <Skeleton className="h-full w-full" />
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+      <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black to-transparent p-4">
         <Skeleton className="mb-1 h-6 w-3/4" />
         <Skeleton className="mb-1 h-4 w-1/2" />
         <div className="flex items-center justify-between">

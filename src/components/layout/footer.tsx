@@ -4,7 +4,7 @@ import { SiFacebook, SiInstagram } from "react-icons/si";
 
 const Footer = () => {
   return (
-    <footer className="mt-auto py-6 shadow">
+    <footer className="mt-auto py-6 shadow-sm">
       <div className="container mx-auto flex flex-col items-center justify-between md:flex-row">
         <div className="mb-4 md:mb-0">
           <h2 className="text-lg font-bold">MOVIESHOP</h2>

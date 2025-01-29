@@ -54,7 +54,7 @@ export default function HamburgerMenu() {
 
       {/* Side menu that appears when 'isOpen' is true */}
       {isOpen && (
-        <div className="fixed left-0 top-0 z-50 h-full w-48 rounded-e-md bg-black/15 text-black shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out">
+        <div className="fixed left-0 top-0 z-50 h-full w-48 rounded-e-md bg-black/15 text-black shadow-lg backdrop-blur-xs transition-all duration-300 ease-in-out">
           <div className="flex justify-end p-4">
             <button type="button" onClick={toggleMenu} aria-label="Close Menu">
               <span className="text-2xl font-bold">

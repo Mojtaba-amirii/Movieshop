@@ -26,7 +26,7 @@ export default function PaymentConfirmation() {
           <Link href="../my-movies" className="block w-full">
             <button
               type="button"
-              className="flex w-full items-center justify-center rounded-md bg-blue-500 px-4 py-3 text-white transition duration-300 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="flex w-full items-center justify-center rounded-md bg-blue-500 px-4 py-3 text-white transition duration-300 hover:bg-blue-600 focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
               <Film className="mr-2 h-5 w-5" />
               Go to My Movies
@@ -35,7 +35,7 @@ export default function PaymentConfirmation() {
           <Link href="/" className="block w-full">
             <button
               type="button"
-              className="flex w-full items-center justify-center rounded-md bg-gray-200 px-4 py-3 text-gray-800 transition duration-300 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+              className="flex w-full items-center justify-center rounded-md bg-gray-200 px-4 py-3 text-gray-800 transition duration-300 hover:bg-gray-300 focus:outline-hidden focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
             >
               <Home className="mr-2 h-5 w-5" />
               Return to Home

@@ -69,7 +69,7 @@ export default function MyProfile() {
       <h1 className="mb-8 text-center text-3xl font-bold">My Profile</h1>
       <div className="mx-auto max-w-2xl overflow-hidden rounded-lg p-4 shadow-md">
         <div className="md:flex">
-          <div className="md:flex-shrink-0">
+          <div className="md:shrink-0">
             <div className="relative h-48 w-full md:w-48">
               <Image
                 src={

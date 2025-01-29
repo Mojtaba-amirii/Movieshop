@@ -92,7 +92,7 @@ export default function ShoppingCart() {
               <Link href="/cart-pages/PaymentPage">
                 <button
                   type="button"
-                  className="w-full rounded-full bg-blue-500 px-6 py-3 text-center text-base font-medium text-white shadow-sm transition-colors hover:bg-blue-600"
+                  className="w-full rounded-full bg-blue-500 px-6 py-3 text-center text-base font-medium text-white shadow-xs transition-colors hover:bg-blue-600"
                 >
                   Proceed to Checkout
                 </button>

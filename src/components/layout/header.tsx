@@ -15,7 +15,7 @@ export default function Navar() {
   const cartItemsCount = useSelector(selectCartItemsCount);
 
   return (
-    <header className="sticky top-0 z-40 bg-white p-6 shadow">
+    <header className="sticky top-0 z-40 bg-white p-6 shadow-sm">
       <nav className="sticky flex w-full items-center justify-between">
         <div className="flex items-center gap-10">
           <Link href="/" className="text-2xl font-bold">
