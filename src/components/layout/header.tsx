@@ -15,7 +15,7 @@ export default function Navar() {
   const cartItemsCount = useSelector(selectCartItemsCount);
 
   return (
-    <header className="sticky top-0 z-40 bg-white p-6 shadow-sm">
+    <header className="sticky top-0 z-40 bg-white p-6 shadow-sm 2xl:container 2xl:mx-auto 2xl:shadow-none">
       <nav className="sticky flex w-full items-center justify-between">
         <div className="flex items-center gap-10">
           <Link href="/" className="text-2xl font-bold">
@@ -92,7 +92,7 @@ export default function Navar() {
               >
                 <ShoppingBasket size={24} />
                 {cartItemsCount > 0 && (
-                  <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-green-500 text-xs text-white">
+                  <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-green-500 text-xs text-white">
                     {cartItemsCount}
                   </span>
                 )}
