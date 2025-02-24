@@ -28,7 +28,7 @@ export default function Navar() {
             <ul className="flex font-bold">
               <li>
                 <button
-                  className="flex items-center gap-1 border-r-2 border-black pr-4"
+                  className="flex cursor-pointer items-center gap-1 border-r-2 border-black pr-4"
                   type="button"
                   onClick={
                     sessionData ? () => void signOut() : () => void signIn()

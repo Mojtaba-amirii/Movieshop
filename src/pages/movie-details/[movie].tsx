@@ -87,7 +87,7 @@ export default function MovieDetails() {
             <button
               type="button"
               onClick={() => router.back()}
-              className="mb-4 flex items-center text-blue-500 hover:text-blue-600"
+              className="mb-4 flex cursor-pointer items-center text-blue-500 hover:text-blue-600"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Movies
