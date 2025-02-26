@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react";
 import Image from "next/image";
+import { Star } from "lucide-react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { getSession, useSession } from "next-auth/react";
+
 import { api } from "~/utils/api";
 import type { Movie } from "~/types/types";
 import SearchBar from "~/components/Search";
-import { Star } from "lucide-react";
 import type { GetServerSideProps } from "next";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -121,7 +122,7 @@ export default function MyMovies() {
                 className="object-cover"
               />
             </div>
-            <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black to-transparent p-4">
+            <div className="absolute right-0 bottom-0 left-0 bg-linear-to-t from-black to-transparent p-4">
               <h3 className="mb-1 text-lg font-semibold text-white">
                 {movie.title}
               </h3>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { X, ShoppingBag, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+
 import { useSelector, useDispatch } from "~/redux/store";
 import type { Movie } from "~/types/types";
 import { removeItem } from "~/redux/cartSlice";

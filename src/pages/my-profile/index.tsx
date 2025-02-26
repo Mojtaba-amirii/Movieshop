@@ -3,6 +3,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Edit2, Mail, Phone, Camera } from "lucide-react";
 import { useSession, getSession } from "next-auth/react";
+
 import type { GetServerSideProps } from "next";
 
 const MAX_IMAGE_SIZE = 1024 * 1024; // 1MB
@@ -85,7 +86,7 @@ export default function MyProfile() {
               />
               <label
                 htmlFor="profile-picture"
-                className="absolute bottom-0 right-0 cursor-pointer rounded-full bg-blue-500 p-2 text-white"
+                className="absolute right-0 bottom-0 cursor-pointer rounded-full bg-blue-500 p-2 text-white"
               >
                 <Camera size={20} />
                 <input
@@ -101,7 +102,7 @@ export default function MyProfile() {
           </div>
           <div className="p-8">
             <motion.div
-              className="text-sm font-semibold uppercase tracking-wide text-blue-500"
+              className="text-sm font-semibold tracking-wide text-blue-500 uppercase"
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
@@ -109,7 +110,7 @@ export default function MyProfile() {
               MovieShop Member
             </motion.div>
             <motion.h2
-              className="mt-2 text-2xl font-semibold leading-8"
+              className="mt-2 text-2xl leading-8 font-semibold"
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.3 }}

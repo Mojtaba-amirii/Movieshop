@@ -7,7 +7,7 @@ export default function Orders() {
     <div className="flex flex-col items-center">
       <h1 className="my-10 text-center text-5xl">Orders</h1>
 
-      <div className="min-w-sm mt-4 flex flex-col items-center justify-center gap-2 md:flex-row">
+      <div className="mt-4 flex min-w-sm flex-col items-center justify-center gap-2 md:flex-row">
         <input
           className="w-2/3 rounded-md border border-black px-4 text-start"
           placeholder="Search order. . ."

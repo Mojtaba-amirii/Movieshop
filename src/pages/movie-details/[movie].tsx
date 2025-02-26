@@ -1,13 +1,14 @@
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import Image from "next/image";
+import { useSession } from "next-auth/react";
+import { ArrowBigRight, ArrowLeft, Star } from "lucide-react";
+
 import type { Movie } from "~/types/types";
 import { api } from "~/utils/api";
 import { useDispatch, useSelector } from "~/redux/store";
 import { addItem } from "~/redux/cartSlice";
 import { useAnimation } from "~/context/AnimationContext";
-import { useSession } from "next-auth/react";
-import { ArrowBigRight, ArrowLeft, Star } from "lucide-react";
 import { MovieDetailsSkeleton } from "~/components/Skeleton";
 
 async function checkURL(url: string): Promise<boolean> {

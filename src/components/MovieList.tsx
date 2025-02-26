@@ -85,7 +85,7 @@ const MovieList: FC<SearchProps> = ({ search, genre }) => {
                   className="h-auto w-full object-cover transition-opacity duration-300 hover:opacity-75"
                 />
               </div>
-              <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black to-transparent p-4">
+              <div className="absolute right-0 bottom-0 left-0 bg-linear-to-t from-black to-transparent p-4">
                 <h3 className="mb-1 text-lg font-semibold text-white">
                   {movie.title}
                 </h3>
@@ -107,7 +107,7 @@ const MovieList: FC<SearchProps> = ({ search, genre }) => {
               {cartMovies.some(
                 (cartMovie: Movie) => cartMovie.id === movie.id,
               ) && (
-                <div className="absolute right-2 top-2 rounded-full bg-green-500 p-2">
+                <div className="absolute top-2 right-2 rounded-full bg-green-500 p-2">
                   <ShoppingCart className="h-4 w-4 text-white" />
                 </div>
               )}

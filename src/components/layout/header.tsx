@@ -1,13 +1,14 @@
-import HamburgerMenu from "../hamburger";
-import Link from "next/link";
 import React from "react";
-import { useAnimation } from "~/context/AnimationContext";
+import Link from "next/link";
+import { motion } from "framer-motion";
 import "tailwindcss-animatecss";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { LogIn, LogOut, ShoppingBasket } from "lucide-react";
-import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
+
+import HamburgerMenu from "../hamburger";
 import { selectCartItemsCount } from "~/redux/cartSlice";
+import { useAnimation } from "~/context/AnimationContext";
 
 export default function Navar() {
   const { animationTriggered } = useAnimation();
