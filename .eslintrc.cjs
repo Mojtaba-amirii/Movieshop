@@ -4,6 +4,7 @@ const config = {
   parserOptions: {
     project: true,
   },
+  // @ts-expect-error - This is a valid ESLint config
   plugins: ["@typescript-eslint"],
   extends: [
     "next/core-web-vitals",
@@ -11,7 +12,6 @@ const config = {
     "plugin:@typescript-eslint/stylistic-type-checked",
   ],
   rules: {
-    "@typescript-eslint/no-unsafe-assignment": "off",
     "@typescript-eslint/array-type": "off",
     "@typescript-eslint/consistent-type-definitions": "off",
     "@typescript-eslint/consistent-type-imports": [
@@ -38,5 +38,4 @@ const config = {
     ],
   },
 };
-
 module.exports = config;
