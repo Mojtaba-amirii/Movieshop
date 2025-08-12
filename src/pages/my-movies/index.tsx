@@ -44,7 +44,6 @@ export default function MyMovies() {
   const myMoviesIds = api.user.getMyMovies.useQuery(
     { userId: sessionData?.user?.id ?? "" },
     {
-      queryKey: ["user.getMyMovies", { userId: sessionData?.user?.id ?? "" }],
       enabled: !!sessionData,
     },
   ).data?.purchasedMovies;
@@ -54,7 +53,6 @@ export default function MyMovies() {
       movieIds: myMoviesIds ?? [],
     },
     {
-      queryKey: ["movies.findById", { movieIds: myMoviesIds ?? [] }],
       enabled: !!myMoviesIds,
     },
   );
