@@ -2,13 +2,13 @@ import Head from "next/head";
 import { Provider } from "react-redux";
 import { SessionProvider } from "next-auth/react";
 
-import type { AppType } from "next/app";
-import { store } from "~/redux/store";
-import { api } from "~/utils/api";
 import "~/styles/globals.css";
-import { AnimationProvider } from "~/context/AnimationContext";
+import { api } from "~/utils/api";
+import { store } from "~/redux/store";
+import type { AppType } from "next/app";
 import type { Session } from "next-auth";
 import Layout from "~/components/layout/layout";
+import { AnimationProvider } from "~/context/AnimationContext";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { X, CreditCard } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { X, CreditCard } from "lucide-react";
+import React, { useState, useEffect } from "react";
 import {
   Elements,
   CardElement,
@@ -10,11 +10,11 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 
+import { api } from "~/utils/api";
+import { getStripe } from "~/libs/stripe";
 import type { Movie } from "~/types/types";
 import { useSelector, useDispatch } from "~/redux/store";
 import { removeItem, clearCart } from "~/redux/cartSlice";
-import { api } from "~/utils/api";
-import { getStripe } from "~/libs/stripe";
 
 interface CheckoutFormProps {
   totalPrice: number;

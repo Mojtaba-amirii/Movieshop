@@ -1,6 +1,6 @@
 import { type FC, useState } from "react";
-import MovieList from "~/components/MovieList";
 import SearchBar from "~/components/Search";
+import MovieList from "~/components/MovieList";
 
 const Home: FC = () => {
   const [search, setSearch] = useState<string | undefined>();

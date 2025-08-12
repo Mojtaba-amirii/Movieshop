@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { X, ShoppingBag, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import React, { useState, useEffect } from "react";
+import { X, ShoppingBag, AlertCircle } from "lucide-react";
 
-import { useSelector, useDispatch } from "~/redux/store";
 import type { Movie } from "~/types/types";
 import { removeItem } from "~/redux/cartSlice";
+import { useSelector, useDispatch } from "~/redux/store";
 
 export default function ShoppingCart() {
   const dispatch = useDispatch();

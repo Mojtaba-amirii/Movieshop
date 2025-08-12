@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import type { PayloadAction } from "@reduxjs/toolkit";
 import type { Movie } from "~/types/types";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface CartItem extends Movie {
   quantity: number;

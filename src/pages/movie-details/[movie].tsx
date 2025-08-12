@@ -4,10 +4,10 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { ArrowBigRight, ArrowLeft, Star } from "lucide-react";
 
-import type { Movie } from "~/types/types";
 import { api } from "~/utils/api";
-import { useDispatch, useSelector } from "~/redux/store";
+import type { Movie } from "~/types/types";
 import { addItem } from "~/redux/cartSlice";
+import { useDispatch, useSelector } from "~/redux/store";
 import { useAnimation } from "~/context/AnimationContext";
 import { MovieDetailsSkeleton } from "~/components/Skeleton";
 

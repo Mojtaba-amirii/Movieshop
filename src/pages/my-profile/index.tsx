@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Edit2, Mail, Phone, Camera } from "lucide-react";
+import React, { useState, useEffect } from "react";
 import { useSession, getSession } from "next-auth/react";
+import { Edit2, Mail, Phone, Camera } from "lucide-react";
 
 import type { GetServerSideProps } from "next";
 
