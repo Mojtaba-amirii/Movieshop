@@ -1,10 +1,10 @@
 import React from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import "tailwindcss-animatecss";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { LogIn, LogOut, ShoppingBasket } from "lucide-react";
+import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
+import { LogIn, LogOut, ShoppingBasket } from "lucide-react";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 import HamburgerMenu from "../hamburger";
 import { selectCartItemsCount } from "~/redux/cartSlice";
@@ -76,9 +76,7 @@ export default function Navar() {
             </ul>
           </div>
         </div>
-        <Link
-          title="ShoppingBasket"
-          href="/cart-pages/cart"
+        <div
           className={`text-2xl ${animationTriggered && "animate-bounce transition-transform duration-200 ease-in-out"}`}
         >
           {sessionData && (
@@ -100,7 +98,7 @@ export default function Navar() {
               </motion.div>
             </Link>
           )}
-        </Link>
+        </div>
       </nav>
     </header>
   );
