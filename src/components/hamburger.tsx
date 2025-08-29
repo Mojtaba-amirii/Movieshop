@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { useState } from "react";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { GiHamburgerMenu } from "react-icons/gi";
 import { GrClose } from "react-icons/gr";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function HamburgerMenu() {
   const { data: sessionData } = useSession();
