@@ -1,11 +1,14 @@
-import { FlatCompat } from "@eslint/eslintrc";
+import eslint from "@eslint/js";
+import { defineConfig } from "eslint/config";
+
 import tseslint from "typescript-eslint";
+import { FlatCompat } from "@eslint/eslintrc";
 
 const compat = new FlatCompat({
   baseDirectory: import.meta.dirname,
 });
 
-export default tseslint.config(
+export default defineConfig(
   {
     ignores: [".next"],
   },
@@ -13,6 +16,7 @@ export default tseslint.config(
   {
     files: ["**/*.ts", "**/*.tsx"],
     extends: [
+      eslint.configs.recommended,
       ...tseslint.configs.recommended,
       ...tseslint.configs.recommendedTypeChecked,
       ...tseslint.configs.stylisticTypeChecked,
