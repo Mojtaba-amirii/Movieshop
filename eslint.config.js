@@ -1,14 +1,14 @@
-import eslint from "@eslint/js";
-import { defineConfig } from "eslint/config";
+// @ts-check
 
-import tseslint from "typescript-eslint";
+import eslint from "@eslint/js";
 import { FlatCompat } from "@eslint/eslintrc";
+import tseslint from "typescript-eslint";
 
 const compat = new FlatCompat({
   baseDirectory: import.meta.dirname,
 });
 
-export default defineConfig(
+export default tseslint.config(
   {
     ignores: [
       ".next",
