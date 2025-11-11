@@ -1,61 +1,28 @@
-// @ts-check
+import { defineConfig, globalIgnores } from "eslint/config";
+import nextVitals from "eslint-config-next/core-web-vitals";
 
-import eslint from "@eslint/js";
-import { FlatCompat } from "@eslint/eslintrc";
-import tseslint from "typescript-eslint";
-
-const compat = new FlatCompat({
-  baseDirectory: import.meta.dirname,
-});
-
-export default tseslint.config(
+const eslintConfig = defineConfig([
+  ...nextVitals,
+  // Override default ignores of eslint-config-next
+  globalIgnores([
+    // Default ignores of eslint-config-next:
+    ".next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+    "node_modules/**",
+    "coverage/**",
+    "dist/**",
+    "public/**",
+  ]),
   {
-    ignores: [
-      ".next",
-      "node_modules",
-      "out",
-      "dist",
-      "build",
-      "public",
-      "coverage",
-      "next-env.d.ts",
-    ],
-  },
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
-  {
-    files: ["**/*.ts", "**/*.tsx"],
-    extends: [
-      eslint.configs.recommended,
-      ...tseslint.configs.recommended,
-      ...tseslint.configs.recommendedTypeChecked,
-      ...tseslint.configs.stylisticTypeChecked,
-    ],
     rules: {
-      "@typescript-eslint/array-type": "off",
-      "@typescript-eslint/consistent-type-definitions": "off",
-      "@typescript-eslint/consistent-type-imports": [
-        "warn",
-        { prefer: "type-imports", fixStyle: "inline-type-imports" },
-      ],
-      "@typescript-eslint/no-unused-vars": [
-        "warn",
-        { argsIgnorePattern: "^_" },
-      ],
-      "@typescript-eslint/require-await": "off",
-      "@typescript-eslint/no-misused-promises": [
-        "error",
-        { checksVoidReturn: { attributes: false } },
-      ],
+      // Next.js rules
+      "@next/next/no-html-link-for-pages": "off",
+      // React rules
+      "react/no-unescaped-entities": "off",
     },
   },
-  {
-    linterOptions: {
-      reportUnusedDisableDirectives: true,
-    },
-    languageOptions: {
-      parserOptions: {
-        projectService: true,
-      },
-    },
-  },
-);
+]);
+
+export default eslintConfig;

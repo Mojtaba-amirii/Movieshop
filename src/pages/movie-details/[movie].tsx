@@ -34,11 +34,20 @@ export default function MovieDetails() {
     title: router.query.movie as string,
   });
 
+  // Calculate cartDuplicate during render
+  const isMovieInCart = movie
+    ? cartMovies.some((cartMovie) => cartMovie.id === movie.id)
+    : false;
+
+  useEffect(() => {
+    setCartDuplicate(isMovieInCart);
+  }, [isMovieInCart]);
+
   useEffect(() => {
     if (movie) {
       const movieWithPrice = { ...movie, price: Number(router.query.price) };
       if (movieWithPrice.poster) {
-        checkURL(movieWithPrice.poster)
+        void checkURL(movieWithPrice.poster)
           .then((result: boolean) => {
             if (result) {
               setValidatedMovie(movieWithPrice);
@@ -56,13 +65,8 @@ export default function MovieDetails() {
           poster: "/imgs/image-not-found.jpg",
         });
       }
-      if (
-        cartMovies.filter((cartMovie) => cartMovie.id === movie.id).length !== 0
-      ) {
-        setCartDuplicate(true);
-      }
     }
-  }, [movie, cartMovies, router.query.price]);
+  }, [movie, router.query.price]);
 
   const handleAddToCart = () => {
     if (validatedMovie) {

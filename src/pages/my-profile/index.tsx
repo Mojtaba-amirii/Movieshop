@@ -11,27 +11,32 @@ const MAX_IMAGE_SIZE = 1024 * 1024; // 1MB
 export default function MyProfile() {
   const { data: sessionData } = useSession();
 
+  // Initialize with empty state
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
     email: "",
-    phoneNumber: "",
+    phoneNumber: "123-456-7890",
     profilePicture: "",
   });
 
-  useEffect(() => {
-    if (sessionData) {
-      const { name, email = "", image } = sessionData.user;
-      const [firstName = "", lastName = ""] = (name ?? "").split(" ");
-      setUserData({
-        firstName,
-        lastName,
-        email: email ?? "",
-        phoneNumber: "123-456-7890", // Default phone number, update as needed
-        profilePicture: image ?? "",
-      });
-    }
-  }, [sessionData]);
+  // Track previous session to detect changes
+  const [prevSessionId, setPrevSessionId] = useState<string | undefined>();
+
+  // Adjust state during render when session changes
+  if (sessionData?.user?.email !== prevSessionId) {
+    const { name, email = "", image } = sessionData?.user ?? {};
+    const [firstName = "", lastName = ""] = (name ?? "").split(" ");
+
+    setPrevSessionId(sessionData?.user?.email ?? undefined);
+    setUserData({
+      firstName,
+      lastName,
+      email: email ?? "",
+      phoneNumber: "123-456-7890",
+      profilePicture: image ?? "",
+    });
+  }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

@@ -4,15 +4,15 @@ import { GrClose } from "react-icons/gr";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { signIn, signOut, useSession } from "next-auth/react";
 
-export default function HamburgerMenu() {
-  const { data: sessionData } = useSession();
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const Links = () => (
+// Move Links component outside to avoid recreation during render
+function Links({
+  sessionData,
+  toggleMenu,
+}: {
+  sessionData: ReturnType<typeof useSession>["data"];
+  toggleMenu: () => void;
+}) {
+  return (
     <div className="flex flex-col items-start font-semibold">
       <Link href="/" className="p-4 font-semibold" onClick={toggleMenu}>
         Home
@@ -40,6 +40,15 @@ export default function HamburgerMenu() {
       </button>
     </div>
   );
+}
+
+export default function HamburgerMenu() {
+  const { data: sessionData } = useSession();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
     <div className="relative">
@@ -62,7 +71,7 @@ export default function HamburgerMenu() {
               </span>
             </button>
           </div>
-          <Links />
+          <Links sessionData={sessionData} toggleMenu={toggleMenu} />
         </div>
       )}
     </div>

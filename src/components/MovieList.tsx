@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { ShoppingCart, Star } from "lucide-react";
-import React, { type FC, memo, useEffect, useMemo, useState } from "react";
+import React, { type FC, memo, useMemo, useState } from "react";
 
 import { api } from "~/utils/api";
 import { useSelector } from "~/redux/store";
@@ -95,7 +95,7 @@ const MovieList: FC<SearchProps> = ({ search, genre }) => {
       >
         {filteredMovies.map((movie) => (
           <MovieCard
-            key={movie.id}
+            key={`${movie.id}-${movie.poster}`}
             movie={movie}
             isInCart={isInCart(movie.id)}
           />
@@ -111,13 +111,11 @@ interface MovieCardProps {
 }
 
 const MovieCard: FC<MovieCardProps> = memo(({ movie, isInCart }) => {
-  const [imgSrc, setImgSrc] = useState(movie.poster ?? DEFAULT_POSTER);
   const [hasError, setHasError] = useState(false);
 
   const handleImageError = () => {
-    if (!hasError && imgSrc !== DEFAULT_POSTER) {
+    if (!hasError) {
       setHasError(true);
-      setImgSrc(DEFAULT_POSTER);
     }
   };
 
@@ -125,16 +123,13 @@ const MovieCard: FC<MovieCardProps> = memo(({ movie, isInCart }) => {
   const movieRating = movie.imdb?.rating?.toFixed(1) ?? "N/A";
   const genresText = movie.genres.join(", ");
 
-  // Reset error state when movie changes
-  useEffect(() => {
-    setImgSrc(movie.poster ?? DEFAULT_POSTER);
-    setHasError(false);
-  }, [movie.poster]);
+  // Calculate imgSrc during render - no useEffect needed
+  const imgSrc = hasError ? DEFAULT_POSTER : (movie.poster ?? DEFAULT_POSTER);
 
   return (
     <li className="group relative">
       <article
-        className={`relative aspect-[2/3] overflow-hidden rounded-lg bg-gray-100 shadow-md transition-all duration-300 hover:shadow-xl ${
+        className={`relative aspect-2/3 overflow-hidden rounded-lg bg-gray-100 shadow-md transition-all duration-300 hover:shadow-xl ${
           isInCart ? "opacity-70" : ""
         }`}
       >
@@ -160,7 +155,7 @@ const MovieCard: FC<MovieCardProps> = memo(({ movie, isInCart }) => {
             />
 
             {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
 
             {/* Movie info overlay */}
             <div className="absolute right-0 bottom-0 left-0 p-3 text-white">

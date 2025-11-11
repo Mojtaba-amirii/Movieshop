@@ -103,7 +103,6 @@ export default function PaymentPage() {
   const { data: sessionData } = useSession();
   const router = useRouter();
   const cartMovies = useSelector((state) => state.cart.items);
-  const [totalPrice, setTotalPrice] = useState<number>(0);
   const addPurchasedMovie = api.user.addPurchasedMovie.useMutation();
   const dispatch = useDispatch();
 
@@ -113,13 +112,11 @@ export default function PaymentPage() {
     }
   }, [router, sessionData]);
 
-  useEffect(() => {
-    const totalPrice = cartMovies.reduce(
-      (acc: number, movie: Movie) => acc + (movie.price ?? 0),
-      0,
-    );
-    setTotalPrice(totalPrice);
-  }, [cartMovies]);
+  // Calculate totalPrice during render instead of useEffect
+  const totalPrice = cartMovies.reduce(
+    (acc: number, movie: Movie) => acc + (movie.price ?? 0),
+    0,
+  );
 
   const removeMovieFromCart = (movie: Movie) => {
     dispatch(removeItem(movie.id));

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   CheckCircle,
   Home,
@@ -13,6 +13,14 @@ import {
 
 export default function PaymentConfirmation() {
   const [showConfetti, setShowConfetti] = useState(true);
+
+  // Generate sparkle positions once during initial render using useState initializer
+  const [sparklePositions] = useState(() =>
+    Array.from({ length: 12 }, () => ({
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+    })),
+  );
 
   useEffect(() => {
     // Hide confetti effect after 3 seconds
@@ -59,17 +67,17 @@ export default function PaymentConfirmation() {
     },
   };
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 via-white to-green-50 p-4">
+    <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-blue-50 via-white to-green-50 p-4">
       {/* Background Sparkles */}
       {showConfetti && (
         <div className="pointer-events-none fixed inset-0">
-          {Array.from({ length: 12 }, (_, i) => (
+          {sparklePositions.map((position, i) => (
             <motion.div
               key={i}
               className="absolute"
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
+                left: `${position.left}%`,
+                top: `${position.top}%`,
               }}
               animate={{
                 scale: [1, 1.2, 1],

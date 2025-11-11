@@ -1,12 +1,50 @@
 import Image from "next/image";
 import { Star } from "lucide-react";
 import { getSession, useSession } from "next-auth/react";
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import React, { useEffect, useState, useMemo, useCallback, memo } from "react";
 
 import { api } from "~/utils/api";
 import type { Movie } from "~/types/types";
 import SearchBar from "~/components/Search";
 import type { GetServerSideProps } from "next";
+
+// MovieCard component to avoid re-generating random rating on each render
+const MovieCard = memo(({ movie }: { movie: Movie }) => {
+  // Generate rating once per component using useState initializer
+  const [rating] = useState(() => (Math.random() * 2 + 3).toFixed(1));
+
+  return (
+    <li
+      key={movie.id}
+      className="relative transform overflow-hidden rounded-lg bg-gray-800 shadow-lg transition-transform hover:scale-105"
+    >
+      <div className="aspect-w-2 aspect-h-3">
+        <Image
+          src={movie.poster ?? "/imgs/image-not-found.jpg"}
+          alt={movie.title}
+          width={600}
+          height={900}
+          priority
+          className="object-cover"
+        />
+      </div>
+      <div className="absolute right-0 bottom-0 left-0 bg-linear-to-t from-black to-transparent p-4">
+        <h3 className="mb-1 text-lg font-semibold text-white">{movie.title}</h3>
+        <h4 className="mb-1 text-sm text-gray-400">
+          {movie.genres.join(", ")}
+        </h4>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <Star className="mr-1 h-4 w-4 text-yellow-400" />
+            <span className="text-sm text-gray-400">{rating}</span>
+          </div>
+        </div>
+      </div>
+    </li>
+  );
+});
+
+MovieCard.displayName = "MovieCard";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
@@ -80,6 +118,8 @@ export default function MyMovies() {
 
   useEffect(() => {
     if (movies) {
+      // This is a valid use of Effect - validating external URLs (network requests)
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       validateMovies(movies).catch((error) => {
         console.error("Error validating movies:", error);
       });
@@ -106,37 +146,7 @@ export default function MyMovies() {
 
       <ul className="my-8 grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
         {filteredMovies.map((movie) => (
-          <li
-            key={movie.id}
-            className="relative transform overflow-hidden rounded-lg bg-gray-800 shadow-lg transition-transform hover:scale-105"
-          >
-            <div className="aspect-w-2 aspect-h-3">
-              <Image
-                src={movie.poster ?? "/imgs/image-not-found.jpg"}
-                alt={movie.title}
-                width={600}
-                height={900}
-                priority
-                className="object-cover"
-              />
-            </div>
-            <div className="absolute right-0 bottom-0 left-0 bg-linear-to-t from-black to-transparent p-4">
-              <h3 className="mb-1 text-lg font-semibold text-white">
-                {movie.title}
-              </h3>
-              <h4 className="mb-1 text-sm text-gray-400">
-                {movie.genres.join(", ")}
-              </h4>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <Star className="mr-1 h-4 w-4 text-yellow-400" />
-                  <span className="text-sm text-gray-400">
-                    {(Math.random() * 2 + 3).toFixed(1)}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </li>
+          <MovieCard key={movie.id} movie={movie} />
         ))}
       </ul>
     </div>
