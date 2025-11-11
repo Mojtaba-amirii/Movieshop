@@ -1,4 +1,4 @@
-import React, {
+import {
   createContext,
   useContext,
   useState,
@@ -29,11 +29,7 @@ export const AnimationProvider: FC<{ children: ReactNode }> = ({
     [animationTriggered],
   );
 
-  return (
-    <AnimationContext.Provider value={value}>
-      {children}
-    </AnimationContext.Provider>
-  );
+  return <AnimationContext value={value}>{children}</AnimationContext>;
 };
 
 export const useAnimation = () => {
