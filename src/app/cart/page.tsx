@@ -1,11 +1,12 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Trash2 } from "lucide-react";
-import { removeItem, clearCart } from "~/redux/cartSlice";
-import { useDispatch, useSelector } from "~/redux/store";
+import { useRouter } from "next/navigation";
+
 import type { ReduxState } from "~/redux/store";
+import { useDispatch, useSelector } from "~/redux/store";
+import { removeItem, clearCart } from "~/redux/cartSlice";
 
 export default function CartPage() {
   const router = useRouter();
@@ -38,6 +39,7 @@ export default function CartPage() {
           Add some movies to your cart to get started!
         </p>
         <button
+          type="button"
           onClick={() => router.push("/")}
           className="rounded-md bg-blue-500 px-6 py-3 text-white hover:bg-blue-600"
         >
@@ -52,6 +54,7 @@ export default function CartPage() {
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-3xl font-bold">Shopping Cart</h1>
         <button
+          type="button"
           onClick={handleClearCart}
           className="text-red-500 hover:text-red-700"
         >
@@ -72,6 +75,7 @@ export default function CartPage() {
                     src={item.poster ?? "/imgs/image-not-found.jpg"}
                     alt={item.title}
                     fill
+                    sizes="96px"
                     className="rounded object-cover"
                   />
                 </div>
@@ -87,6 +91,7 @@ export default function CartPage() {
                       {item.price ?? 0} kr
                     </span>
                     <button
+                      type="button"
                       onClick={() => handleRemoveItem(item.id)}
                       className="text-red-500 hover:text-red-700"
                       title="Remove from cart"
@@ -115,12 +120,14 @@ export default function CartPage() {
               <span>{totalPrice.toFixed(2)} kr</span>
             </div>
             <button
+              type="button"
               onClick={handleCheckout}
               className="mt-6 w-full rounded-md bg-blue-500 py-3 text-white hover:bg-blue-600"
             >
               Proceed to Checkout
             </button>
             <button
+              type="button"
               onClick={() => router.push("/")}
               className="mt-2 w-full rounded-md border py-3 hover:bg-gray-50"
             >

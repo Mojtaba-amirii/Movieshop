@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "next build",
+    "check": "eslint . && tsc --noEmit",
     "db:generate": "prisma migrate dev",
     "db:migrate": "prisma migrate deploy",
     "db:push": "prisma db push",
@@ -13,14 +14,14 @@
     "postinstall": "prisma generate",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "check": "eslint . && tsc --noEmit",
     "start": "next start",
+    "preview": "next build && next start",
     "typecheck": "tsc --noEmit",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
     "format:write": "prettier --write \"**/*.{ts,tsx,js,jsx,mdx}\" --cache"
   },
   "dependencies": {
-    "@next-auth/prisma-adapter": "^1.0.7",
+    "@auth/prisma-adapter": "^2.7.2",
     "@prisma/client": "^6.19.0",
     "@reduxjs/toolkit": "^2.10.1",
     "@stripe/react-stripe-js": "^5.3.0",
@@ -39,11 +40,12 @@
     "helmet": "^8.1.0",
     "lucide-react": "^0.554.0",
     "next": "^16.0.3",
-    "next-auth": "^4.24.13",
+    "next-auth": "^5.0.0-beta.29",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-icons": "^5.5.0",
     "react-redux": "^9.2.0",
+    "server-only": "^0.0.1",
     "stripe": "^19.3.1",
     "superjson": "^2.2.5",
     "tailwindcss-animatecss": "^3.0.5",
@@ -70,7 +72,7 @@
     "typescript-eslint": "^8.46.4"
   },
   "ct3aMetadata": {
-    "initVersion": "7.38.1"
+    "initVersion": "7.40.0"
   },
-  "packageManager": "npm@11.3.0"
+  "packageManager": "npm@11.6.2"
 }
