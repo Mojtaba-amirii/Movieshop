@@ -3,9 +3,9 @@
  * for Docker builds.
  */
 import "./src/env.js";
+import type { NextConfig } from "next";
 
-/** @type {import("next").NextConfig} */
-const config = {
+const config: NextConfig = {
   reactStrictMode: true,
 
   images: {
@@ -52,11 +52,6 @@ const config = {
       },
     ];
   },
-
-  /**
-   * App Router is now enabled - i18n moved to middleware/app directory
-   * @see https://nextjs.org/docs/app/guides/internationalization
-   */
 };
 
 export default config;

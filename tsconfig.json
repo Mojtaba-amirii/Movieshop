@@ -32,7 +32,7 @@
     }
   },
   "include": [
-    "eslint.config.js",
+    "eslint.config.mjs",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
@@ -40,7 +40,8 @@
     "**/*.js",
     ".next/types/**/*.ts",
     "prettier.config.mjs",
-    ".next/dev/types/**/*.ts"
+    ".next/dev/types/**/*.ts",
+    "postcss.config.mjs"
   ],
   "exclude": ["node_modules"]
 }
