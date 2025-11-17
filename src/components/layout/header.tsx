@@ -4,7 +4,14 @@ import Link from "next/link";
 import "tailwindcss-animatecss";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
-import { LogIn, LogOut, ShoppingBasket } from "lucide-react";
+import {
+  LogIn,
+  LogOut,
+  ShoppingBasket,
+  Film,
+  User,
+  Library,
+} from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 import HamburgerMenu from "../hamburger";
@@ -17,20 +24,27 @@ export default function Navar() {
   const cartItemsCount = useSelector(selectCartItemsCount);
 
   return (
-    <header className="sticky top-0 z-40 bg-white p-6 shadow-sm 2xl:container 2xl:mx-auto 2xl:shadow-none">
-      <nav className="sticky flex w-full items-center justify-between">
+    <header className="sticky top-0 z-50 border-b border-gray-200/50 bg-white/80 shadow-sm backdrop-blur-lg 2xl:container 2xl:mx-auto">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <div className="flex items-center gap-10">
-          <Link href="/" className="text-2xl font-bold">
-            <h1>MOVIESHOP</h1>
+          <Link href="/" className="group flex items-center gap-2">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-blue-600 to-purple-600 shadow-lg transition-transform duration-300 group-hover:scale-110">
+              <Film className="h-6 w-6 text-white" />
+            </div>
+            <h1 className="bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-2xl font-extrabold text-transparent">
+              MOVIESHOP
+            </h1>
           </Link>
+
           <div className="text-xl lg:hidden">
             <HamburgerMenu />
           </div>
+
           <div className="hidden lg:block">
-            <ul className="flex font-bold">
+            <ul className="flex items-center gap-1">
               <li>
                 <button
-                  className="flex cursor-pointer items-center gap-1 border-r-2 border-black pr-4"
+                  className="flex items-center gap-2 rounded-lg px-4 py-2 font-semibold text-gray-700 transition-all duration-200 hover:bg-gray-100"
                   type="button"
                   onClick={
                     sessionData ? () => void signOut() : () => void signIn()
@@ -38,11 +52,13 @@ export default function Navar() {
                 >
                   {sessionData ? (
                     <>
-                      Sign out <LogOut className="text-red-500" />
+                      <span>Sign out</span>
+                      <LogOut className="h-4 w-4 text-red-500" />
                     </>
                   ) : (
                     <>
-                      Sign in <LogIn className="text-green-400" />
+                      <span>Sign in</span>
+                      <LogIn className="h-4 w-4 text-green-500" />
                     </>
                   )}
                 </button>
@@ -52,43 +68,50 @@ export default function Navar() {
                   <li>
                     <Link
                       href="/my-profile"
-                      className="border-r-2 border-black px-4 font-bold"
+                      className="flex items-center gap-2 rounded-lg px-4 py-2 font-semibold text-gray-700 transition-all duration-200 hover:bg-gray-100"
                     >
-                      My Profile
+                      <User className="h-4 w-4" />
+                      <span>My Profile</span>
                     </Link>
                   </li>
                   <li>
                     <Link
                       href="/my-movies"
-                      className="border-r-2 border-black px-4 font-bold"
+                      className="flex items-center gap-2 rounded-lg px-4 py-2 font-semibold text-gray-700 transition-all duration-200 hover:bg-gray-100"
                     >
-                      My Movies
+                      <Library className="h-4 w-4" />
+                      <span>My Movies</span>
                     </Link>
                   </li>
                 </>
-              ) : (
-                ""
-              )}
+              ) : null}
               <li>
-                <Link href="/about" className="pl-4 font-bold">
+                <Link
+                  href="/about"
+                  className="flex items-center gap-2 rounded-lg px-4 py-2 font-semibold text-gray-700 transition-all duration-200 hover:bg-gray-100"
+                >
                   About
                 </Link>
               </li>
             </ul>
           </div>
         </div>
-        <div
-          className={`text-2xl ${animationTriggered && "animate-bounce transition-transform duration-200 ease-in-out"}`}
-        >
+
+        <div className={`${animationTriggered && "animate-bounce"}`}>
           {sessionData && (
-            <Link href="/cart" title="Shopping Basket" className="relative">
+            <Link
+              href="/cart"
+              title="Shopping Basket"
+              className="group relative"
+            >
               <motion.div
                 animate={animationTriggered ? { y: [0, -10, 0] } : {}}
                 transition={{ duration: 0.5 }}
+                className="flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-blue-600 to-purple-600 shadow-lg transition-all duration-300 group-hover:scale-110 hover:shadow-xl"
               >
-                <ShoppingBasket size={24} />
+                <ShoppingBasket className="h-5 w-5 text-white" />
                 {cartItemsCount > 0 && (
-                  <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-green-500 text-xs text-white">
+                  <span className="absolute -top-1 -right-1 flex h-6 w-6 animate-pulse items-center justify-center rounded-full bg-green-500 text-xs font-bold text-white shadow-lg ring-2 ring-white">
                     {cartItemsCount}
                   </span>
                 )}

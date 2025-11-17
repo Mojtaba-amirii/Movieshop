@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Trash2 } from "lucide-react";
+import { Trash2, ShoppingBasket } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import type { ReduxState } from "~/redux/store";
@@ -33,30 +33,42 @@ export default function CartPage() {
 
   if (cartItems.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-12 text-center">
-        <h1 className="mb-4 text-3xl font-bold">Your Cart is Empty</h1>
-        <p className="mb-8 text-gray-600">
-          Add some movies to your cart to get started!
-        </p>
-        <button
-          type="button"
-          onClick={() => router.push("/")}
-          className="rounded-md bg-blue-500 px-6 py-3 text-white hover:bg-blue-600"
-        >
-          Browse Movies
-        </button>
+      <div className="container mx-auto px-4 py-12">
+        <div className="animate-scale-in mx-auto max-w-md text-center">
+          <div className="mb-6 inline-flex h-24 w-24 items-center justify-center rounded-full bg-linear-to-br from-blue-100 to-purple-100">
+            <ShoppingBasket className="h-12 w-12 text-gray-400" />
+          </div>
+          <h1 className="mb-4 text-3xl font-bold text-gray-900">
+            Your Cart is Empty
+          </h1>
+          <p className="mb-8 text-gray-600">
+            Add some movies to your cart to get started!
+          </p>
+          <button
+            type="button"
+            onClick={() => router.push("/")}
+            className="inline-flex items-center gap-2 rounded-xl bg-linear-to-r from-blue-600 to-purple-600 px-8 py-4 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+          >
+            Browse Movies
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Shopping Cart</h1>
+    <div className="animate-slide-up container mx-auto px-4 py-8">
+      <div className="mb-8 flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Shopping Cart</h1>
+          <p className="mt-1 text-gray-600">
+            {cartItems.length} items in your cart
+          </p>
+        </div>
         <button
           type="button"
           onClick={handleClearCart}
-          className="text-red-500 hover:text-red-700"
+          className="rounded-lg px-4 py-2 text-sm font-semibold text-red-600 transition-colors duration-200 hover:bg-red-50"
         >
           Clear Cart
         </button>
@@ -68,21 +80,23 @@ export default function CartPage() {
             {cartItems.map((item) => (
               <div
                 key={item.id}
-                className="flex gap-4 rounded-lg border p-4 shadow-sm"
+                className="group flex gap-4 rounded-2xl border-2 border-gray-200 bg-white p-4 shadow-sm transition-all duration-300 hover:border-blue-300 hover:shadow-lg"
               >
-                <div className="relative h-32 w-24 shrink-0">
+                <div className="relative h-32 w-24 shrink-0 overflow-hidden rounded-xl">
                   <Image
                     src={item.poster ?? "/imgs/image-not-found.jpg"}
                     alt={item.title}
                     fill
                     sizes="96px"
-                    className="rounded object-cover"
+                    className="object-cover transition-transform duration-300 group-hover:scale-110"
                   />
                 </div>
                 <div className="flex flex-1 flex-col justify-between">
                   <div>
-                    <h3 className="text-lg font-semibold">{item.title}</h3>
-                    <p className="text-sm text-gray-600">
+                    <h3 className="text-lg font-bold text-gray-900">
+                      {item.title}
+                    </h3>
+                    <p className="mt-1 text-sm text-gray-600">
                       {item.genres.slice(0, 3).join(", ")}
                     </p>
                   </div>
@@ -93,7 +107,7 @@ export default function CartPage() {
                     <button
                       type="button"
                       onClick={() => handleRemoveItem(item.id)}
-                      className="text-red-500 hover:text-red-700"
+                      className="rounded-lg p-2 text-red-500 transition-colors duration-200 hover:bg-red-50"
                       title="Remove from cart"
                       aria-label="Remove from cart"
                     >
@@ -107,29 +121,33 @@ export default function CartPage() {
         </div>
 
         <div className="lg:col-span-1">
-          <div className="rounded-lg border p-6 shadow-sm">
-            <h2 className="mb-4 text-xl font-bold">Order Summary</h2>
-            <div className="space-y-2 border-b pb-4">
-              <div className="flex justify-between">
+          <div className="sticky top-24 rounded-2xl border-2 border-gray-200 bg-white p-6 shadow-lg">
+            <h2 className="mb-6 text-xl font-bold text-gray-900">
+              Order Summary
+            </h2>
+            <div className="space-y-3 border-b-2 border-gray-200 pb-4">
+              <div className="flex justify-between text-gray-600">
                 <span>Items ({cartItems.length})</span>
-                <span>{totalPrice.toFixed(2)} kr</span>
+                <span className="font-semibold">
+                  {totalPrice.toFixed(2)} kr
+                </span>
               </div>
             </div>
-            <div className="mt-4 flex justify-between text-xl font-bold">
+            <div className="mt-4 flex justify-between text-2xl font-bold text-gray-900">
               <span>Total</span>
-              <span>{totalPrice.toFixed(2)} kr</span>
+              <span className="text-green-600">{totalPrice.toFixed(2)} kr</span>
             </div>
             <button
               type="button"
               onClick={handleCheckout}
-              className="mt-6 w-full rounded-md bg-blue-500 py-3 text-white hover:bg-blue-600"
+              className="mt-6 w-full rounded-xl bg-linear-to-r from-blue-600 to-purple-600 py-4 font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
             >
               Proceed to Checkout
             </button>
             <button
               type="button"
               onClick={() => router.push("/")}
-              className="mt-2 w-full rounded-md border py-3 hover:bg-gray-50"
+              className="mt-3 w-full rounded-xl border-2 border-gray-200 py-4 font-semibold text-gray-700 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50"
             >
               Continue Shopping
             </button>
