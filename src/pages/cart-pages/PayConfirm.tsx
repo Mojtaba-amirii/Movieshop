@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
-import React, { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import {
   CheckCircle,
   Home,

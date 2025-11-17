@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Star } from "lucide-react";
 import { getSession, useSession } from "next-auth/react";
-import React, { useEffect, useState, useMemo, useCallback, memo } from "react";
+import { useEffect, useState, useMemo, useCallback, memo } from "react";
 
 import { api } from "~/utils/api";
 import type { Movie } from "~/types/types";

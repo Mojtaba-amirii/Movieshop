@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSession, getSession } from "next-auth/react";
 import { Edit2, Mail, Phone, Camera } from "lucide-react";
 

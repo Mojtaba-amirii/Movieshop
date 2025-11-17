@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import SearchBar from "~/components/Search";
 
 export default function Admin() {

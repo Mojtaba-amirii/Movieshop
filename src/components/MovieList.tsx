@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { ShoppingCart, Star } from "lucide-react";
-import React, { type FC, memo, useMemo, useState } from "react";
+import { type FC, memo, useMemo, useState } from "react";
 
 import { api } from "~/utils/api";
 import { useSelector } from "~/redux/store";

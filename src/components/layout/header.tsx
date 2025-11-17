@@ -1,4 +1,3 @@
-import React from "react";
 import Link from "next/link";
 import "tailwindcss-animatecss";
 import { motion } from "framer-motion";

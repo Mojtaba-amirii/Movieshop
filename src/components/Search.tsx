@@ -1,4 +1,4 @@
-import React, {
+import {
   type SetStateAction,
   type Dispatch,
   type ChangeEvent,

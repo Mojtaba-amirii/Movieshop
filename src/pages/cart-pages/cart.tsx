@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import React, { useMemo, useCallback } from "react";
+import { useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
@@ -73,7 +73,7 @@ export default function ShoppingCart() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col items-center justify-center rounded-xl bg-gradient-to-br from-gray-50 to-gray-100 p-12 text-center shadow-lg"
+          className="flex flex-col items-center justify-center rounded-xl bg-linear-to-br from-gray-50 to-gray-100 p-12 text-center shadow-lg"
         >
           <ShoppingBag className="mb-6 h-20 w-20 text-gray-400" />
           <h2 className="mb-4 text-2xl font-semibold text-gray-700">
@@ -102,6 +102,7 @@ export default function ShoppingCart() {
                 Cart Items
               </h2>
               <button
+                type="button"
                 onClick={handleClearCart}
                 className="flex items-center gap-2 rounded-lg px-4 py-2 text-red-600 transition-colors hover:bg-red-50"
               >
@@ -143,16 +144,18 @@ export default function ShoppingCart() {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <button
+                            type="button"
                             onClick={() => handleRemoveItem(movie.id)}
                             className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 transition-colors hover:bg-gray-50"
                             aria-label="Decrease quantity"
                           >
                             <Minus className="h-4 w-4" />
                           </button>
-                          <span className="min-w-[2rem] text-center font-medium">
+                          <span className="min-w-8 text-center font-medium">
                             {movie.quantity}
                           </span>
                           <button
+                            type="button"
                             onClick={() => handleAddItem(movie)}
                             className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 transition-colors hover:bg-gray-50"
                             aria-label="Increase quantity"
@@ -175,6 +178,7 @@ export default function ShoppingCart() {
                     </div>
 
                     <button
+                      type="button"
                       onClick={() => handleRemoveItem(movie.id)}
                       className="rounded-full p-2 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500"
                       title="Remove from cart"

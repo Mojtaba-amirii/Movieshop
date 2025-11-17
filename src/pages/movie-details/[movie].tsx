@@ -1,10 +1,10 @@
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { ArrowBigRight, ArrowLeft, Star } from "lucide-react";
 
 import { api } from "~/utils/api";
+import { useRouter } from "next/router";
 import type { Movie } from "~/types/types";
 import { addItem } from "~/redux/cartSlice";
 import { useDispatch, useSelector } from "~/redux/store";

@@ -4,7 +4,6 @@ import { GrClose } from "react-icons/gr";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { signIn, signOut, useSession } from "next-auth/react";
 
-// Move Links component outside to avoid recreation during render
 function Links({
   sessionData,
   toggleMenu,
