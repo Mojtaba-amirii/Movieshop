@@ -20,14 +20,14 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
-      <body>
+    <html lang="en" className={`${GeistSans.variable} h-full`}>
+      <body className="flex min-h-screen flex-col">
         <TRPCReactProvider>
           <SessionProvider>
             <ReduxProvider>
               <AnimationProvider>
                 <Navbar />
-                <main className="container mx-auto p-4">{children}</main>
+                <main className="container mx-auto flex-1 p-4">{children}</main>
                 <Footer />
               </AnimationProvider>
             </ReduxProvider>

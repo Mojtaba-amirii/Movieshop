@@ -81,11 +81,7 @@ export default function Navar() {
           className={`text-2xl ${animationTriggered && "animate-bounce transition-transform duration-200 ease-in-out"}`}
         >
           {sessionData && (
-            <Link
-              href="/cart-pages/cart"
-              title="Shopping Basket"
-              className="relative"
-            >
+            <Link href="/cart" title="Shopping Basket" className="relative">
               <motion.div
                 animate={animationTriggered ? { y: [0, -10, 0] } : {}}
                 transition={{ duration: 0.5 }}
