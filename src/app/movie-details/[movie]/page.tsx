@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { ArrowBigRight, ArrowLeft, Star } from "lucide-react";
+import { useState, useEffect, use } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { ArrowBigRight, ArrowLeft, Star } from "lucide-react";
 
 import { api } from "~/trpc/react";
 import type { Movie } from "~/types/types";
@@ -26,8 +26,9 @@ async function checkURL(url: string): Promise<boolean> {
 export default function MovieDetailsPage({
   params,
 }: {
-  params: { movie: string };
+  params: Promise<{ movie: string }>;
 }) {
+  const resolvedParams = use(params);
   const [validatedMovie, setValidatedMovie] = useState<Movie>();
   const [cartDuplicate, setCartDuplicate] = useState(false);
   const cartMovies = useSelector((state) => state.cart.items);
@@ -37,7 +38,7 @@ export default function MovieDetailsPage({
   const searchParams = useSearchParams();
   const { data: sessionData } = useSession();
 
-  const movieTitle = decodeURIComponent(params.movie);
+  const movieTitle = decodeURIComponent(resolvedParams.movie);
   const price = searchParams?.get("price");
 
   const { data: movie, isLoading } = api.movies.findByTitle.useQuery({
@@ -54,8 +55,11 @@ export default function MovieDetailsPage({
   }, [isMovieInCart]);
 
   useEffect(() => {
-    if (movie && price) {
-      const movieWithPrice = { ...movie, price: Number(price) };
+    if (movie) {
+      const movieWithPrice = {
+        ...movie,
+        price: price ? Number(price) : (movie.price ?? 0),
+      };
       if (movieWithPrice.poster) {
         void checkURL(movieWithPrice.poster)
           .then((result: boolean) => {

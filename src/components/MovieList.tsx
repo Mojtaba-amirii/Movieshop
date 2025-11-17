@@ -134,11 +134,7 @@ const MovieCard: FC<MovieCardProps> = memo(({ movie, isInCart }) => {
         }`}
       >
         <Link
-          href={{
-            pathname: "/movie-details/[movie]",
-            query: { price: moviePrice },
-          }}
-          as={`/movie-details/${movie.title}`}
+          href={`/movie-details/${encodeURIComponent(movie.title)}?price=${moviePrice}`}
           className="block h-full w-full focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
           aria-label={`View details for ${movie.title}`}
         >
