@@ -1,12 +1,14 @@
+"use client";
+
 import Image from "next/image";
 import { Star } from "lucide-react";
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useEffect, useState, useMemo, useCallback, memo } from "react";
+import { redirect } from "next/navigation";
 
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import type { Movie } from "~/types/types";
 import SearchBar from "~/components/Search";
-import type { GetServerSideProps } from "next";
 
 // MovieCard component to avoid re-generating random rating on each render
 const MovieCard = memo(({ movie }: { movie: Movie }) => {
@@ -46,23 +48,6 @@ const MovieCard = memo(({ movie }: { movie: Movie }) => {
 
 MovieCard.displayName = "MovieCard";
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: { session },
-  };
-};
-
 async function checkURL(url: string): Promise<boolean> {
   try {
     const response = await fetch(url);
@@ -73,11 +58,16 @@ async function checkURL(url: string): Promise<boolean> {
   }
 }
 
-export default function MyMovies() {
-  const { data: sessionData } = useSession();
+export default function MyMoviesPage() {
+  const { data: sessionData, status } = useSession();
   const [validatedMovies, setValidatedMovies] = useState<Movie[]>([]);
   const [search, setSearch] = useState<string | undefined>();
   const [genre, setGenre] = useState<string | undefined>();
+
+  // Redirect if not authenticated
+  if (status === "unauthenticated") {
+    redirect("/");
+  }
 
   const myMoviesIds = api.user.getMyMovies.useQuery(
     { userId: sessionData?.user?.id ?? "" },
@@ -95,36 +85,41 @@ export default function MyMovies() {
     },
   );
 
-  const validateMovies = useCallback(async (movies: Movie[]) => {
-    try {
-      const updatedMovies = await Promise.all(
-        movies.map(async (movie) => {
-          const movieWithPrice = { ...movie, price: movie.price ?? 0 };
-          if (movieWithPrice.poster) {
-            const isValid = await checkURL(movieWithPrice.poster);
-            return isValid
-              ? movieWithPrice
-              : { ...movieWithPrice, poster: "/imgs/image-not-found.jpg" };
-          } else {
-            return { ...movieWithPrice, poster: "/imgs/image-not-found.jpg" };
-          }
-        }),
-      );
-      setValidatedMovies(updatedMovies);
-    } catch (error) {
-      console.error("Error validating movies:", error);
-    }
-  }, []);
-
   useEffect(() => {
-    if (movies) {
-      // This is a valid use of Effect - validating external URLs (network requests)
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      validateMovies(movies).catch((error) => {
+    if (!movies) return;
+
+    let cancelled = false;
+
+    const validateMovies = async () => {
+      try {
+        const updatedMovies = await Promise.all(
+          movies.map(async (movie) => {
+            const movieWithPrice = { ...movie, price: movie.price ?? 0 };
+            if (movieWithPrice.poster) {
+              const isValid = await checkURL(movieWithPrice.poster);
+              return isValid
+                ? movieWithPrice
+                : { ...movieWithPrice, poster: "/imgs/image-not-found.jpg" };
+            } else {
+              return { ...movieWithPrice, poster: "/imgs/image-not-found.jpg" };
+            }
+          }),
+        );
+
+        if (!cancelled) {
+          setValidatedMovies(updatedMovies);
+        }
+      } catch (error) {
         console.error("Error validating movies:", error);
-      });
-    }
-  }, [movies, validateMovies]);
+      }
+    };
+
+    validateMovies().catch(console.error);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [movies]);
 
   const filteredMovies = useMemo(() => {
     return validatedMovies.filter((movie) => {
@@ -137,6 +132,14 @@ export default function MyMovies() {
       return isSearchMatch && isGenreMatch;
     });
   }, [validatedMovies, search, genre]);
+
+  if (status === "loading") {
+    return (
+      <div className="container mx-auto my-8 px-4">
+        <h1 className="mb-6 text-center text-3xl font-bold">Loading...</h1>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto my-8 px-4">

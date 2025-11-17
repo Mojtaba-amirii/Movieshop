@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { motion } from "framer-motion";
 import { Film, Star, Users, Globe } from "lucide-react";
@@ -22,7 +24,7 @@ const AboutSection = ({
   </motion.div>
 );
 
-export default function About() {
+export default function AboutPage() {
   return (
     <section className="container mx-auto px-4 py-12">
       <motion.section

@@ -1,28 +1,136 @@
-# Create T3 App
+# 🎬 Movie Shop - Next.js 16 App Router
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+A modern movie e-commerce platform built with the T3 Stack and Next.js 16 App Router.
 
-## What's next? How do I make an app with this?
+## 🚀 Migration Complete!
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+This project has been **successfully migrated** from Next.js Pages Router to **Next.js 16 App Router** following the latest T3 Stack conventions.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+### 📚 Migration Documentation
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+- **[MIGRATION_SUMMARY.md](./MIGRATION_SUMMARY.md)** ⭐ Start here! Quick overview of changes
+- **[MIGRATION_GUIDE.md](./MIGRATION_GUIDE.md)** - Detailed migration documentation
+- **[QUICK_REFERENCE.md](./QUICK_REFERENCE.md)** - Code patterns and examples
 
-## Learn More
+### ✨ Key Features
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+- ✅ **Next.js 16** with App Router
+- ✅ **React 19** features built-in
+- ✅ **Turbopack** as default bundler
+- ✅ **TypeScript** for type safety
+- ✅ **tRPC** for end-to-end type-safe APIs
+- ✅ **Prisma** with MongoDB
+- ✅ **NextAuth.js** for authentication
+- ✅ **Tailwind CSS v4** for styling
+- ✅ **Redux Toolkit** for state management
+- ✅ **Stripe** for payments
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## 🚀 Getting Started
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+### Installation
 
-## How do I deploy this?
+```bash
+# Install dependencies
+npm install
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your configuration
+
+# Push database schema
+npm run db:push
+
+# Run development server
+npm run dev
+```
+
+Visit [http://localhost:3000](http://localhost:3000)
+
+### Available Scripts
+
+```bash
+npm run dev          # Start dev server with Turbopack
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+npm run typecheck    # Type checking
+npm run db:studio    # Open Prisma Studio
+```
+
+## 📁 Project Structure
+
+```
+src/
+├── app/                          # Next.js App Router (NEW!)
+│   ├── layout.tsx               # Root layout
+│   ├── page.tsx                 # Home page
+│   ├── about/page.tsx
+│   ├── my-movies/page.tsx
+│   ├── movie-details/[movie]/page.tsx
+│   └── api/                     # API Route Handlers
+│       ├── auth/[...nextauth]/route.ts
+│       └── trpc/[trpc]/route.ts
+├── components/
+│   ├── layout/                  # Layout components
+│   └── providers/               # Client providers (NEW!)
+├── trpc/                        # tRPC config (NEW!)
+│   ├── react.tsx               # Client hooks
+│   └── server.ts               # Server calls
+└── server/                      # Server-side code
+```
+
+## 🔧 Technologies
+
+- [Next.js 16](https://nextjs.org/) - React framework
+- [React 19](https://react.dev/) - UI library
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
+- [tRPC](https://trpc.io/) - Type-safe APIs
+- [Prisma](https://www.prisma.io/) - Database ORM
+- [NextAuth.js](https://next-auth.js.org/) - Authentication
+- [Tailwind CSS v4](https://tailwindcss.com/) - Styling
+- [Redux Toolkit](https://redux-toolkit.js.org/) - State management
+
+## 🎯 Key Changes from Pages Router
+
+| Before                         | After                              |
+| ------------------------------ | ---------------------------------- |
+| `pages/about.tsx`              | `app/about/page.tsx`               |
+| `pages/api/hello.ts`           | `app/api/hello/route.ts`           |
+| `getServerSideProps`           | Server Components                  |
+| `useRouter` from `next/router` | `useRouter` from `next/navigation` |
+| `<Head>`                       | `export const metadata`            |
+
+See [MIGRATION_GUIDE.md](./MIGRATION_GUIDE.md) for details.
+
+## 📦 Deployment
+
+### Vercel (Recommended)
+
+```bash
+vercel
+```
+
+### Docker
+
+```bash
+docker build -t movie-shop .
+docker run -p 3000:3000 movie-shop
+```
+
+See [deployment guides](https://create.t3.gg/en/deployment/vercel) for more info.
+
+## 📚 Learn More
+
+- [T3 Stack Documentation](https://create.t3.gg/)
+- [Next.js 16 Docs](https://nextjs.org/docs)
+- [App Router Migration](https://nextjs.org/docs/app/guides/migrating/app-router-migration)
+- [tRPC Documentation](https://trpc.io/docs)
+
+## 🤝 Contributing
+
+Built with [create-t3-app](https://create.t3.gg/) and migrated to Next.js 16 App Router.
+
+---
+
+**Version:** 2.0.0 (App Router)  
+**Status:** ✅ Migration Complete

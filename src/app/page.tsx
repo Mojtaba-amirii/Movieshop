@@ -1,19 +1,17 @@
+"use client";
+
 import { useState } from "react";
 import SearchBar from "~/components/Search";
+import MovieList from "~/components/MovieList";
 
-export default function Admin() {
+export default function HomePage() {
   const [search, setSearch] = useState<string | undefined>();
   const [genre, setGenre] = useState<string | undefined>();
 
   return (
-    <div className="flex flex-col items-center">
-      <h1 className="my-10 text-center text-5xl">Products</h1>
-
+    <>
       <SearchBar setSearch={setSearch} setGenre={setGenre} />
-
-      <div>{search}</div>
-
-      <p>{genre}</p>
-    </div>
+      <MovieList search={search} genre={genre} />
+    </>
   );
 }

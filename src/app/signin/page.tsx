@@ -1,3 +1,5 @@
+"use client";
+
 export default function SignInPage() {
   return (
     <div className="my-a mx-auto w-96 rounded-3xl bg-gray-50 p-8 shadow-md">

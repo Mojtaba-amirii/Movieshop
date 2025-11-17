@@ -1,15 +1,16 @@
+"use client";
+
 import Image from "next/image";
 import { motion } from "framer-motion";
 import React, { useState } from "react";
-import { useSession, getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { Edit2, Mail, Phone, Camera } from "lucide-react";
-
-import type { GetServerSideProps } from "next";
+import { redirect } from "next/navigation";
 
 const MAX_IMAGE_SIZE = 1024 * 1024; // 1MB
 
-export default function MyProfile() {
-  const { data: sessionData } = useSession();
+export default function MyProfilePage() {
+  const { data: sessionData, status } = useSession();
 
   // Initialize with empty state
   const [userData, setUserData] = useState({
@@ -22,6 +23,11 @@ export default function MyProfile() {
 
   // Track previous session to detect changes
   const [prevSessionId, setPrevSessionId] = useState<string | undefined>();
+
+  // Redirect if not authenticated
+  if (status === "unauthenticated") {
+    redirect("/");
+  }
 
   // Adjust state during render when session changes
   if (sessionData?.user?.email !== prevSessionId) {
@@ -64,6 +70,14 @@ export default function MyProfile() {
       reader.readAsDataURL(file);
     }
   };
+
+  if (status === "loading") {
+    return (
+      <section className="px-4 py-8">
+        <h1 className="mb-8 text-center text-3xl font-bold">Loading...</h1>
+      </section>
+    );
+  }
 
   return (
     <motion.section
@@ -153,20 +167,3 @@ export default function MyProfile() {
     </motion.section>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: { session },
-  };
-};

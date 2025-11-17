@@ -1,10 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { ArrowBigRight, ArrowLeft, Star } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 
-import { api } from "~/utils/api";
-import { useRouter } from "next/router";
+import { api } from "~/trpc/react";
 import type { Movie } from "~/types/types";
 import { addItem } from "~/redux/cartSlice";
 import { useDispatch, useSelector } from "~/redux/store";
@@ -21,17 +23,25 @@ async function checkURL(url: string): Promise<boolean> {
   }
 }
 
-export default function MovieDetails() {
+export default function MovieDetailsPage({
+  params,
+}: {
+  params: { movie: string };
+}) {
   const [validatedMovie, setValidatedMovie] = useState<Movie>();
   const [cartDuplicate, setCartDuplicate] = useState(false);
   const cartMovies = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
   const { setAnimationTriggered } = useAnimation();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { data: sessionData } = useSession();
 
+  const movieTitle = decodeURIComponent(params.movie);
+  const price = searchParams?.get("price");
+
   const { data: movie, isLoading } = api.movies.findByTitle.useQuery({
-    title: router.query.movie as string,
+    title: movieTitle,
   });
 
   // Calculate cartDuplicate during render
@@ -44,8 +54,8 @@ export default function MovieDetails() {
   }, [isMovieInCart]);
 
   useEffect(() => {
-    if (movie) {
-      const movieWithPrice = { ...movie, price: Number(router.query.price) };
+    if (movie && price) {
+      const movieWithPrice = { ...movie, price: Number(price) };
       if (movieWithPrice.poster) {
         void checkURL(movieWithPrice.poster)
           .then((result: boolean) => {
@@ -66,7 +76,7 @@ export default function MovieDetails() {
         });
       }
     }
-  }, [movie, router.query.price]);
+  }, [movie, price]);
 
   const handleAddToCart = () => {
     if (validatedMovie) {
@@ -156,7 +166,7 @@ export default function MovieDetails() {
                   <button
                     type="button"
                     className="max-w-96 rounded-md bg-blue-500 px-6 py-2 text-lg font-semibold text-white transition-colors hover:bg-blue-600"
-                    onClick={() => router.push("/cart-pages/cart")}
+                    onClick={() => router.push("/cart")}
                   >
                     Go to Cart
                     <ArrowBigRight className="ml-2 inline h-6 w-6" />

@@ -7,6 +7,7 @@ import "./src/env.js";
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
+
   images: {
     remotePatterns: [
       {
@@ -17,9 +18,9 @@ const config = {
       },
       {
         protocol: "https",
-        hostname: "m.media-amazon.com/images/M",
+        hostname: "m.media-amazon.com",
         port: "",
-        pathname: "/**",
+        pathname: "/images/M/**",
       },
       {
         protocol: "https",
@@ -53,14 +54,9 @@ const config = {
   },
 
   /**
-   * If you are using `appDir` then you must comment the below `i18n` config out.
-   *
-   * @see {@link https://github.com/vercel/next.js/issues/41980}
+   * App Router is now enabled - i18n moved to middleware/app directory
+   * @see https://nextjs.org/docs/app/guides/internationalization
    */
-  i18n: {
-    locales: ["en"],
-    defaultLocale: "en",
-  },
 };
 
 export default config;

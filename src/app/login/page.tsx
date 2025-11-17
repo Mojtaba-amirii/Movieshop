@@ -1,4 +1,6 @@
-export default function Login() {
+"use client";
+
+export default function LoginPage() {
   return (
     <div className="flex items-center justify-center">
       <div className="w-96 rounded-3xl bg-gray-50 p-8 shadow-md">
