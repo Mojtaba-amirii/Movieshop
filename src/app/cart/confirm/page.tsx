@@ -1,10 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { CheckCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
+
 import { useDispatch } from "~/redux/store";
 import { clearCart } from "~/redux/cartSlice";
-import { CheckCircle } from "lucide-react";
 
 export default function PaymentConfirmPage() {
   const router = useRouter();
@@ -32,6 +33,7 @@ export default function PaymentConfirmPage() {
 
       <div className="space-y-3">
         <button
+          type="button"
           onClick={() => router.push("/my-movies")}
           className="w-full max-w-sm rounded-md bg-blue-500 py-3 text-white hover:bg-blue-600"
         >
@@ -39,6 +41,7 @@ export default function PaymentConfirmPage() {
         </button>
 
         <button
+          type="button"
           onClick={() => router.push("/")}
           className="w-full max-w-sm rounded-md border py-3 hover:bg-gray-50"
         >

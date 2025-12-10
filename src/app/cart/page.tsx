@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { Trash2, ShoppingBasket } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { Trash2, ShoppingBasket } from "lucide-react";
 
 import type { ReduxState } from "~/redux/store";
 import { useDispatch, useSelector } from "~/redux/store";

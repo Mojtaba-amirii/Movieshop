@@ -3,9 +3,9 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import React, { useState } from "react";
+import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Edit2, Mail, Phone, Camera } from "lucide-react";
-import { redirect } from "next/navigation";
 
 const MAX_IMAGE_SIZE = 1024 * 1024; // 1MB
 

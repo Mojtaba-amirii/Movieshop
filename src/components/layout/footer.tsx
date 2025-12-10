@@ -1,6 +1,6 @@
 import { FaTwitter } from "react-icons/fa";
-import { SiFacebook, SiInstagram } from "react-icons/si";
 import { Film, Mail, Heart } from "lucide-react";
+import { SiFacebook, SiInstagram } from "react-icons/si";
 
 const Footer = () => {
   return (

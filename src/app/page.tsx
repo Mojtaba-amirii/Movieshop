@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Film, Sparkles } from "lucide-react";
+
 import SearchBar from "~/components/Search";
 import MovieList from "~/components/MovieList";
 
