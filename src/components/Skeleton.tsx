@@ -16,7 +16,7 @@ export function MovieDetailsSkeleton() {
       <div className="flex flex-col md:flex-row md:space-x-8">
         <div className="md:w-1/3">
           <Skeleton className="mb-4 h-6 w-24" />
-          <Skeleton className="h-[450px] w-[300px] rounded-lg" />
+          <Skeleton className="h-112.5 w-75 rounded-lg" />
         </div>
         <div className="mt-4 md:mt-0 md:w-2/3">
           <Skeleton className="mb-2 h-8 w-3/4" />

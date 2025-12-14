@@ -217,7 +217,7 @@ export default function MovieDetailsPage({
           </div>
         </div>
       ) : (
-        <div className="flex min-h-[400px] items-center justify-center rounded-2xl bg-white shadow-lg">
+        <div className="flex min-h-100 items-center justify-center rounded-2xl bg-white shadow-lg">
           <p className="text-xl font-semibold text-gray-600">Movie not found</p>
         </div>
       )}
