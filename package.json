@@ -35,7 +35,7 @@
     "axios": "^1.13.2",
     "cors": "^2.8.5",
     "express": "^5.2.1",
-    "framer-motion": "^12.26.2",
+    "framer-motion": "^12.27.0",
     "geist": "^1.5.1",
     "helmet": "^8.1.0",
     "lucide-react": "^0.562.0",
