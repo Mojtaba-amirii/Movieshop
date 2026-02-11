@@ -47,6 +47,7 @@ export const api = createTRPCClient<AppRouter>({
                 ctx,
                 type: op.type,
                 signal: new AbortController().signal,
+                batchIndex: 0,
               });
             })
             .then((data) => {
