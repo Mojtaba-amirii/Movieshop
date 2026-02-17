@@ -35,10 +35,10 @@
     "axios": "^1.13.5",
     "cors": "^2.8.6",
     "express": "^5.2.1",
-    "framer-motion": "^12.34.0",
+    "framer-motion": "^12.34.1",
     "geist": "^1.7.0",
     "helmet": "^8.1.0",
-    "lucide-react": "^0.563.0",
+    "lucide-react": "^0.574.0",
     "next": "^16.1.6",
     "next-auth": "^5.0.0-beta.29",
     "react": "^19.2.4",
@@ -69,7 +69,7 @@
     "prisma": "^6.19.2",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.55.0"
+    "typescript-eslint": "^8.56.0"
   },
   "ct3aMetadata": {
     "initVersion": "7.40.0"
