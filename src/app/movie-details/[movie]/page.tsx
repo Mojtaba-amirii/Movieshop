@@ -30,7 +30,6 @@ export default function MovieDetailsPage({
 }) {
   const resolvedParams = use(params);
   const [validatedMovie, setValidatedMovie] = useState<Movie>();
-  const [cartDuplicate, setCartDuplicate] = useState(false);
   const cartMovies = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
   const { setAnimationTriggered } = useAnimation();
@@ -51,35 +50,34 @@ export default function MovieDetailsPage({
     : false;
 
   useEffect(() => {
-    setCartDuplicate(isMovieInCart);
-  }, [isMovieInCart]);
-
-  useEffect(() => {
-    if (movie) {
+    let active = true;
+    async function validateAndSet() {
+      if (!movie) return;
       const movieWithPrice = {
         ...movie,
         price: price ? Number(price) : (movie.price ?? 0),
       };
+
+      let isValid = false;
       if (movieWithPrice.poster) {
-        void checkURL(movieWithPrice.poster)
-          .then((result: boolean) => {
-            if (result) {
-              setValidatedMovie(movieWithPrice);
-            } else {
-              setValidatedMovie({
-                ...movieWithPrice,
-                poster: "/imgs/image-not-found.jpg",
-              });
-            }
-          })
-          .catch((error) => console.log(error));
-      } else {
-        setValidatedMovie({
-          ...movieWithPrice,
-          poster: "/imgs/image-not-found.jpg",
-        });
+        isValid = await checkURL(movieWithPrice.poster);
+      }
+
+      if (active) {
+        if (isValid) {
+          setValidatedMovie(movieWithPrice);
+        } else {
+          setValidatedMovie({
+            ...movieWithPrice,
+            poster: "/imgs/image-not-found.jpg",
+          });
+        }
       }
     }
+    void validateAndSet();
+    return () => {
+      active = false;
+    };
   }, [movie, price]);
 
   const handleAddToCart = () => {
@@ -89,8 +87,6 @@ export default function MovieDetailsPage({
       setTimeout(() => {
         setAnimationTriggered(false);
       }, 1500);
-
-      setCartDuplicate(true);
     }
   };
 
@@ -181,9 +177,9 @@ export default function MovieDetailsPage({
                         type="button"
                         className="flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-blue-600 to-purple-600 px-8 py-4 text-lg font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl disabled:opacity-50 disabled:hover:scale-100"
                         onClick={handleAddToCart}
-                        disabled={cartDuplicate}
+                        disabled={isMovieInCart}
                       >
-                        {cartDuplicate ? "✓ Added to Cart" : "Add to Cart"}
+                        {isMovieInCart ? "✓ Added to Cart" : "Add to Cart"}
                       </button>
                       <button
                         type="button"
