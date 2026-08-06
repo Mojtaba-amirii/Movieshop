@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import { useSelector } from "~/redux/store";
@@ -13,8 +14,13 @@ export default function PaymentPage() {
     0,
   );
 
+  useEffect(() => {
+    if (cartItems.length === 0) {
+      router.replace("/cart");
+    }
+  }, [cartItems.length, router]);
+
   if (cartItems.length === 0) {
-    router.push("/cart");
     return null;
   }
 
